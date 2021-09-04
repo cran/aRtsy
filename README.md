@@ -13,9 +13,9 @@
 
 `aRtsy` is an attempt at making generative art available for the masses in a simple and standardized format. The package provides various algorithms for creating artworks in `ggplot2` that incorporate some form of randomness (depending on the set `seed`). Each type of artwork is implemented in a separate function.
 
-Contributions to `aRtsy` are very much appreciated! If you want to add your own type of artwork to the package so that others can also create them, feel free to make a pull request to the [GitHub repository](https://github.com/koenderks/aRtsy). Don't forget to adjust [generate-artwork.R](https://github.com/koenderks/aRtsy/blob/development/.github/workflows/generate_artwork.R) if you also want the artwork to show up in the 'Artwork of the day' category and the twitter feed.
-
 Good luck hunting for some good `seed`'s! Feel free to post a comment with your best artworks and the corresponding seed in the [GitHub discussions](https://github.com/koenderks/aRtsy/discussions).
+
+Contributions to `aRtsy` are very much appreciated! If you want to add your own artwork to the package so that others can create unique versions of it, feel free to make a pull request to the [GitHub repository](https://github.com/koenderks/aRtsy). Don't forget to also adjust [generate-artwork.R](https://github.com/koenderks/aRtsy/blob/development/.github/workflows/generate_artwork.R) if you want the artwork to show up in the 'Artwork of the day' category and the twitter feed.
 
 ## Artwork of the day
 
@@ -54,6 +54,7 @@ library(aRtsy)
 * [`canvas_turmite()`](#turmite)
 * [`canvas_ant()`](#langtons-ant)
 * [`canvas_planet()`](#planets)
+* [`canvas_stripes()`](#stripes)
 
 *The Geometric collection*
 
@@ -64,6 +65,14 @@ library(aRtsy)
 * [`canvas_polylines()`](#polylines)
 * [`canvas_function()`](#functions)
 
+*The Supervised collection*
+
+* [`canvas_mosaic()`](#mosaics)
+* [`canvas_forest()`](#forests)
+* [`canvas_gemstone()`](#gemstones)
+* [`canvas_nebula()`](#Nebula)
+* [`canvas_blacklight()`](#blacklights)
+
 *The Static collection*
 
 * [`canvas_mandelbrot()`](#the-mandelbrot-set)
@@ -71,7 +80,7 @@ library(aRtsy)
 
 ### The Iterative collection
 
-The Iterative collection implements algorithms whose state depend on the previous state. These algorithms draw on a grid based canvas in which every point represents a pixel of the final image. By assigning a color to these points according to certain rules, one can create the images in this collection.
+The Iterative collection mostly implements algorithms whose state depend on the previous state. These algorithms generally use a grid based canvas to draw on. On the grid, each point represents a pixel of the final image. By assigning a color to these points according to certain rules, one can create the images in this collection.
 
 #### Paint strokes
 
@@ -112,13 +121,14 @@ By visualizing the sequence for each number, overlaying sequences that are the s
 You can use the `canvas_collatz()` function to make your own artwork using this algorithm.
 
 ```r
+set.seed(2)
 canvas_collatz(colors = '#000000', background = '#fafafa', n = 200, 
                angle.even = 0.0075, angle.odd = 0.0145, side = FALSE)
 ```
 
 #### Turmite
 
-According to [wikipedia](https://en.wikipedia.org/wiki/Turmite), a turmite is *"a Turing machine which has an orientation in addition to a current state and a "tape" that consists of an infinite two-dimensional grid of cells"*. The classic algorithm consists of repeating the three simple steps shown below. However, the algorithm in `aRtsy` is slightly modified so that the turmite does not go off the canvas, but instead bounces back onto the canvas.
+According to [Wikipedia](https://en.wikipedia.org/wiki/Turmite), a turmite is *"a Turing machine which has an orientation in addition to a current state and a "tape" that consists of an infinite two-dimensional grid of cells"*. The classic algorithm consists of repeating the three simple steps shown below. However, the algorithm in `aRtsy` is slightly modified so that the turmite does not go off the canvas, but instead bounces back onto the canvas.
 
 1. Turn on the spot (left, right, up, or down),
 2. Change the color of the block,
@@ -133,14 +143,14 @@ According to [wikipedia](https://en.wikipedia.org/wiki/Turmite), a turmite is *"
 You can use the `canvas_turmite()` function to make your own artwork using this algorithm.
 
 ```r
-set.seed(1)
-canvas_turmite(color = "#000000", background = "#fafafa", p = 0.5, 
-               iterations = 1e7, width = 1500, height = 1500)
+set.seed(3)
+canvas_turmite(colors = '#000000', background = '#fafafa', p = 0.5, 
+               iterations = 1e7, width = 1500, height = 1500, noise = FALSE)
 ```
 
 #### Langton's ant
 
-According to [wikipedia](https://en.wikipedia.org/wiki/Langtons_ant), Langton's ant is a turmite with a very specific set of rules. In particular, the algorithm involves repeating the three rules shown below. Beware, the problem (or blessing) of Langton's ant is that it always moves off the canvas...
+According to [Wikipedia](https://en.wikipedia.org/wiki/Langtons_ant), Langton's ant is a turmite with a very specific set of rules. In particular, the algorithm involves repeating the three rules shown below. Beware, the problem (or blessing) of Langton's ant is that it always moves off the canvas...
 
 1. On a non-colored block: turn 90 degrees clockwise, un-color the block, move forward one block.
 1. On a colored block: turn 90 degrees counter-clockwise, color the block, move forward one block.
@@ -155,6 +165,7 @@ According to [wikipedia](https://en.wikipedia.org/wiki/Langtons_ant), Langton's 
 You can use the `canvas_ant()` function to make your own artwork using this algorithm.
 
 ```r
+set.seed(4)
 canvas_ant(colors = '#000000', background = '#fafafa', iterations = 1e7,
            width = 200, height = 200)
 ```
@@ -174,13 +185,31 @@ You can use the `canvas_planet()` function to make your own artwork using this a
 ```r
 # Sun behind Earth and Moon
 set.seed(1)
-colors <- list(c("khaki1", "lightcoral", "lightsalmon"),
-               c("dodgerblue", "forestgreen", "white"), 
-               c("gray", "darkgray", "beige"))
+colors <- list(c('khaki1', 'lightcoral', 'lightsalmon'),
+               c('dodgerblue', 'forestgreen', 'white'), 
+               c('gray', 'darkgray', 'beige'))
 canvas_planet(colors, radius = c(800, 400, 150), 
               center.x = c(1, 500, 1100),
               center.y = c(1400, 500, 1000), 
               starprob = 0.005)
+```
+
+#### Stripes
+
+This type of artwork is based on the concept of [Brownian motion](https://en.wikipedia.org/wiki/Brownian_motion). The algorithm generates a sequence of brownian motion steps on a two-dimensional surface for each row on the canvas. Next, it fills these according to their generated value. More colors usually make this artwork more interesting.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/stripes/2021-08-23.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/stripes/2021-08-24.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/stripes/2021-08-25.png' width='270' height='270'>
+</p>
+
+You can use the `canvas_stripes()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(5)
+canvas_stripes(colors = c('forestgreen', 'navyblue', 'goldenrod', 'firebrick'),
+               n = 300, H = 1, burnin = 1)
 ```
 
 ### The Geometric collection
@@ -200,7 +229,7 @@ This type of artwork mimics the style of the well-known paintings by the Dutch a
 You can use the `canvas_segments()` function to make your own artwork using this algorithm.
 
 ```r
-set.seed(1)
+set.seed(6)
 canvas_segments(colors = 'black', background = '#fafafa', n = 100, p = 0.5, H = 0.1)
 ```
 
@@ -217,8 +246,8 @@ This function creates a set of diamonds on a canvas. The diamonds are filled in 
 You can use the `canvas_diamonds()` function to make your own artwork using this algorithm.
 
 ```r
-set.seed(1)
-canvas_diamonds(colors = c("forestgreen", "navyblue", "goldenrod", "firebrick"), 
+set.seed(7)
+canvas_diamonds(colors = c('forestgreen', 'navyblue', 'goldenrod', 'firebrick'), 
                 background = '#fafafa', col.line = 'black', radius = 10, alpha = 1, 
                 p = 0.2, width = 500, height = 500)
 ```
@@ -238,7 +267,7 @@ You can use the `canvas_squares()` function to make your own artwork using this 
 ```r
 set.seed(6)
 canvas_squares(colors = c('forestgreen', 'goldenrod', 'firebrick', 'navyblue'),
-               cuts = 50, ratio = 1.618, width = 100, height = 100)
+               cuts = 50, ratio = 1.618, width = 200, height = 200, noise = FALSE)
 ```
 
 #### Ribbons
@@ -254,8 +283,8 @@ This function creates colored ribbons with (or without) a triangle that breaks t
 You can use the `canvas_ribbons()` function to make your own artwork using this algorithm.
 
 ```r
-set.seed(1)
-canvas_ribbons(colors = c("forestgreen", "firebrick", "dodgerblue", "goldenrod"),
+set.seed(9)
+canvas_ribbons(colors = c('forestgreen', 'firebrick', 'dodgerblue', 'goldenrod'),
                background = '#fdf5e6', triangle = TRUE)
 ```
 
@@ -291,8 +320,100 @@ The idea for this type of artwork is taken over from the [`generativeart`](https
 You can use the `canvas_function()` function to make your own artwork using this algorithm.
 
 ```r
-set.seed(1)
+set.seed(14)
 canvas_function(color = '#000000', background = '#fafafa')
+```
+
+### The Supervised collection
+
+The artworks in the Supervised collection are inspired by decision boundary plots in machine learning tasks. The algorithms in this collection work by generating random data points on a two dimensional surface (with either a continuous or a categorical response variable), which they then try to model using the supervised learning algorithm. Next, they try to predict the color of each pixel on the canvas.
+
+#### Mosaics
+
+The first artwork in this collection is inspired by a supervised learning method called k-nearest neighbors. In short, the k-nearest neighbors algorithm computes the distance of each pixel on the canvas to each randomly generated data point and assigns it the color of the class of that data point. If you considers fewer neighbors the artwork looks like a mosaic, while higher values make the artwork look more smooth.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/mosaics/2021-08-17.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/mosaics/2021-08-19.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/mosaics/2021-08-18.png' width='270' height='270'>
+</p>
+
+You can use the `canvas_mosaic()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_mosaic(colors = c('dodgerblue', 'forestgreen', 'white'), 
+              kmax = 1, n = 1000, resolution = 500)
+```
+
+#### Forests
+
+This artwork is inspired by a supervised learning method called random forest. It applies the same principle as described above, but uses a different predictive algorithm to fill in the color of the pixels.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/forests/2021-08-20.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/forests/2021-08-21.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/forests/2021-08-19.png' width='270' height='270'>
+</p>
+
+You can use the `canvas_forest()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_forest(colors = c('dodgerblue', 'forestgreen', 'firebrick', 'goldenrod'), 
+              n = 1000, resolution = 500)
+```
+
+#### Gemstones
+
+Returning to the previously mentioned k-nearest neighbors algorithm, this artwork uses a continuous response variable instead of a categorical one. The resulting pattern can sometimes resemble a gemstone.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/gemstones/2021-08-20.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/gemstones/2021-08-21.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/gemstones/2021-08-22.png' width='270' height='270'>
+</p>
+
+```r
+set.seed(1)
+canvas_gemstone(colors = c('dodgerblue', 'forestgreen', 'firebrick', 'goldenrod'), 
+                n = 1000, resolution = 500)
+```
+
+You can use the `canvas_gemstone()` function to make your own artwork using this algorithm.
+
+#### Nebula
+
+Based on the very same principle as described in the artwork above is this next type of artwork. However, it produces slightly different pictures as it uses different code to create a form of k-nearest neighbors noise. Some of these artworks can resemble nebulas in outer space.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/nebulas/2021-08-29.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/nebulas/2021-08-28.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/nebulas/2021-08-27.png' width='270' height='270'>
+</p>
+
+You can use the `canvas_nebula()` function to make your own artwork using this algorithm.
+
+```r
+canvas_nebula(colors = c('forestgreen', 'firebrick', 'goldenrod', 'navyblue'), k = 10)
+```
+
+#### Blacklights
+
+This artwork is inspired by a supervised machine learning method called support vector machines. It applies the same principle as described above, but uses a different predictive algorithm to fill in the color of the pixels.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/blacklights/2021-08-22.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/blacklights/2021-08-21.png' width='270' height='270'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/blacklights/2021-08-20.png' width='270' height='270'>
+</p>
+
+You can use the `canvas_blacklight()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_blacklight(colors = c('dodgerblue', 'forestgreen', 'firebrick', 'goldenrod'), 
+                  n = 1000, resolution = 500)
 ```
 
 ### The Static collection
@@ -317,7 +438,7 @@ canvas_mandelbrot(colors = c('forestgreen', 'firebrick', 'goldenrod', 'navyblue'
 
 #### Circle maps
 
-This type of artwork is based on the concept of an [Arnold tongue](https://en.wikipedia.org/wiki/Arnold_tongue). According to wikipedia, Arnold tongues *"are a pictorial phenomenon that occur when visualizing how the rotation number of a dynamical system, or other related invariant property thereof, changes according to two or more of its parameters"*.
+This type of artwork is based on the concept of an [Arnold tongue](https://en.wikipedia.org/wiki/Arnold_tongue). According to Wikipedia, Arnold tongues *"are a pictorial phenomenon that occur when visualizing how the rotation number of a dynamical system, or other related invariant property thereof, changes according to two or more of its parameters"*.
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/circlemaps/2021-04-22b.png' width='270' height='270'>

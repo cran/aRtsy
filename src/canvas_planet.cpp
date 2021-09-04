@@ -9,17 +9,17 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat iterate_planet(arma::mat X, 
-                         int radius,
-                         int xcenter,
-                         int ycenter,
-                         int threshold,
-                         int iterations,
-                         double starprob,
-                         int ncolors,
-                         int colorsused,
-                         double fade,
-                         int lightright) {
+arma::mat draw_planet(arma::mat X, 
+                      int radius,
+                      int xcenter,
+                      int ycenter,
+                      int threshold,
+                      int iterations,
+                      double starprob,
+                      int ncolors,
+                      int colorsused,
+                      double fade,
+                      int lightright) {
   int m = X.n_rows;
   int n = X.n_cols;
   std::vector<int> xcircle; // Vector of x-locations of all circle points
@@ -58,8 +58,9 @@ arma::mat iterate_planet(arma::mat X,
   }
   // Fill the circle
   arma::mat X_ref = X;
+  int circlesize = xcircle.size();
   for (int i = 0; i < iterations; i++) {
-    for (int ii = 0; ii < xcircle.size(); ii++) {
+    for (int ii = 0; ii < circlesize; ii++) {
       int xpoint = xcircle[ii];
       int ypoint = ycircle[ii];
       if (ypoint > 0 && ypoint < (m - 1) && xpoint > 0 && xpoint < (n - 1)) {
@@ -87,7 +88,7 @@ arma::mat iterate_planet(arma::mat X,
     }
 	X_ref = X;
   }
-  for (int ii = 0; ii < xcircle.size(); ii++) {
+  for (int ii = 0; ii < circlesize; ii++) {
     int xpoint = xcircle[ii];
     int ypoint = ycircle[ii];
 	  float xdist = abs(xcenter - xpoint);

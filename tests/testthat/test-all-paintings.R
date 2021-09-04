@@ -81,3 +81,39 @@ test_that("canvas_collatz()", {
   artwork <- aRtsy::canvas_collatz(colors = c("black", "gray", "white"))
   expect_equal(!is.null(artwork), TRUE)
 })
+
+test_that("canvas_mosaic()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_mosaic(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_forest()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_forest(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_gemstone()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_gemstone(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_blacklight()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_blacklight(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_stripes()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_stripes(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_nebula()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_nebula(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})

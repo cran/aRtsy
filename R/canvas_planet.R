@@ -1,23 +1,25 @@
-#' Paint a Planet on a Canvas
+#' Paint a Random Planet on a Canvas
 #'
-#' @description This function paints one or multiple planets.
+#' @description This function paints one or multiple planets and uses a cellular automata to fill their surfaces.
 #'
 #' @usage canvas_planet(colors, threshold = 4, iterations = 200, 
 #'               starprob = 0.01, fade = 0.2,
 #'               radius = NULL, center.x = NULL, center.y = NULL, 
 #'               light.right = TRUE, width = 1500, height = 1500)
 #'
-#' @param colors   	  a character specifying the colors used for the planet(s). Can also be a list where each entry is a vector of colors for each planet.
+#' @param colors      a character specifying the colors used for a single planet. Can also be a list where each entry is a vector of colors for a planet.
 #' @param threshold   a character specifying the threshold for a color take.
-#' @param starprob    the probability of drawing a star in outer space.
-#' @param fade        the fading factor.
-#' @param iterations  the number of iterations of the planets
+#' @param starprob    a value specifying the probability of drawing a star in outer space.
+#' @param fade        a value specifying the amount of fading to apply.
+#' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param radius      a numeric (vector) specifying the radius of the planet(s).
 #' @param center.x    the x-axis coordinate(s) for the center(s) of the planet(s).
 #' @param center.y    the y-axis coordinate(s) for the center(s) of the planet(s).
 #' @param light.right whether to draw the light from the right or the left.
-#' @param width       the width of the artwork in pixels.
-#' @param height      the height of the artwork in pixels.
+#' @param width       a positive integer specifying the width of the artwork in pixels.
+#' @param height      a positive integer specifying the height of the artwork in pixels.
+#'
+#' @references \url{https://fronkonstin.com/2021/01/02/neighborhoods-experimenting-with-cyclic-cellular-automata/}
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -46,9 +48,14 @@ canvas_planet <- function(colors, threshold = 4, iterations = 200, starprob = 0.
                           radius = NULL, center.x = NULL, center.y = NULL, light.right = TRUE,
                           width = 1500, height = 1500) {
   x <- y <- z <- NULL
-  palette <- list()
-  for (i in 1:length(colors)) {
-    palette[[i]] <- c('#000000', '#787878', '#fafafa', colors[[i]])
+  if (is.list(colors)) {
+    palette <- list()
+    for (i in 1:length(colors)) {
+      palette[[i]] <- c('#000000', '#787878', '#fafafa', colors[[i]])
+    }
+  } else {
+    palette <- list(c('#000000', '#787878', '#fafafa', colors))
+    colors <- list(colors)
   }
   canvas <- matrix(0, nrow = height, ncol = width)
   if (is.null(radius))
@@ -67,21 +74,20 @@ canvas_planet <- function(colors, threshold = 4, iterations = 200, starprob = 0.
   planets <- length(radius)
   colorsused <- 0
   for (i in 1:planets) {
-    canvas <- iterate_planet(X = canvas, 
-                             radius = radius[i], 
-                             xcenter = center.x[i], 
-                             ycenter = center.y[i], 
-                             threshold = threshold, 
-                             iterations = ceiling(iterations / i), 
-                             starprob = starprob, 
-                             ncolors = length(palette[[i]]), 
-                             colorsused = colorsused, 
-                             fade = fade,
-                             lightright = lightright)
+    canvas <- draw_planet(X = canvas, 
+                          radius = radius[i], 
+                          xcenter = center.x[i], 
+                          ycenter = center.y[i], 
+                          threshold = threshold, 
+                          iterations = ceiling(iterations / i), 
+                          starprob = starprob, 
+                          ncolors = length(palette[[i]]), 
+                          colorsused = colorsused, 
+                          fade = fade,
+                          lightright = lightright)
     colorsused <- colorsused + length(colors[[i]]) 
   }
-  full_canvas <- reshape2::melt(canvas)
-  colnames(full_canvas) <- c("y", "x", "z")
+  full_canvas <- unraster(canvas, names = c('y', 'x', 'z')) # Convert 2D matrix to data frame
   full_palette <- c('#000000', '#787878', '#fafafa', unlist(colors))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE, alpha = 0.9) + 
@@ -89,6 +95,6 @@ canvas_planet <- function(colors, threshold = 4, iterations = 200, starprob = 0.
     ggplot2::scale_fill_gradientn(colours = full_palette) +
     ggplot2::scale_y_continuous(expand = c(0,0)) + 
     ggplot2::scale_x_continuous(expand = c(0,0))
-  artwork <- themeCanvas(artwork, background = NULL)
+  artwork <- theme_canvas(artwork, background = NULL)
   return(artwork)
 }
