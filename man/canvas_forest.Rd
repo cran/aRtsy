@@ -2,7 +2,7 @@
 % Please edit documentation in R/canvas_forest.R
 \name{canvas_forest}
 \alias{canvas_forest}
-\title{Paint a Random Forest on a Canvas}
+\title{Draw a Random Forest}
 \usage{
 canvas_forest(colors, n = 1000, resolution = 500)
 }
@@ -11,21 +11,28 @@ canvas_forest(colors, n = 1000, resolution = 500)
 
 \item{n}{a positive integer specifying the number of random data points to generate.}
 
-\item{resolution}{a positive integer specifying the number of pixels (resolution x resolution) of the artwork.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function creates an artwork from randomly generated data by running a random forest classification algorithm to predict the color of each pixel on the canvas.
+This function draws the predictions from a random forest algorithm trained on randomly generated categorical data.
 }
 \examples{
 \donttest{
-set.seed(6)
-palette <- colorPalette('random', n = 5)
-canvas_forest(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_forest(colors = colorPalette("jungle"))
 }
 
+}
+\references{
+\url{https://en.wikipedia.org/wiki/Random_forest}
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

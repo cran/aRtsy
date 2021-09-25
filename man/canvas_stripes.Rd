@@ -2,7 +2,7 @@
 % Please edit documentation in R/canvas_stripes.R
 \name{canvas_stripes}
 \alias{canvas_stripes}
-\title{Paint Random Stripes on a Canvas}
+\title{Draw Stripes}
 \usage{
 canvas_stripes(colors, n = 300, H = 1, burnin = 1)
 }
@@ -23,11 +23,15 @@ This function creates a brownian motion on each row of the artwork and colors it
 }
 \examples{
 \donttest{
-set.seed(15)
-palette <- colorPalette('random', n = 5)
-canvas_stripes(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_stripes(colors = colorPalette("random", n = 10))
 }
 
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

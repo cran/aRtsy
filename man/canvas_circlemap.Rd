@@ -2,39 +2,35 @@
 % Please edit documentation in R/canvas_circlemap.R
 \name{canvas_circlemap}
 \alias{canvas_circlemap}
-\title{Paint a Circle Map on a Canvas}
+\title{Draw a Circle Map}
 \usage{
-canvas_circlemap(colors, xmin = 0, xmax = 12.56, ymin = 0, ymax = 1, 
-                 iterations = 10, width = 1500, height = 1500)
+canvas_circlemap(colors, left = 0, right = 12.56, bottom = 0, top = 1,
+                 iterations = 10, resolution = 1500)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
-\item{xmin}{a value specifying the minimum location on the x-axis.}
+\item{left}{a value specifying the minimum location on the x-axis.}
 
-\item{xmax}{a value specifying the maximum location on the x-axis.}
+\item{right}{a value specifying the maximum location on the x-axis.}
 
-\item{ymin}{a value specifying the minimum location on the y-axis.}
+\item{bottom}{a value specifying the minimum location on the y-axis.}
 
-\item{ymax}{a value specifying the maximum location on the y-axis.}
+\item{top}{a value specifying the maximum location on the y-axis.}
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
-\item{width}{a positive integer specifying the width of the artwork in pixels.}
-
-\item{height}{a positive integer specifying the height of the artwork in pixels.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws a circle map on the canvas.
+This function draws a circle map on the canvas. A circle map models the dynamics of a physical system consisting of two rotors or disks, one free to spin, and another one attached to a motor, with a long (weak) spring connecting the two.
 }
 \examples{
 \donttest{
-set.seed(3)
-palette <- colorPalette('random', n = 5)
-canvas_circlemap(colors = palette)
+canvas_circlemap(colors = colorPalette("dark2"))
 }
 
 }
@@ -42,6 +38,9 @@ canvas_circlemap(colors = palette)
 \url{https://en.wikipedia.org/wiki/Arnold_tongue}
 
 \url{https://linas.org/art-gallery/circle-map/circle-map.html}
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

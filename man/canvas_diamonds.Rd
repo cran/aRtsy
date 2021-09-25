@@ -2,11 +2,10 @@
 % Please edit documentation in R/canvas_diamonds.R
 \name{canvas_diamonds}
 \alias{canvas_diamonds}
-\title{Paint Random Diamonds on a Canvas}
+\title{Draw Diamonds}
 \usage{
-canvas_diamonds(colors, background = '#fafafa', col.line = 'black', 
-                radius = 10, alpha = 1, p = 0.2, 
-                width = 500, height = 500)
+canvas_diamonds(colors, background = "#fafafa", col.line = "black",
+                radius = 10, alpha = 1, p = 0.2, resolution = 500)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -21,23 +20,25 @@ canvas_diamonds(colors, background = '#fafafa', col.line = 'black',
 
 \item{p}{a value specifying the probability of drawing an empty diamond.}
 
-\item{width}{a positive integer specifying the width of the artwork in pixels.}
-
-\item{height}{a positive integer specifying the height of the artwork in pixels.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws many diamonds on the canvas and places two lines behind them. The diamonds can be transparent or have a random color sampled from the input.
+This function draws diamonds on a canvas and (optionally) places two lines behind them. The diamonds can be transparent or have a random color sampled from the input.
 }
 \examples{
 \donttest{
-set.seed(5)
-palette <- colorPalette('random', n = 5)
-canvas_diamonds(colors = palette, radius = 10)
+set.seed(1)
+
+# Simple example
+canvas_diamonds(colors = colorPalette("tuscany1"))
 }
 
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

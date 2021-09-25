@@ -2,10 +2,10 @@
 % Please edit documentation in R/canvas_strokes.R
 \name{canvas_strokes}
 \alias{canvas_strokes}
-\title{Paint Random Strokes on a Canvas}
+\title{Draw Strokes}
 \usage{
-canvas_strokes(colors, neighbors = 1, p = 0.01, iterations = 1, 
-               width = 500, height = 500, side = FALSE)
+canvas_strokes(colors, neighbors = 1, p = 0.01, iterations = 1,
+               resolution = 500, side = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -16,9 +16,7 @@ canvas_strokes(colors, neighbors = 1, p = 0.01, iterations = 1,
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm. More iterations generally apply more fade to the artwork.}
 
-\item{width}{a positive integer specifying the width of the artwork in pixels.}
-
-\item{height}{a positive integer specifying the height of the artwork in pixels.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
 \item{side}{logical. Whether to put the artwork on its side.}
 }
@@ -30,11 +28,15 @@ This function creates an artwork that resembles paints strokes. The algorithm is
 }
 \examples{
 \donttest{
-set.seed(16)
-palette <- colorPalette('random', n = 6)
-canvas_strokes(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_strokes(colors = colorPalette("tuscany1"))
 }
 
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

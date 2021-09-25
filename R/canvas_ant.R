@@ -1,54 +1,65 @@
-#' Paint Langton's Ant on a Canvas
+#' Draw Langton's Ant
 #'
-#' @description This function paints Langton's Ant. Langton's ant is a two-dimensional universal Turing machine with a very simple set of rules but complex emergent behavior.
+#' @description This function draws Langton's Ant on a canvas. Langton's ant is a two-dimensional universal Turing machine with a very simple set of rules. These simple rules can lead to complex emergent behavior.
 #'
-#' @usage canvas_ant(colors, background = '#fafafa', iterations = 1e7,
-#'            width = 200, height = 200)
+#' @usage canvas_ant(colors, background = "#fafafa", iterations = 50000,
+#'            resolution = 500)
 #'
-#' @param colors      a string or character vector specifying the color(s) used for the artwork.
+#' @param colors      a character (vector) specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
-#' @param width       a positive integer specifying the width of the artwork in pixels.
-#' @param height      a positive integer specifying the height of the artwork in pixels.
-#'
-#' @references \url{https://en.wikipedia.org/wiki/Langtons_ant}
+#' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
+#' @details The algorithm for Langton's Ant involves repeating the following rules: 1) on a non-colored block: turn 90 degrees clockwise, un-color the block, move forward one block; 2)
+#'          On a colored block: turn 90 degrees counter-clockwise, color the block, move forward one block; 3) If a certain number of iterations has passed, choose a different color which corresponds to a different combination of these rules.
+#'
+#' @references \url{https://en.wikipedia.org/wiki/Langtons_ant}
+#'
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
+#'
+#' @keywords artwork canvas
+#'
+#' @seealso \code{colorPalette}
 #'
 #' @examples
 #' \donttest{
 #' set.seed(1)
-#' palette <- colorPalette('random', n = 10)
-#' canvas_ant(colors = palette)
+#'
+#' # Simple example
+#' canvas_ant(colors = colorPalette("house"))
 #' }
-#' 
-#' @keywords artwork canvas
 #'
 #' @export
-#' @useDynLib aRtsy
-#' @import Rcpp
 
-canvas_ant <- function(colors, background = '#fafafa', iterations = 1e7, 
-                       width = 200, height = 200) {
-  if (length(background) > 1)
-    stop("Can only take one background value.")
-  x <- y <- z <- NULL # Global variables
+canvas_ant <- function(colors, background = "#fafafa", iterations = 50000,
+                       resolution = 500) {
+  .checkUserInput(
+    background = background, resolution = resolution, iterations = iterations
+  )
   palette <- c(background, colors)
-  sequence <- rep(c(0:1), length(colors)) # Create a sequence of 0 (L) and 1 (R) positions
-  pos <- expand.grid(sequence, sequence) # Create a matrix that holds all possible combinations of 0 (L) and 1 (R)
-  pos[2:nrow(pos), ] <- pos[sample(2:nrow(pos)), ] # Mix the possible positions randomly
-  pos <- pos[1:length(colors), ] # Select only as many positions as there are colors given by the user
-  canvas <- matrix(0, nrow = height, ncol = width) # Empty canvas
-  full_canvas <- draw_ant(canvas, iterations, ceiling(height / 2), ceiling(width / 2), pos[, 1], pos[, 2]) # Go into c++ to draw the ant
-  full_canvas <- unraster(full_canvas, names = c('y', 'x', 'z')) # Convert 2D matrix to data frame
+  directions <- .ant_directions(length(colors))
+  canvas <- matrix(0, nrow = resolution, ncol = resolution)
+  full_canvas <- draw_ant(
+    X = canvas, iters = iterations, ncolors = length(colors),
+    x = sample(ceiling(resolution * 0.05):ceiling(resolution * 0.95), size = 1),
+    y = sample(ceiling(resolution * 0.05):ceiling(resolution * 0.95), size = 1),
+    dx = directions[, 1], dy = directions[, 2]
+  )
+  full_canvas <- .unraster(full_canvas, names = c("x", "y", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +
-    ggplot2::geom_raster(interpolate = TRUE, alpha = 0.9) + 
-    ggplot2::coord_equal() +
-    ggplot2::scale_fill_gradientn(colours = palette) +
-    ggplot2::scale_y_continuous(expand = c(0,0)) + 
-    ggplot2::scale_x_continuous(expand = c(0,0))
+    ggplot2::geom_raster(interpolate = TRUE, alpha = 0.9) +
+    ggplot2::xlim(c(0, resolution + 1)) +
+    ggplot2::ylim(c(0, resolution + 1)) +
+    ggplot2::scale_fill_gradientn(colours = palette)
   artwork <- theme_canvas(artwork, background)
   return(artwork)
+}
+
+.ant_directions <- function(n) {
+  sequence <- rep(0:1, n) # Create a sequence of 0 (L) and 1 (R) positions
+  pos <- expand.grid(sequence, sequence) # Create a matrix that holds all possible combinations of 0 (L) and 1 (R)
+  pos[2:nrow(pos), ] <- pos[sample(2:nrow(pos)), ] # Mix the possible positions randomly
+  pos <- pos[1:n, ] # Select only as many positions as there are colors given by the user
 }

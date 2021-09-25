@@ -2,10 +2,10 @@
 % Please edit documentation in R/canvas_turmite.R
 \name{canvas_turmite}
 \alias{canvas_turmite}
-\title{Paint a Random Turmite on a Canvas}
+\title{Draw Turmites}
 \usage{
-canvas_turmite(colors, background = '#fafafa', p = 0.5, iterations = 1e7, 
-               width = 1500, height = 1500, noise = FALSE)
+canvas_turmite(colors, background = "#fafafa", p = 0.5, iterations = 1e6,
+               resolution = 500, noise = FALSE)
 }
 \arguments{
 \item{colors}{a character specifying the color used for the artwork. The number of colors determines the number of turmites.}
@@ -16,28 +16,33 @@ canvas_turmite(colors, background = '#fafafa', p = 0.5, iterations = 1e7,
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
-\item{width}{a positive integer specifying the width of the artwork in pixels.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 
-\item{height}{a positive integer specifying the height of the artwork in pixels.}
-
-\item{noise}{logical. Whether to add k-nn noise to the artwork. Caution, adding noise increases computation time significantly in large dimensions.}
+\item{noise}{logical. Whether to add k-nn noise to the artwork. Note that adding noise increases computation time significantly in large dimensions.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function paints a turmite. A turmite is a Turing machine which has an orientation in addition to a current state and a "tape" that consists of a two-dimensional grid of cells. The algorithm is simple: 1) turn on the spot (left, right, up, down) 2) change the color of the square 3) move forward one square.
+This function paints a turmite. A turmite is a Turing machine which has an orientation in addition to a current state and a "tape" that consists of a two-dimensional grid of cells.
+}
+\details{
+The turmite algorithm consists of the following steps: 1) turn on the spot (left, right, up, down) 2) change the color of the square 3) move forward one square.
 }
 \examples{
 \donttest{
-set.seed(17)
-palette <- colorPalette('dark2')
-canvas_turmite(colors = palette, p = 0, noise = TRUE)
+set.seed(1)
+
+# Simple example
+canvas_turmite(colors = colorPalette("dark2"))
 }
 
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Turmite}
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

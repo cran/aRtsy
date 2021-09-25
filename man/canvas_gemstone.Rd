@@ -2,35 +2,37 @@
 % Please edit documentation in R/canvas_gemstone.R
 \name{canvas_gemstone}
 \alias{canvas_gemstone}
-\title{Paint a Random Gemstone on a Canvas}
+\title{Draw Gemstones}
 \usage{
-canvas_gemstone(colors, maxk = 1, n = 1000, resolution = 500)
+canvas_gemstone(colors, n = 1000, resolution = 500)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
-\item{maxk}{a positive integer specifying the maximum number of nearest neighbors to consider.}
-
 \item{n}{a positive integer specifying the number of random data points to generate.}
 
-\item{resolution}{a positive integer specifying the number of pixels (resolution x resolution) of the artwork.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function creates an artwork from randomly generated data by running a k-nearest neighbors regression algorithm to predict the color of each pixel on the canvas.
+This function draws the predictions from a k-nearest neighbors algorithm trained on randomly generated continuous data.
 }
 \examples{
 \donttest{
-set.seed(7)
-palette <- colorPalette('random', n = 10)
-canvas_gemstone(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_gemstone(colors = colorPalette("dark3"))
 }
 
 }
 \references{
 \url{https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm}
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

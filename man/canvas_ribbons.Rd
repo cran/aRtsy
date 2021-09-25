@@ -2,9 +2,9 @@
 % Please edit documentation in R/canvas_ribbons.R
 \name{canvas_ribbons}
 \alias{canvas_ribbons}
-\title{Paint Random Ribbons on a Canvas}
+\title{Draw Ribbons}
 \usage{
-canvas_ribbons(colors, background = '#fdf5e6', triangle = TRUE)
+canvas_ribbons(colors, background = "#fdf5e6", triangle = TRUE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork. The number of colors determines the number of ribbons.}
@@ -21,11 +21,15 @@ This function paints random ribbons and (optionally) a triangle in the middle.
 }
 \examples{
 \donttest{
-set.seed(12)
-palette <- colorPalette('random', n = 4)
-canvas_ribbons(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_ribbons(colors = colorPalette("retro1"))
 }
 
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

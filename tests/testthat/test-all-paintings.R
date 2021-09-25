@@ -1,6 +1,6 @@
 test_that("colorPalette()", {
   set.seed(1)
-  palette <- aRtsy::colorPalette(name = 'random', n = 4)
+  palette <- aRtsy::colorPalette(name = "random", n = 4)
   expect_equal(length(palette), 4)
 })
 
@@ -115,5 +115,17 @@ test_that("canvas_stripes()", {
 test_that("canvas_nebula()", {
   set.seed(1)
   artwork <- aRtsy::canvas_nebula(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_watercolors()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_watercolors(colors = c("black", "gray", "white"))
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_flow()", {
+  set.seed(1)
+  artwork <- aRtsy::canvas_flow(colors = c("black", "gray", "white"))
   expect_equal(!is.null(artwork), TRUE)
 })

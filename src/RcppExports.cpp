@@ -12,34 +12,35 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // draw_ant
-arma::mat draw_ant(arma::mat X, int iters, int row, int col, std::vector<int> dx, std::vector<int> dy);
-RcppExport SEXP _aRtsy_draw_ant(SEXP XSEXP, SEXP itersSEXP, SEXP rowSEXP, SEXP colSEXP, SEXP dxSEXP, SEXP dySEXP) {
+arma::mat draw_ant(arma::mat X, int iters, int ncolors, int x, int y, std::vector<int> dx, std::vector<int> dy);
+RcppExport SEXP _aRtsy_draw_ant(SEXP XSEXP, SEXP itersSEXP, SEXP ncolorsSEXP, SEXP xSEXP, SEXP ySEXP, SEXP dxSEXP, SEXP dySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
     Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< int >::type row(rowSEXP);
-    Rcpp::traits::input_parameter< int >::type col(colSEXP);
+    Rcpp::traits::input_parameter< int >::type ncolors(ncolorsSEXP);
+    Rcpp::traits::input_parameter< int >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type y(ySEXP);
     Rcpp::traits::input_parameter< std::vector<int> >::type dx(dxSEXP);
     Rcpp::traits::input_parameter< std::vector<int> >::type dy(dySEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_ant(X, iters, row, col, dx, dy));
+    rcpp_result_gen = Rcpp::wrap(draw_ant(X, iters, ncolors, x, y, dx, dy));
     return rcpp_result_gen;
 END_RCPP
 }
 // draw_circlemap
-arma::mat draw_circlemap(arma::mat X, double kmin, double kmax, double phimin, double phimax, int iterations);
-RcppExport SEXP _aRtsy_draw_circlemap(SEXP XSEXP, SEXP kminSEXP, SEXP kmaxSEXP, SEXP phiminSEXP, SEXP phimaxSEXP, SEXP iterationsSEXP) {
+arma::mat draw_circlemap(arma::mat X, double left, double right, double bottom, double top, int iters);
+RcppExport SEXP _aRtsy_draw_circlemap(SEXP XSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP bottomSEXP, SEXP topSEXP, SEXP itersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< double >::type kmin(kminSEXP);
-    Rcpp::traits::input_parameter< double >::type kmax(kmaxSEXP);
-    Rcpp::traits::input_parameter< double >::type phimin(phiminSEXP);
-    Rcpp::traits::input_parameter< double >::type phimax(phimaxSEXP);
-    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_circlemap(X, kmin, kmax, phimin, phimax, iterations));
+    Rcpp::traits::input_parameter< double >::type left(leftSEXP);
+    Rcpp::traits::input_parameter< double >::type right(rightSEXP);
+    Rcpp::traits::input_parameter< double >::type bottom(bottomSEXP);
+    Rcpp::traits::input_parameter< double >::type top(topSEXP);
+    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_circlemap(X, left, right, bottom, top, iters));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -65,6 +66,25 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type even(evenSEXP);
     Rcpp::traits::input_parameter< double >::type odd(oddSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_collatz(empty, series, even, odd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// iterate_flow
+Rcpp::DataFrame iterate_flow(arma::mat angles, int j, int iters, int left, int right, int top, int bottom, double step, int r);
+RcppExport SEXP _aRtsy_iterate_flow(SEXP anglesSEXP, SEXP jSEXP, SEXP itersSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP topSEXP, SEXP bottomSEXP, SEXP stepSEXP, SEXP rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type angles(anglesSEXP);
+    Rcpp::traits::input_parameter< int >::type j(jSEXP);
+    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
+    Rcpp::traits::input_parameter< int >::type left(leftSEXP);
+    Rcpp::traits::input_parameter< int >::type right(rightSEXP);
+    Rcpp::traits::input_parameter< int >::type top(topSEXP);
+    Rcpp::traits::input_parameter< int >::type bottom(bottomSEXP);
+    Rcpp::traits::input_parameter< double >::type step(stepSEXP);
+    Rcpp::traits::input_parameter< int >::type r(rSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_flow(angles, j, iters, left, right, top, bottom, step, r));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -148,6 +168,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// deform
+Rcpp::DataFrame deform(Rcpp::DataFrame canvas, int maxdepth, int resolution);
+RcppExport SEXP _aRtsy_deform(SEXP canvasSEXP, SEXP maxdepthSEXP, SEXP resolutionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< int >::type maxdepth(maxdepthSEXP);
+    Rcpp::traits::input_parameter< int >::type resolution(resolutionSEXP);
+    rcpp_result_gen = Rcpp::wrap(deform(canvas, maxdepth, resolution));
+    return rcpp_result_gen;
+END_RCPP
+}
 // c_noise_knn
 std::vector<double> c_noise_knn(arma::rowvec x, arma::rowvec y, arma::rowvec z, arma::rowvec newx, arma::rowvec newy, int k, int n);
 RcppExport SEXP _aRtsy_c_noise_knn(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP newxSEXP, SEXP newySEXP, SEXP kSEXP, SEXP nSEXP) {
@@ -167,15 +200,17 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 6},
+    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 7},
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
+    {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 9},
     {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 11},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},
     {"_aRtsy_draw_turmite", (DL_FUNC) &_aRtsy_draw_turmite, 5},
+    {"_aRtsy_deform", (DL_FUNC) &_aRtsy_deform, 3},
     {"_aRtsy_c_noise_knn", (DL_FUNC) &_aRtsy_c_noise_knn, 7},
     {NULL, NULL, 0}
 };

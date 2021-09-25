@@ -2,9 +2,9 @@
 % Please edit documentation in R/canvas_segments.R
 \name{canvas_segments}
 \alias{canvas_segments}
-\title{Paint Random Line Segments on a Canvas}
+\title{Draw Segments}
 \usage{
-canvas_segments(colors, background = '#fafafa', n = 100, 
+canvas_segments(colors, background = "#fafafa", n = 250,
                 p = 0.5, H = 0.1, size = 0.2)
 }
 \arguments{
@@ -24,15 +24,19 @@ canvas_segments(colors, background = '#fafafa', n = 100,
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws many random line segments on the canvas.
+This function draws line segments on a canvas. The length and direction of the line segments is determined randomly.
 }
 \examples{
 \donttest{
-set.seed(13)
-palette <- colorPalette('random', n = 4)
-canvas_segments(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_segments(colors = colorPalette("dark1"))
 }
 
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

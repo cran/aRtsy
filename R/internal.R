@@ -1,16 +1,69 @@
+# This function computes k-nearest neighbors noise from c++
+.noise <- function(dims, n = 100, type = c("artsy-knn", "knn", "svm", "rf"), k = 20, limits = c(0, 1)) {
+  type <- match.arg(type)
+  if (type == "artsy-knn") {
+    if (length(dims) == 1) {
+      vec <- expand.grid(limits[1], seq(limits[1], limits[2], length.out = dims))
+    } else if (length(dims) == 2) {
+      vec <- expand.grid(seq(limits[1], limits[2], length.out = dims[1]), seq(limits[1], limits[2], length.out = dims[2]))
+    }
+    z <- c_noise_knn(stats::runif(n), stats::runif(n), stats::runif(n), vec[, 1], vec[, 2], k, n)
+  } else if (type == "svm") {
+    train <- data.frame(
+      x = stats::runif(n, limits[1], limits[2]),
+      y = stats::runif(n, limits[1], limits[2]),
+      z = stats::runif(n, limits[1], limits[2])
+    )
+    fit <- e1071::svm(formula = z ~ x + y, data = train)
+    xsequence <- seq(limits[1], limits[2], length = dims[1])
+    ysequence <- seq(limits[1], limits[2], length = dims[2])
+    canvas <- expand.grid(xsequence, ysequence)
+    colnames(canvas) <- c("x", "y")
+    z <- predict(fit, newdata = canvas)
+  } else if (type == "knn") {
+    train <- data.frame(
+      x = stats::runif(n, limits[1], limits[2]),
+      y = stats::runif(n, limits[1], limits[2]),
+      z = stats::runif(n, limits[1], limits[2])
+    )
+    fit <- kknn::train.kknn(formula = z ~ x + y, data = train, kmax = k)
+    xsequence <- seq(limits[1], limits[2], length = dims[1])
+    ysequence <- seq(limits[1], limits[2], length = dims[2])
+    canvas <- expand.grid(xsequence, ysequence)
+    colnames(canvas) <- c("x", "y")
+    z <- predict(fit, newdata = canvas)
+  } else if (type == "rf") {
+    train <- data.frame(
+      x = stats::runif(n, limits[1], limits[2]),
+      y = stats::runif(n, limits[1], limits[2]),
+      z = stats::runif(n, limits[1], limits[2])
+    )
+    fit <- randomForest::randomForest(formula = z ~ x + y, data = train)
+    xsequence <- seq(limits[1], limits[2], length = dims[1])
+    ysequence <- seq(limits[1], limits[2], length = dims[2])
+    canvas <- expand.grid(xsequence, ysequence)
+    colnames(canvas) <- c("x", "y")
+    z <- predict(fit, newdata = canvas)
+  }
+  return(matrix(z, nrow = dims[1], ncol = dims[2]))
+}
+
+# This function performs validation checks on the standardized input arguments of a function
+.checkUserInput <- function(background = NULL, resolution = NULL, iterations = NULL) {
+  if (!is.null(background) && length(background) != 1) {
+    stop("'background' must be a single character")
+  }
+  if (!is.null(resolution) && (resolution < 1 || resolution %% 1 != 0)) {
+    stop("'resolution' must be a single value > 0")
+  }
+  if (!is.null(iterations) && (iterations < 1 || iterations %% 1 != 0)) {
+    stop("'iterations' must be a single integer > 0")
+  }
+}
+
 # This function turns a matrix into a data frame with columns x, y, and z
-unraster <- function(x, names) {
+.unraster <- function(x, names) {
   newx <- data.frame(x = rep(1:ncol(x), times = ncol(x)), y = rep(1:nrow(x), each = nrow(x)), z = c(x))
   colnames(newx) <- names
   return(newx)
-}
-
-noise <- function(dims, k = 20, n = 100) {
-  if (length(dims) == 1) {
-    vec <- expand.grid(0, seq(0, 1, length.out = dims)) # Create all combinations of pixels
-  } else if (length(dims) == 2) {
-    vec <- expand.grid(seq(0, 1, length.out = dims[1]), seq(0, 1, length.out = dims[2])) # Create all combinations of pixels
-  }
-  z <- c_noise_knn(stats::runif(n), stats::runif(n), stats::runif(n), vec[, 1], vec[, 2], k, n)
-  return(matrix(z, nrow = dims[1], ncol = dims[2]))
 }

@@ -1,8 +1,8 @@
-#' Paint Random Ribbons on a Canvas
+#' Draw Ribbons
 #'
 #' @description This function paints random ribbons and (optionally) a triangle in the middle.
 #'
-#' @usage canvas_ribbons(colors, background = '#fdf5e6', triangle = TRUE)
+#' @usage canvas_ribbons(colors, background = "#fdf5e6", triangle = TRUE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork. The number of colors determines the number of ribbons.
 #' @param background  a character specifying the color of the background.
@@ -12,19 +12,22 @@
 #'
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
 #'
+#' @keywords artwork canvas
+#'
+#' @seealso \code{colorPalette}
+#'
 #' @examples
 #' \donttest{
-#' set.seed(12)
-#' palette <- colorPalette('random', n = 4)
-#' canvas_ribbons(colors = palette)
+#' set.seed(1)
+#'
+#' # Simple example
+#' canvas_ribbons(colors = colorPalette("retro1"))
 #' }
-#' 
-#' @keywords artwork canvas
 #'
 #' @export
 
-canvas_ribbons <- function(colors, background = '#fdf5e6', triangle = TRUE) {
-  x <- y <- NULL
+canvas_ribbons <- function(colors, background = "#fdf5e6", triangle = TRUE) {
+  .checkUserInput(background = background)
   # Create an empty figure
   artwork <- ggplot2::ggplot() +
     ggplot2::xlim(c(0, 100)) +
@@ -48,15 +51,20 @@ canvas_ribbons <- function(colors, background = '#fdf5e6', triangle = TRUE) {
     ept <- data.frame(x = 100, y = epb$y + 5)
     # Combine polygon points
     polygon <- rbind(bpb, fpb, spb, epb, ept, spt, fpt, bpt)
-    artwork <- artwork + ggplot2::geom_polygon(data = polygon, mapping = ggplot2::aes(x = x, y = y), 
-                                               fill = colors[i], color = NA, 
-                                               stat = "identity", alpha = 1)
+    artwork <- artwork + ggplot2::geom_polygon(
+      data = polygon, mapping = ggplot2::aes(x = x, y = y),
+      fill = colors[i], color = NA,
+      stat = "identity", alpha = 1
+    )
   }
-  # (Optionally) draw the triangle 
-  if (triangle)
-    artwork <- artwork + ggplot2::geom_polygon(data = data.frame(x = c(15, 50, 85), y = c(15, 75, 15)), mapping = ggplot2::aes(x = x, y = y), 
-                                               fill = NA, color = "black", 
-                                               stat = "identity", size = 1)
+  # (Optionally) draw the triangle
+  if (triangle) {
+    artwork <- artwork + ggplot2::geom_polygon(
+      data = data.frame(x = c(15, 50, 85), y = c(15, 75, 15)), mapping = ggplot2::aes(x = x, y = y),
+      fill = NA, color = "black",
+      stat = "identity", size = 1
+    )
+  }
   artwork <- theme_canvas(artwork, background)
   return(artwork)
 }

@@ -1,3 +1,18 @@
+# aRtsy 0.1.2
+
+**New features**
+
+- Added new artwork `canvas_flow()`.
+- Added new artwork `canvas_watercolors()`.
+
+**Major changes**
+
+- Changed the `width` and `height` arguments in all functions to `resolution`. If you want to save a non-square artwork, it is best to set a custom `height` and `width` the the preferred export / save function.
+
+**Minor changes**
+
+- Added `Rcpp::checkUserInterrupt()` to all `C++` functions.
+
 # aRtsy 0.1.1
 
 **New features**

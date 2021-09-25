@@ -2,9 +2,9 @@
 % Please edit documentation in R/canvas_collatz.R
 \name{canvas_collatz}
 \alias{canvas_collatz}
-\title{Paint Random Collatz Sequences on a Canvas}
+\title{Draw Collatz Sequences}
 \usage{
-canvas_collatz(colors, background = '#fafafa', n = 200, 
+canvas_collatz(colors, background = "#fafafa", n = 200,
                 angle.even = 0.0075, angle.odd = 0.0145, side = FALSE)
 }
 \arguments{
@@ -28,14 +28,18 @@ This function draws the Collatz conjecture on the canvas.
 }
 \examples{
 \donttest{
-set.seed(4)
-palette <- colorPalette('random', n = 5)
-canvas_collatz(colors = palette, n = 100)
+set.seed(1)
+
+# Simple example
+canvas_collatz(colors = colorPalette("tuscany3"))
 }
 
 }
 \references{
 \url{https://nl.wikipedia.org/wiki/Collatz_Conjecture}
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

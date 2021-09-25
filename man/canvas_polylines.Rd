@@ -2,10 +2,10 @@
 % Please edit documentation in R/canvas_polylines.R
 \name{canvas_polylines}
 \alias{canvas_polylines}
-\title{Paint Random Polygons and Lines on a Canvas}
+\title{Draw Polygons and Lines}
 \usage{
-canvas_polylines(colors, background = '#fafafa', ratio = 0.5, iterations = 1000, 
-                 alpha = NULL, size = 0.1, width = 500, height = 500)
+canvas_polylines(colors, background = "#fafafa", ratio = 0.5, iterations = 1000,
+                 size = 0.1, resolution = 500)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -16,13 +16,9 @@ canvas_polylines(colors, background = '#fafafa', ratio = 0.5, iterations = 1000,
 
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
-\item{alpha}{a value specifying the transparency of the polygons. If \code{NULL} (the default), added layers become increasingly more transparent.}
-
 \item{size}{a positive value specifying the size of the borders.}
 
-\item{width}{a positive integer specifying the width of the artwork in pixels.}
-
-\item{height}{a positive integer specifying the height of the artwork in pixels.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -32,11 +28,15 @@ This function draws many points on the canvas and connects these points into a p
 }
 \examples{
 \donttest{
-set.seed(11)
-palette <- colorPalette('random', n = 10)
-canvas_polylines(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_polylines(colors = colorPalette("retro1"))
 }
 
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}

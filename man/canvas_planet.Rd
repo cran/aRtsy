@@ -2,12 +2,12 @@
 % Please edit documentation in R/canvas_planet.R
 \name{canvas_planet}
 \alias{canvas_planet}
-\title{Paint a Random Planet on a Canvas}
+\title{Draw Planets}
 \usage{
-canvas_planet(colors, threshold = 4, iterations = 200, 
+canvas_planet(colors, threshold = 4, iterations = 200,
               starprob = 0.01, fade = 0.2,
-              radius = NULL, center.x = NULL, center.y = NULL, 
-              light.right = TRUE, width = 1500, height = 1500)
+              radius = NULL, center.x = NULL, center.y = NULL,
+              light.right = TRUE, resolution = 1500)
 }
 \arguments{
 \item{colors}{a character specifying the colors used for a single planet. Can also be a list where each entry is a vector of colors for a planet.}
@@ -28,9 +28,7 @@ canvas_planet(colors, threshold = 4, iterations = 200,
 
 \item{light.right}{whether to draw the light from the right or the left.}
 
-\item{width}{a positive integer specifying the width of the artwork in pixels.}
-
-\item{height}{a positive integer specifying the height of the artwork in pixels.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -40,15 +38,23 @@ This function paints one or multiple planets and uses a cellular automata to fil
 }
 \examples{
 \donttest{
-# Sun behind Earth and Moon
 set.seed(1)
-colors <- list(c("khaki1", "lightcoral", "lightsalmon"),
-               c("dodgerblue", "forestgreen", "white"), 
-               c("gray", "darkgray", "beige"))
-canvas_planet(colors, radius = c(800, 400, 150), 
-              center.x = c(1, 500, 1100),
-              center.y = c(1400, 500, 1000), 
-              starprob = 0.005)
+
+# Simple example
+canvas_planet(colors = colorPalette("retro3"))
+
+# Advanced example
+colors <- list(
+  c("khaki1", "lightcoral", "lightsalmon"),
+  c("dodgerblue", "forestgreen", "white"),
+  c("gray", "darkgray", "beige")
+)
+canvas_planet(colors,
+  radius = c(800, 400, 150),
+  center.x = c(1, 500, 1100),
+  center.y = c(1400, 500, 1000),
+  starprob = 0.005
+)
 }
 
 }

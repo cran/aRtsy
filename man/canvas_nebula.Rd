@@ -2,9 +2,9 @@
 % Please edit documentation in R/canvas_nebula.R
 \name{canvas_nebula}
 \alias{canvas_nebula}
-\title{Paint a Nebula on a Canvas}
+\title{Draw Nebulas}
 \usage{
-canvas_nebula(colors, k = 50, n = 500, resolution = 2000)
+canvas_nebula(colors, k = 50, n = 500, resolution = 500)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -13,21 +13,25 @@ canvas_nebula(colors, k = 50, n = 500, resolution = 2000)
 
 \item{n}{a positive integer specifying the number of random data points to generate.}
 
-\item{resolution}{a positive integer specifying the number of pixels (resolution x resolution) of the artwork.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function creates an artwork from randomly generated noise. Currently it is only capable of generating k-nearest neighbors noise. Sometimes, the noise resembles a nebula.
+This function creates an artwork from randomly generated k-nearest neighbors noise.
 }
 \examples{
 \donttest{
-set.seed(6)
-palette <- colorPalette('random', n = 5)
-canvas_nebula(colors = palette)
+set.seed(1)
+
+# Simple example
+canvas_nebula(colors = colorPalette("tuscany1"))
 }
 
+}
+\seealso{
+\code{colorPalette}
 }
 \author{
 Koen Derks, \email{koen-derks@hotmail.com}
