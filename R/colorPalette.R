@@ -4,8 +4,8 @@
 #'
 #' @usage colorPalette(name, n = NULL)
 #'
-#' @param name   name of the color palette. Can be \code{random} for random colors, but can also be the name of a pre-implemented palette. See the \code{details} section for a list of pre-implemented palettes.
-#' @param n      the number of colors to select from the palette. Required if \code{name = 'random'}. Otherwise, if \code{NULL}, automatically selects all colors from the chosen palette.
+#' @param name   name of the color palette. Can be \code{random} for random colors or \code{complement} for complementing colors, but can also be the name of a pre-implemented palette. See the \code{details} section for a list of pre-implemented palettes.
+#' @param n      the number of colors to select from the palette. Required if \code{name = 'random'} or \code{name = 'complement'}. Otherwise, if \code{NULL}, automatically selects all colors from the chosen palette.
 #'
 #' @details The following color palettes are implemented:
 #'
@@ -17,7 +17,7 @@
 #' @author Koen Derks, \email{koen-derks@hotmail.com}
 #'
 #' @examples
-#' colorPalette("random", 5)
+#' colorPalette("complement", 5)
 #' @keywords canvas palette
 #'
 #' @export
@@ -30,7 +30,29 @@ colorPalette <- function(name, n = NULL) {
     if (is.null(n)) {
       stop("'n' is missing for palette = 'random'")
     }
-    palette <- grDevices::rgb(stats::runif(n, 0, 255), stats::runif(n, 0, 255), stats::runif(n, 0, 255), maxColorValue = 255)
+    palette <- character(n)
+    for (i in 1:length(palette)) {
+      palette[i] <- .hsl_to_rgb(h = stats::runif(1, 1, 360), stats::runif(1), stats::runif(1))
+    }
+  } else if (name == "complement") {
+    palette <- character(n)
+    tmp <- stats::runif(1, 1, 360)
+    palette[1] <- .hsl_to_rgb(h = tmp, stats::runif(1, .4, .8), stats::runif(1, .4, .8))
+    for (i in 2:length(palette)) {
+      if (i %% 2 == 0) {
+        if (tmp > 180) {
+          color <- tmp - 180
+        } else if (tmp < 180) {
+          color <- tmp + 180
+        } else {
+          color <- tmp
+        }
+        palette[i] <- .hsl_to_rgb(h = color, stats::runif(1, .4, .8), stats::runif(1, .4, .8))
+      } else {
+        tmp <- stats::runif(1, 1, 360)
+        palette[i] <- .hsl_to_rgb(h = tmp, stats::runif(1, .4, .8), stats::runif(1, .4, .8))
+      }
+    }
   } else {
     palette <- switch(name,
       "blackwhite" = c("black", "white"),
@@ -64,4 +86,39 @@ colorPalette <- function(name, n = NULL) {
     palette <- palette[1:n]
   }
   return(palette)
+}
+
+.hsl_to_rgb <- function(h, s, l) {
+  h <- h / 360
+  r <- g <- b <- 0.0
+  if (s == 0) {
+    r <- g <- b <- l
+  } else {
+    q <- ifelse(l < 0.5, l * (1.0 + s), l + s - (l * s))
+    p <- 2.0 * l - q
+    r <- .hue_to_rgb(p, q, h + 1 / 3)
+    g <- .hue_to_rgb(p, q, h)
+    b <- .hue_to_rgb(p, q, h - 1 / 3)
+  }
+  col <- grDevices::rgb(r, g, b)
+  return(col)
+}
+
+.hue_to_rgb <- function(p, q, t) {
+  if (t < 0) {
+    t <- t + 1.0
+  }
+  if (t > 1) {
+    t <- t - 1.0
+  }
+  if (t < 1 / 6) {
+    return(p + (q - p) * 6.0 * t)
+  }
+  if (t < 1 / 2) {
+    return(q)
+  }
+  if (t < 2 / 3) {
+    return(p + ((q - p) * ((2 / 3) - t) * 6))
+  }
+  return(p)
 }

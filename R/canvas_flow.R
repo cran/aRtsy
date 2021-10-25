@@ -1,17 +1,17 @@
 #' Draw A Flow Field
 #'
-#' @description This function draws flow fields on a canvas.
+#' @description This function draws flow fields on a canvas. The algorithm simulates the flow of points through a field of angles which can be set manually or generated from the predictions of a supervised learning method (i.e., knn, svm, random forest) trained on randomly generated data.
 #'
 #' @usage canvas_flow(colors, background = "#fafafa", lines = 500, lwd = 0.05,
-#'             iterations = 100, resolution = 100, angles = NULL)
+#'             iterations = 100, stepmax = 0.01, angles = NULL)
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background.
 #' @param lines          the number of lines to draw.
 #' @param lwd            expansion factor for the line width.
 #' @param iterations     the maximum number of iterations for each line.
-#' @param resolution     resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param angles         optional, a matrix containing the angles of the flow field . If \code{NULL} (default), angles are set according to the predictions of a supervised learning algorithm.
+#' @param stepmax        the maximum proportion of the canvas covered in each iteration.
+#' @param angles         optional, a 200 x 200 matrix containing the angles in the flow field. If \code{NULL} (default), angles are set according to the predictions of a supervised learning algorithm.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -31,27 +31,32 @@
 #' canvas_flow(colors = colorPalette("dark2"))
 #'
 #' # Advanced example
-#' angles <- matrix(rnorm(200 * 200), nrow = 200, ncol = 200)
-#' canvas_flow(colors = colorPalette("tuscany1"), angles = angles)
+#' angles <- matrix(0, 200, 200)
+#' angles[1:100, ] <- seq(from = 0, to = 2 * pi, length = 100)
+#' angles[101:200, ] <- seq(from = 2 * pi, to = 0, length = 100)
+#' angles <- angles + rnorm(200 * 200, sd = 0.1)
+#' canvas_flow(
+#'   colors = colorPalette("tuscany1"), background = "black",
+#'   angles = angles, lwd = 0.4, lines = 1000, stepmax = 0.001
+#' )
 #' }
 #'
 #' @export
 
 canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
-                        iterations = 100, resolution = 100, angles = NULL) {
+                        iterations = 100, stepmax = 0.01, angles = NULL) {
   .checkUserInput(
     background = background, iterations = iterations
   )
-  r <- round(resolution * 0.01)
-  sequence <- seq(0, resolution, length = resolution)
+  sequence <- seq(0, 100, length = 100)
   grid <- expand.grid(sequence, sequence)
   grid <- data.frame(x = grid[, 1], y = grid[, 2], z = 0)
-  left <- resolution * -0.5
-  right <- resolution * 1.5
-  bottom <- resolution * -0.5
-  top <- resolution * 1.5
-  ncols <- (right - left) / r
-  nrows <- (top - bottom) / r
+  left <- 100 * -0.5
+  right <- 100 * 1.5
+  bottom <- 100 * -0.5
+  top <- 100 * 1.5
+  ncols <- right - left
+  nrows <- top - bottom
   if (is.null(angles)) {
     angles <- .noise(
       dims = c(nrows, ncols), n = sample(100:300, size = 1),
@@ -68,15 +73,15 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
   }
   plotData <- data.frame(x = numeric(), y = numeric(), z = numeric(), size = numeric(), color = numeric())
   for (j in 1:lines) {
-    step <- stats::runif(1, min = 0, max = resolution * 0.01)
-    rows <- iterate_flow(angles, j, iterations, left, right, top, bottom, step, r)
+    step <- stats::runif(1, min = 0, max = 100 * stepmax)
+    rows <- iterate_flow(angles, j, iterations, left, right, top, bottom, step)
     rows$color <- sample(colors, size = 1)
     rows$size <- .bmline(n = nrow(rows), lwd)
     plotData <- rbind(plotData, rows)
   }
   artwork <- ggplot2::ggplot(data = plotData, mapping = ggplot2::aes(x = x, y = y, group = factor(z))) +
     ggplot2::geom_path(size = plotData$size, color = plotData$color, lineend = "round") +
-    ggplot2::coord_cartesian(xlim = c(0, resolution), ylim = c(0, resolution))
+    ggplot2::coord_cartesian(xlim = c(0, 100), ylim = c(0, 100))
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
 }

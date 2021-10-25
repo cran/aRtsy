@@ -5,7 +5,7 @@
 \title{Draw A Flow Field}
 \usage{
 canvas_flow(colors, background = "#fafafa", lines = 500, lwd = 0.05,
-            iterations = 100, resolution = 100, angles = NULL)
+            iterations = 100, stepmax = 0.01, angles = NULL)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -18,15 +18,15 @@ canvas_flow(colors, background = "#fafafa", lines = 500, lwd = 0.05,
 
 \item{iterations}{the maximum number of iterations for each line.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+\item{stepmax}{the maximum proportion of the canvas covered in each iteration.}
 
-\item{angles}{optional, a matrix containing the angles of the flow field . If \code{NULL} (default), angles are set according to the predictions of a supervised learning algorithm.}
+\item{angles}{optional, a 200 x 200 matrix containing the angles in the flow field. If \code{NULL} (default), angles are set according to the predictions of a supervised learning algorithm.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws flow fields on a canvas.
+This function draws flow fields on a canvas. The algorithm simulates the flow of points through a field of angles which can be set manually or generated from the predictions of a supervised learning method (i.e., knn, svm, random forest) trained on randomly generated data.
 }
 \examples{
 \donttest{
@@ -36,8 +36,14 @@ set.seed(1)
 canvas_flow(colors = colorPalette("dark2"))
 
 # Advanced example
-angles <- matrix(rnorm(200 * 200), nrow = 200, ncol = 200)
-canvas_flow(colors = colorPalette("tuscany1"), angles = angles)
+angles <- matrix(0, 200, 200)
+angles[1:100, ] <- seq(from = 0, to = 2 * pi, length = 100)
+angles[101:200, ] <- seq(from = 2 * pi, to = 0, length = 100)
+angles <- angles + rnorm(200 * 200, sd = 0.1)
+canvas_flow(
+  colors = colorPalette("tuscany1"), background = "black",
+  angles = angles, lwd = 0.4, lines = 1000, stepmax = 0.001
+)
 }
 
 }
