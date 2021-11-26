@@ -5,6 +5,10 @@ draw_ant <- function(X, iters, ncolors, x, y, dx, dy) {
     .Call('_aRtsy_draw_ant', PACKAGE = 'aRtsy', X, iters, ncolors, x, y, dx, dy)
 }
 
+iterate_chladni <- function(X, waves, f) {
+    .Call('_aRtsy_iterate_chladni', PACKAGE = 'aRtsy', X, waves, f)
+}
+
 draw_circlemap <- function(X, left, right, bottom, top, iters) {
     .Call('_aRtsy_draw_circlemap', PACKAGE = 'aRtsy', X, left, right, bottom, top, iters)
 }
@@ -25,12 +29,20 @@ iterate_maze <- function(X, x, y) {
     .Call('_aRtsy_iterate_maze', PACKAGE = 'aRtsy', X, x, y)
 }
 
+iterate_phyllotaxis <- function(iter, a, p) {
+    .Call('_aRtsy_iterate_phyllotaxis', PACKAGE = 'aRtsy', iter, a, p)
+}
+
 draw_planet <- function(X, radius, xcenter, ycenter, threshold, iterations, starprob, ncolors, colorsused, fade, lightright) {
     .Call('_aRtsy_draw_planet', PACKAGE = 'aRtsy', X, radius, xcenter, ycenter, threshold, iterations, starprob, ncolors, colorsused, fade, lightright)
 }
 
 draw_polylines <- function(X, ratio, iters, rows, cols) {
     .Call('_aRtsy_draw_polylines', PACKAGE = 'aRtsy', X, ratio, iters, rows, cols)
+}
+
+iterate_recaman <- function(n, start, increment) {
+    .Call('_aRtsy_iterate_recaman', PACKAGE = 'aRtsy', n, start, increment)
 }
 
 draw_squares <- function(X, neighbors, s, cuts, ratio) {

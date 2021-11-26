@@ -28,6 +28,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iterate_chladni
+arma::mat iterate_chladni(arma::mat X, Rcpp::IntegerVector waves, double f);
+RcppExport SEXP _aRtsy_iterate_chladni(SEXP XSEXP, SEXP wavesSEXP, SEXP fSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type waves(wavesSEXP);
+    Rcpp::traits::input_parameter< double >::type f(fSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_chladni(X, waves, f));
+    return rcpp_result_gen;
+END_RCPP
+}
 // draw_circlemap
 arma::mat draw_circlemap(arma::mat X, double left, double right, double bottom, double top, int iters);
 RcppExport SEXP _aRtsy_draw_circlemap(SEXP XSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP bottomSEXP, SEXP topSEXP, SEXP itersSEXP) {
@@ -100,6 +113,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iterate_phyllotaxis
+Rcpp::DataFrame iterate_phyllotaxis(int iter, double a, double p);
+RcppExport SEXP _aRtsy_iterate_phyllotaxis(SEXP iterSEXP, SEXP aSEXP, SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type iter(iterSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type p(pSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_phyllotaxis(iter, a, p));
+    return rcpp_result_gen;
+END_RCPP
+}
 // draw_planet
 arma::mat draw_planet(arma::mat X, int radius, int xcenter, int ycenter, int threshold, int iterations, double starprob, int ncolors, int colorsused, double fade, int lightright);
 RcppExport SEXP _aRtsy_draw_planet(SEXP XSEXP, SEXP radiusSEXP, SEXP xcenterSEXP, SEXP ycenterSEXP, SEXP thresholdSEXP, SEXP iterationsSEXP, SEXP starprobSEXP, SEXP ncolorsSEXP, SEXP colorsusedSEXP, SEXP fadeSEXP, SEXP lightrightSEXP) {
@@ -133,6 +159,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type rows(rowsSEXP);
     Rcpp::traits::input_parameter< int >::type cols(colsSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_polylines(X, ratio, iters, rows, cols));
+    return rcpp_result_gen;
+END_RCPP
+}
+// iterate_recaman
+Rcpp::IntegerVector iterate_recaman(int n, int start, int increment);
+RcppExport SEXP _aRtsy_iterate_recaman(SEXP nSEXP, SEXP startSEXP, SEXP incrementSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< int >::type increment(incrementSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_recaman(n, start, increment));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -213,13 +252,16 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 7},
+    {"_aRtsy_iterate_chladni", (DL_FUNC) &_aRtsy_iterate_chladni, 3},
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
+    {"_aRtsy_iterate_phyllotaxis", (DL_FUNC) &_aRtsy_iterate_phyllotaxis, 3},
     {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 11},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
+    {"_aRtsy_iterate_recaman", (DL_FUNC) &_aRtsy_iterate_recaman, 3},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},
     {"_aRtsy_draw_turmite", (DL_FUNC) &_aRtsy_draw_turmite, 5},

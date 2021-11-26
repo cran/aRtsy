@@ -1,3 +1,17 @@
+# aRtsy 0.1.5
+
+**New features**
+
+- Added `canvas_recaman()`. Thanks to @akident on Twitter for the suggestion.
+- Added `canvas_phyllotaxis()`.
+- Added `canvas_cobweb()`.
+- Added `canvas_chladni()`.
+
+**Major changes**
+
+- `canvas_function()` is now able to take a vector of colors for the artwork.
+- Removed the dependency on the `dplyr` package.
+
 # aRtsy 0.1.4
 
 **New features**

@@ -135,3 +135,27 @@ test_that("canvas_maze()", {
   artwork <- canvas_maze(color = "black")
   expect_equal(!is.null(artwork), TRUE)
 })
+
+test_that("canvas_recaman()", {
+  set.seed(1)
+  artwork <- canvas_recaman(colors = "black")
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_phyllotaxis()", {
+  set.seed(1)
+  artwork <- canvas_phyllotaxis(colors = "black")
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_cobweb()", {
+  set.seed(1)
+  artwork <- canvas_cobweb(colors = "black")
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_chladni()", {
+  set.seed(1)
+  artwork <- canvas_chladni(colors = "black")
+  expect_equal(!is.null(artwork), TRUE)
+})
