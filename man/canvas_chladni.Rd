@@ -4,30 +4,37 @@
 \alias{canvas_chladni}
 \title{Draw Chladni Figures}
 \usage{
-canvas_chladni(colors, waves = 5, resolution = 500)
+canvas_chladni(colors, waves = 5, warp = 0, resolution = 500,
+               angles = NULL, distances = NULL)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
 \item{waves}{a character specifying the number of randomly sampled waves, or an integer vector of waves to be summed.}
 
+\item{warp}{a numeric value specifying the maximum warping distance for each point. If \code{warp = 0} (the default), no warping is performed.}
+
 \item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+
+\item{angles}{optional, a resolution x resolution matrix containing the angles for the warp, or a character indicating the type of noise to use (\code{svm}, \code{knn}, \code{rf}, \code{perlin}, \code{cubic}, \code{simplex}, or \code{worley}). If \code{NULL} (the default), the noise type is chosen randomly.}
+
+\item{distances}{optional, a resolution x resolution matrix containing the distances for the warp, or a character indicating the type of noise to use (\code{svm}, \code{knn}, \code{rf}, \code{perlin}, \code{cubic}, \code{simplex}, or \code{worley}). If \code{NULL} (the default), the noise type is chosen randomly.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws Chladni figures on a canvas.
+This function draws Chladni figures on a canvas and subsequently warps the domain under these figures.
 }
 \examples{
 \donttest{
-set.seed(1)
+set.seed(2)
 
 # Simple example
-canvas_chladni(colors = colorPalette("lava"))
+canvas_chladni(colors = colorPalette("origami"))
 
 # Advanced example
-canvas_chladni(colors = colorPalette("lava"), waves = c(1, 2, 3, 9))
+canvas_chladni(colors = colorPalette("lava"), waves = c(1, 2, 3, 9), warp = 1)
 }
 
 }
