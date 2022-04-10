@@ -1,3 +1,18 @@
+# Copyright (C) 2021-2022 Koen Derks
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 test_that("colorPalette()", {
   set.seed(1)
   palette <- colorPalette(name = "random", n = 4)
@@ -157,5 +172,11 @@ test_that("canvas_cobweb()", {
 test_that("canvas_chladni()", {
   set.seed(1)
   artwork <- canvas_chladni(colors = "black")
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_petri()", {
+  set.seed(1)
+  artwork <- canvas_petri(colors = "black")
   expect_equal(!is.null(artwork), TRUE)
 })

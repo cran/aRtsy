@@ -2,7 +2,6 @@
 [![R_build_status](https://github.com/koenderks/aRtsy/workflows/Build/badge.svg)](https://github.com/koenderks/aRtsy/actions)
 [![Codecov](https://codecov.io/gh/koenderks/aRtsy/branch/development/graph/badge.svg?token=ZoxIB8p8PW)](https://app.codecov.io/gh/koenderks/aRtsy)
 [![Bugs](https://img.shields.io/github/issues/koenderks/aRtsy/bug?label=Bugs&logo=github&logoColor=%23FFF&color=brightgreen)](https://github.com/koenderks/aRtsy/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
-[![Monthly](https://cranlogs.r-pkg.org/badges/aRtsy?color=blue)](https://cranlogs.r-pkg.org)
 [![Total](https://cranlogs.r-pkg.org/badges/grand-total/aRtsy?color=blue)](https://cranlogs.r-pkg.org)
 
 # aRtsy: Generative Art with `R` and `ggplot2`
@@ -60,6 +59,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_chladni()`](#chladni-figures)
 * [`canvas_flow()`](#flow-fields)
 * [`canvas_maze()`](#mazes)
+* [`canvas_petri()`](#petri-dishes)
 * [`canvas_planet()`](#planets)
 * [`canvas_stripes()`](#stripes)
 * [`canvas_strokes()`](#paint-strokes)
@@ -211,6 +211,24 @@ You can use the `canvas_maze()` function to make your own artwork using this alg
 set.seed(1)
 canvas_maze(color = "#fafafa")
 # see ?canvas_maze for more input parameters of this function
+```
+
+#### Petri dishes
+
+This artwork uses a space colonization algorithm (excellently described in [this blogpost](https://medium.com/@jason.webb/space-colonization-algorithm-in-javascript-6f683b743dc5) by Jason Webb) to draw Petri dish colonies. If you add a hole in the middle of the Petri dish, the colony grows around the hole.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/petris/2022-04-04.png' width='250' height='250'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/petris/2022-04-06.png' width='250' height='250'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/petris/2022-04-05.png' width='250' height='250'>
+</p>
+
+You can use the `canvas_petri()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_petri(colors = colorPalette("sooph"))
+# see ?canvas_petri for more input parameters of this function
 ```
 
 #### Planets

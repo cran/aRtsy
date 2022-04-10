@@ -1,3 +1,18 @@
+# Copyright (C) 2021-2022 Koen Derks
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #' Color Palette Generator
 #'
 #' @description This function creates a random color palette, or allows the user to select a pre-implemented palette.
@@ -64,13 +79,14 @@ colorPalette <- function(name, n = NULL) {
   } else {
     if (name == "random-palette") {
       name <- sample(c(
-        "blackwhite", "boogy1", "boogy2", "boogy3", "dark1", "dark2", "dark3", "flora", "gogh", "house", "jasp", "jfa", "jungle",
-        "klimt", "kpd", "lava", "nature", "mixer1", "mixer2", "mixer3", "neon1", "neon2", "origami", 
-        "retro1", "retro2", "retro3", "sooph", "tuscany1", "tuscany2", "tuscany3", "vrolik1", "vrolik2", "vrolik3"
+        "blackwhite", "bell", "boogy1", "boogy2", "boogy3", "dark1", "dark2", "dark3", "flora", "gogh", "house", "jasp", "jfa", "jungle",
+        "klimt", "kpd", "lava", "nature", "mixer1", "mixer2", "mixer3", "mixer4", "neon1", "neon2", "origami", "retro1", "retro2",
+        "retro3", "retro4", "sooph", "sky", "tuscany1", "tuscany2", "tuscany3", "vrolik1", "vrolik2", "vrolik3", "vrolik4", "vrolik5"
       ), size = 1)
     }
     palette <- switch(name,
       "blackwhite" = c("black", "white"),
+      "bell" = c("#000000", "#ff0000", "#ffcc00"),
       "boogy1" = c("#a2a07a", "#c49700", "#b4b9cc", "#c0c1b1"),
       "boogy2" = c("#204b9a", "#f1e60e", "#ffffff", "#e5181d", "1d1d1b"),
       "boogy3" = c("#e9e489", "#995c25", "#5eb9f0", "#68b95d", "#69241f"),
@@ -89,6 +105,7 @@ colorPalette <- function(name, n = NULL) {
       "mixer1" = c("#fa9f29", "#15cab1", "0a633d", "2f3030"),
       "mixer2" = c("#a3a948", "#edb92e", "#f85931", "#ce1836", "#009989"),
       "mixer3" = c("#aacad5", "#c9e0e6", "#e0e9ee", "#dccda4", "#99886e"),
+      "mixer4" = c("#20663F", "#259959", "#ABD406", "#FFD412", "#FF821C"),
       "nature" = c("forestgreen", "dodgerblue", "brown", "white", "gray"),
       "neon1" = c("#F7FD04", "#F9B208", "#F98404", "#FC5404"),
       "neon2" = c("#F5F7B2", "#1CC5DC", "#890596", "#CF0000"),
@@ -96,13 +113,17 @@ colorPalette <- function(name, n = NULL) {
       "retro1" = c("#0A1931", "#185ADB", "#FFC947", "#EFEFEF"),
       "retro2" = c("#DDDDDD", "#222831", "#30475E", "#F05454"),
       "retro3" = c("#111D5E", "#C70039", "#F37121", "#C0E218"),
+      "retro4" = c("#80A8A8", "#909D9E", "#A88C8C", "#FF0D51"),
       "sooph" = c("#d6c398", "#cbabdb", "#139485", "#9e1710", "#414952"),
+      "sky" = c("#CFF09E", "#A8DBA8", "#79BD9A", "#3B8686", "#0B486B"),
       "tuscany1" = c("firebrick", "goldenrod", "forestgreen", "navyblue"),
       "tuscany2" = c("#500342", "#023b59", "#f9efdd", "#deaa70", "#711308"),
       "tuscany3" = c("#b08653", "#f5daba", "#c9673c", "#f2ab4e", "#a1863b"),
       "vrolik1" = c("#4ca787", "#183867", "#ea8857", "#442a37", "#ffb747"),
       "vrolik2" = c("#d8c888", "#f4edf3", "#fa428c", "#1900b4", "#ecd07d"),
-      "vrolik3" = c("#774f38", "#e08e79", "#f1d4af", "#ece5ce", "#c5e0dc")
+      "vrolik3" = c("#774f38", "#e08e79", "#f1d4af", "#ece5ce", "#c5e0dc"),
+      "vrolik4" = c("#16E0F2", "#080E10", "#E69E02", "#CB1BA3", "#BA097F"),
+      "vrolik5" = c("#FBCE03", "#03F7EC", "#4D0E98", "#3A3838", "#150326")
     )
     if (is.null(palette)) {
       stop(paste0("'", name, "' is not an existing palette"))
