@@ -180,3 +180,9 @@ test_that("canvas_petri()", {
   artwork <- canvas_petri(colors = "black")
   expect_equal(!is.null(artwork), TRUE)
 })
+
+test_that("canvas_splits()", {
+  set.seed(1)
+  artwork <- canvas_splits(colors = "black")
+  expect_equal(!is.null(artwork), TRUE)
+})

@@ -1,3 +1,9 @@
+# aRtsy 0.1.8
+
+**New features**
+
+- Added new function `canvas_splits()`.
+
 # aRtsy 0.1.7
 
 **New features**

@@ -61,6 +61,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_maze()`](#mazes)
 * [`canvas_petri()`](#petri-dishes)
 * [`canvas_planet()`](#planets)
+* [`canvas_splits()`](#split-lines)
 * [`canvas_stripes()`](#stripes)
 * [`canvas_strokes()`](#paint-strokes)
 * [`canvas_phyllotaxis()`](#phyllotaxis)
@@ -161,7 +162,7 @@ canvas_collatz(colors = colorPalette("tuscany3"))
 
 #### Chladni figures
 
-This function draws [Chladni](https://en.wikipedia.org/wiki/Ernst_Chladni) figures on the canvas. It works by generating one or multiple sine waves on a square matrix. You can provide the waves to be added yourself. After generating the waves it is possible to warp them using a [domain warping](https://www.iquilezles.org/www/articles/warp/warp.htm) technique. The angles and distances for the warp can be set manually or according to a type of noise.
+This function draws [Chladni](https://en.wikipedia.org/wiki/Ernst_Chladni) figures on the canvas. It works by generating one or multiple sine waves on a square matrix. You can provide the waves to be added yourself. After generating the waves it is possible to warp them using a [domain warping](https://iquilezles.org/articles/warp/) technique. The angles and distances for the warp can be set manually or according to a type of noise.
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/chladnis/2021-11-12.png' width='250' height='250'>
@@ -247,6 +248,24 @@ You can use the `canvas_planet()` function to make your own artwork using this a
 set.seed(1)
 canvas_planet(colors = colorPalette("retro3"))
 # see ?canvas_planet for more input parameters of this function
+```
+
+#### Split Lines
+
+This function generates a [fractal curve](https://en.wikipedia.org/wiki/Fractal_curve). It starts with four simple lines and proceeds to split each line in four new line segments. If this action is repeated for some time, and each time the same split is made, the end product is a fractal curve. The fractal curve in this function (optionally) uses some noise to create random distortions in the curve.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-03.png' width='250' height='250'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-01.png' width='250' height='250'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/splits/2022-05-02.png' width='250' height='250'>
+</p>
+
+You can use the `canvas_splits()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_splits(colors = colorPalette("origami"))
+# see ?canvas_splits for more input parameters of this function
 ```
 
 #### Stripes

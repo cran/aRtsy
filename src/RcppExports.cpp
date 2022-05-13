@@ -234,6 +234,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// draw_splits
+Rcpp::DataFrame draw_splits(Rcpp::NumericVector x, Rcpp::NumericVector xend, Rcpp::NumericVector y, Rcpp::NumericVector yend, Rcpp::NumericVector col, double sda, int ncols, int iterations);
+RcppExport SEXP _aRtsy_draw_splits(SEXP xSEXP, SEXP xendSEXP, SEXP ySEXP, SEXP yendSEXP, SEXP colSEXP, SEXP sdaSEXP, SEXP ncolsSEXP, SEXP iterationsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xend(xendSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type yend(yendSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type col(colSEXP);
+    Rcpp::traits::input_parameter< double >::type sda(sdaSEXP);
+    Rcpp::traits::input_parameter< int >::type ncols(ncolsSEXP);
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_splits(x, xend, y, yend, col, sda, ncols, iterations));
+    return rcpp_result_gen;
+END_RCPP
+}
 // draw_squares
 arma::mat draw_squares(arma::mat X, Rcpp::DataFrame neighbors, int s, int cuts, double ratio);
 RcppExport SEXP _aRtsy_draw_squares(SEXP XSEXP, SEXP neighborsSEXP, SEXP sSEXP, SEXP cutsSEXP, SEXP ratioSEXP) {
@@ -325,6 +343,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 11},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
     {"_aRtsy_iterate_recaman", (DL_FUNC) &_aRtsy_iterate_recaman, 3},
+    {"_aRtsy_draw_splits", (DL_FUNC) &_aRtsy_draw_splits, 8},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},
     {"_aRtsy_draw_turmite", (DL_FUNC) &_aRtsy_draw_turmite, 5},
