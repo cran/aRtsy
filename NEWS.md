@@ -1,3 +1,8 @@
+# aRtsy 0.1.9
+
+- Added new function `canvas_mesh()`.
+- Added new function `canvas_flame()`.
+
 # aRtsy 0.1.8
 
 **New features**

@@ -82,6 +82,50 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iterate_flame
+Rcpp::DataFrame iterate_flame(int iterations, Rcpp::DoubleVector functions, Rcpp::DoubleVector variations, Rcpp::DoubleVector point, Rcpp::DoubleVector w_i, arma::mat mat_coef, bool blend_variations, arma::mat v_ij, Rcpp::DoubleVector v_params, bool transform_p, arma::mat p_coef, bool transform_f, Rcpp::DoubleVector f_coef, bool transform_e, Rcpp::DoubleVector e_coef, arma::mat colors);
+RcppExport SEXP _aRtsy_iterate_flame(SEXP iterationsSEXP, SEXP functionsSEXP, SEXP variationsSEXP, SEXP pointSEXP, SEXP w_iSEXP, SEXP mat_coefSEXP, SEXP blend_variationsSEXP, SEXP v_ijSEXP, SEXP v_paramsSEXP, SEXP transform_pSEXP, SEXP p_coefSEXP, SEXP transform_fSEXP, SEXP f_coefSEXP, SEXP transform_eSEXP, SEXP e_coefSEXP, SEXP colorsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type functions(functionsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type variations(variationsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type point(pointSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type w_i(w_iSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type mat_coef(mat_coefSEXP);
+    Rcpp::traits::input_parameter< bool >::type blend_variations(blend_variationsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type v_ij(v_ijSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type v_params(v_paramsSEXP);
+    Rcpp::traits::input_parameter< bool >::type transform_p(transform_pSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type p_coef(p_coefSEXP);
+    Rcpp::traits::input_parameter< bool >::type transform_f(transform_fSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type f_coef(f_coefSEXP);
+    Rcpp::traits::input_parameter< bool >::type transform_e(transform_eSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type e_coef(e_coefSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type colors(colorsSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_flame(iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors));
+    return rcpp_result_gen;
+END_RCPP
+}
+// color_flame
+arma::cube color_flame(arma::cube canvas, Rcpp::DoubleVector binsx, Rcpp::DoubleVector binsy, Rcpp::DoubleVector x, Rcpp::DoubleVector y, Rcpp::DoubleVector c1, Rcpp::DoubleVector c2, Rcpp::DoubleVector c3);
+RcppExport SEXP _aRtsy_color_flame(SEXP canvasSEXP, SEXP binsxSEXP, SEXP binsySEXP, SEXP xSEXP, SEXP ySEXP, SEXP c1SEXP, SEXP c2SEXP, SEXP c3SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsx(binsxSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsy(binsySEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c1(c1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c2(c2SEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c3(c3SEXP);
+    rcpp_result_gen = Rcpp::wrap(color_flame(canvas, binsx, binsy, x, y, c1, c2, c3));
+    return rcpp_result_gen;
+END_RCPP
+}
 // iterate_flow
 Rcpp::DataFrame iterate_flow(arma::mat angles, int j, int iters, int left, int right, int top, int bottom, double step);
 RcppExport SEXP _aRtsy_iterate_flow(SEXP anglesSEXP, SEXP jSEXP, SEXP itersSEXP, SEXP leftSEXP, SEXP rightSEXP, SEXP topSEXP, SEXP bottomSEXP, SEXP stepSEXP) {
@@ -110,6 +154,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type y(ySEXP);
     rcpp_result_gen = Rcpp::wrap(iterate_maze(X, x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// iterate_mesh
+Rcpp::DataFrame iterate_mesh(int iterations, int start, Rcpp::IntegerVector order, Rcpp::DoubleVector points, Rcpp::DoubleVector centers, Rcpp::DoubleVector radii, Rcpp::DoubleVector increase);
+RcppExport SEXP _aRtsy_iterate_mesh(SEXP iterationsSEXP, SEXP startSEXP, SEXP orderSEXP, SEXP pointsSEXP, SEXP centersSEXP, SEXP radiiSEXP, SEXP increaseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type order(orderSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type points(pointsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type centers(centersSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type radii(radiiSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type increase(increaseSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_mesh(iterations, start, order, points, centers, radii, increase));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -333,8 +394,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
+    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 16},
+    {"_aRtsy_color_flame", (DL_FUNC) &_aRtsy_color_flame, 8},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
+    {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},
     {"_aRtsy_get_closest_node", (DL_FUNC) &_aRtsy_get_closest_node, 5},
     {"_aRtsy_kill_attractors", (DL_FUNC) &_aRtsy_kill_attractors, 5},
     {"_aRtsy_draw_circle", (DL_FUNC) &_aRtsy_draw_circle, 4},

@@ -21,12 +21,24 @@ draw_collatz <- function(empty, series, even, odd) {
     .Call('_aRtsy_draw_collatz', PACKAGE = 'aRtsy', empty, series, even, odd)
 }
 
+iterate_flame <- function(iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors) {
+    .Call('_aRtsy_iterate_flame', PACKAGE = 'aRtsy', iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors)
+}
+
+color_flame <- function(canvas, binsx, binsy, x, y, c1, c2, c3) {
+    .Call('_aRtsy_color_flame', PACKAGE = 'aRtsy', canvas, binsx, binsy, x, y, c1, c2, c3)
+}
+
 iterate_flow <- function(angles, j, iters, left, right, top, bottom, step) {
     .Call('_aRtsy_iterate_flow', PACKAGE = 'aRtsy', angles, j, iters, left, right, top, bottom, step)
 }
 
 iterate_maze <- function(X, x, y) {
     .Call('_aRtsy_iterate_maze', PACKAGE = 'aRtsy', X, x, y)
+}
+
+iterate_mesh <- function(iterations, start, order, points, centers, radii, increase) {
+    .Call('_aRtsy_iterate_mesh', PACKAGE = 'aRtsy', iterations, start, order, points, centers, radii, increase)
 }
 
 get_closest_node <- function(attractor_x, attractor_y, nodes_x, nodes_y, attraction_distance) {

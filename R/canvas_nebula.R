@@ -51,6 +51,6 @@ canvas_nebula <- function(colors, k = 50, n = 500, resolution = 500) {
     ggplot2::xlim(c(0, resolution + 1)) +
     ggplot2::ylim(c(0, resolution + 1)) +
     ggplot2::scale_fill_gradientn(colors = colors)
-  artwork <- aRtsy::theme_canvas(artwork)
+  artwork <- theme_canvas(artwork)
   return(artwork)
 }
