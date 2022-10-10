@@ -14,13 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppArmadillo.h>
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <cstdlib>
-#include <iterator>
-#include <math.h>
-
 // [[Rcpp::depends(RcppArmadillo)]]
 
 Rcpp::DataFrame mazeNeighbors(int x, 
@@ -55,9 +48,9 @@ Rcpp::DataFrame mazeNeighbors(int x,
 }
 
 Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x, 
-                              Rcpp::NumericVector y,
-                              Rcpp::NumericVector vx,
-                              Rcpp::NumericVector vy) {
+                                Rcpp::NumericVector y,
+                                Rcpp::NumericVector vx,
+                                Rcpp::NumericVector vy) {
   Rcpp::NumericVector nx;
   Rcpp::NumericVector ny;
   for (int i = 0; i < x.length(); i++) {

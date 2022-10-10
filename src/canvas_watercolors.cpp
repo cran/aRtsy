@@ -13,14 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppArmadillo.h>
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <cstdlib>
-#include <iterator>
-
-// [[Rcpp::depends(RcppArmadillo)]]
+#include <Rcpp.h>
 
 // [[Rcpp::export]]
 Rcpp::DataFrame deform(Rcpp::DataFrame canvas,

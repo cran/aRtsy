@@ -19,23 +19,22 @@
 #'
 #' @usage canvas_flame(colors, background = "#000000",
 #'              iterations = 1000000, zoom = 1, resolution = 1000,
-#'              variations = NULL, blend = TRUE,
+#'              variations = 0, blend = TRUE, weighted = FALSE,
 #'              display = c("colored", "logdensity"),
-#'              post = FALSE, final = FALSE, extra = FALSE,
-#'              verbose = FALSE)
+#'              post = FALSE, final = FALSE, extra = FALSE)
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
 #' @param iterations  a positive integer specifying the number of iterations of the algorithm.
 #' @param zoom        a positive value specifying the amount of zooming.
-#' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
-#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.
-#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time.
+#' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.
+#' @param variations  an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.
+#' @param blend       logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.
+#' @param weighted    logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.
 #' @param display     a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.
 #' @param post        logical. Whether to apply a post transformation in each iteration.
 #' @param final       logical. Whether to apply a final transformation in each iteration.
 #' @param extra       logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.
-#' @param verbose     logical. Whether to print information.
 #'
 #' @details           The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 #'
@@ -103,99 +102,71 @@
 #'
 #' @examples
 #' \donttest{
-#' set.seed(2)
+#' set.seed(3)
 #'
-#' # Simple example
-#' canvas_flame(colors = c("dodgerblue", "green"))
+#' # Simple example, linear variation, relatively few iterations
+#' canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
 #'
-#' # Advanced example (no-blend sine and spherical variations)
-#' canvas_flame(colors = colorPalette("origami"), variations = c(1, 2), blend = FALSE)
+#' # Advanced example (no-blend, weighted, sine and spherical variations)
+#' canvas_flame(
+#'   colors = colorPalette("origami"), variations = c(1, 2),
+#'   blend = FALSE, weighted = TRUE, iterations = 1e7
+#' )
+#'
+#' # More iterations give much better images
+#' canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(2, 5, 23, 27))
 #' }
 #'
 #' @export
 
 canvas_flame <- function(colors, background = "#000000",
                          iterations = 1000000, zoom = 1, resolution = 1000,
-                         variations = NULL, blend = TRUE,
+                         variations = 0, blend = TRUE, weighted = FALSE,
                          display = c("colored", "logdensity"),
-                         post = FALSE, final = FALSE, extra = FALSE,
-                         verbose = FALSE) {
+                         post = FALSE, final = FALSE, extra = FALSE) {
   display <- match.arg(display)
   .checkUserInput(
     resolution = resolution, background = background
   )
   iterations <- iterations + 20
-  varNames <- .getVariationNames()
-  noVariations <- length(varNames)
-  user <- FALSE
-  if (is.null(variations)) {
-    user <- TRUE
-    v <- 0:(noVariations - 1)
-    variations <- sample(x = v[-c(32, 35, 36, 37)], size = sample(2:5, size = 1), replace = FALSE)
-  } else if (min(variations) < 0 || max(variations) > (noVariations - 1)) {
-    stop("'variations' must be between 0 and ", (noVariations - 1))
+  if (!all(variations %% 1 == 0) || min(variations) < 0 || max(variations) > 48) {
+    stop("all 'variations' must be an integer in the range of 0 to 48")
   }
-  if (verbose) {
-    cat("\nVariation:\t", paste(varNames[variations + 1], collapse = " + "), "\n")
-    catp <- if (post) "Post transformation" else NULL
-    catc <- if (final) "Final transformation" else NULL
-    cate <- if (extra) "Additional post transformation" else NULL
-    cat("Effect:\t\t", paste(c("Affine transformation", catp, catc, cate), collapse = " + "), "\n")
-    catd <- if (display == "logdensity") "Log-Density" else "Colored"
-    cat("Rendering:\t", catd, "\n")
-  }
-  nvariations <- length(variations)
   if (display == "logdensity") {
     nfunc <- sample(x = 3:10, size = 1)
     color_mat <- matrix(stats::runif(nfunc * 3), nrow = nfunc, ncol = 3)
   } else {
     nfunc <- sample(x = 3:max(10, length(colors)), size = 1)
-    colors <- sample(x = colors, size = nfunc, replace = TRUE)
+    colors <- c(colors, sample(x = colors, size = nfunc, replace = TRUE))
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
   w_i <- stats::runif(nfunc, 0, 1)
-  if (user) {
-    v_ij <- matrix(1, nrow = nfunc, ncol = nvariations)
-  } else {
-    v_ij <- matrix(stats::runif(nfunc * nvariations, min = 0, max = 1), nrow = nfunc, ncol = nvariations)
-  }
+  v_ij <- matrix(stats::runif(nfunc * length(variations), min = 0, max = 1), nrow = nfunc, ncol = length(variations))
   for (i in 1:nrow(v_ij)) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
-  df <- iterate_flame(
-    iterations = iterations,
+  canvas <- iterate_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
+    canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)), iterations = iterations,
+    resolution = resolution,
+    edge = 2 * (1 / zoom),
+    blend = blend,
+    weighted = weighted,
+    post = post,
+    final = final,
+    extra = extra,
+    colors = color_mat,
     functions = 0:(nfunc - 1),
+    funcWeights = w_i / sum(w_i),
+    funcPars = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
     variations = variations,
-    point = c(stats::runif(2, -1, 1), stats::runif(3, 0, 1)),
-    w_i = w_i / sum(w_i),
-    mat_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
-    blend_variations = blend,
-    v_ij = v_ij,
-    v_params = .getVariationParameters(),
-    transform_p = post,
-    p_coef = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
-    transform_f = final,
-    f_coef = stats::runif(6, min = -1, max = 1),
-    transform_e = extra,
-    e_coef = stats::runif(6, min = -1, max = 1),
-    colors = color_mat
+    varWeights = v_ij,
+    varParams = .getVariationParameters(),
+    postPars = matrix(stats::runif(nfunc * 6, min = -1, max = 1), nrow = nfunc, ncol = 6),
+    finalPars = stats::runif(6, min = -1, max = 1),
+    extraPars = stats::runif(6, min = -1, max = 1)
   )
-  df <- df[!is.infinite(df[["x"]]) & !is.infinite(df[["y"]]), ]
-  df <- df[!is.na(df[["x"]]) & !is.na(df[["y"]]), ]
-  if (nrow(df) == 0) {
-    stop("The algorithm did not converge")
-  }
-  center <- c(stats::median(df[["x"]]), stats::median(df[["y"]]))
-  spanx <- diff(stats::quantile(df[["x"]], probs = c(0.1, 0.9))) * (1 / zoom)
-  spany <- diff(stats::quantile(df[["y"]], probs = c(0.1, 0.9))) * (1 / zoom)
-  canvas <- color_flame( # 1 = alpha, 2 = red, 3 = green, 5 = blue
-    canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)),
-    binsx = seq(center[1] - spanx, center[1] + spanx, length.out = resolution + 1),
-    binsy = seq(center[2] - spany, center[2] + spany, length.out = resolution + 1),
-    x = df[["x"]], y = df[["y"]], c1 = df[["c1"]], c2 = df[["c2"]], c3 = df[["c3"]]
-  )
-  if (length(which(canvas[, , 1] > 0)) < 1) {
-    stop("No points are drawn on the canvas")
+  if (length(which(canvas[, , 1] > 0)) <= 1) {
+    stop("Too few points are drawn on the canvas")
   }
   full_canvas <- .unraster(canvas[, , 1], c("x", "y", "z"))
   full_canvas[["z"]][full_canvas[["z"]] != 0] <- log(full_canvas[["z"]][full_canvas[["z"]] != 0], base = 1.2589)
@@ -206,11 +177,11 @@ canvas_flame <- function(colors, background = "#000000",
       ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   } else {
     canvas <- .scaleColorChannels(canvas)
-    maxColorValue <- max(c(c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])), na.rm = TRUE)
-    if (maxColorValue == 0) {
+    maxVal <- max(c(1, c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])))
+    if (maxVal == 0) {
       stop("No points are drawn on the canvas")
     }
-    full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 2], green = canvas[, , 3], blue = canvas[, , 4], maxColorValue = maxColorValue)
+    full_canvas[["col"]] <- grDevices::rgb(red = canvas[, , 2], green = canvas[, , 3], blue = canvas[, , 4], maxColorValue = maxVal)
     full_canvas[["col"]][which(is.na(full_canvas[["z"]]))] <- background
     artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y)) +
       ggplot2::geom_raster(interpolate = TRUE, fill = full_canvas[["col"]])
@@ -219,26 +190,14 @@ canvas_flame <- function(colors, background = "#000000",
   return(artwork)
 }
 
-.getVariationNames <- function() {
-  return(c(
-    "Linear", "Sine", "Spherical", "Swirl", "Horsehoe", "Polar", "Handkerchief",
-    "Heart", "Disc", "Spiral", "Hyperbolic", "Diamond", "Ex", "Julia", "Bent",
-    "Waves", "Fisheye", "Popcorn", "Exponential", "Power", "Cosine", "Rings",
-    "Fan", "Blob", "PDJ", "Fan2", "Rings2", "Eyefish", "Bubble", "Cylinder",
-    "Perspective", "Noise", "JuliaN", "JuliaScope", "Blur", "Gaussian",
-    "RadialBlur", "Pie", "Ngon", "Curl", "Rectangles", "Arch", "Tangent",
-    "Square", "Rays", "Blade", "Secant", "Twintrian", "Cross"
-  ))
-}
-
 .getVariationParameters <- function() {
   return(c(
     stats::runif(1, 0, 1), stats::runif(1, -1, 0), stats::runif(1, 1, 10), # blob.high, blob.low, blob.waves
     stats::runif(4, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
     stats::runif(1, 0, 1), # rings2.val
     stats::runif(1, 1, pi), stats::runif(1, 0, 1), # perspective.angle, perspective.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaN.power, juliaN.dist
-    stats::runif(1, 1, 5), stats::runif(1, 0, 10), # juliaScope.power, juliaScope.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 1), # juliaN.power, juliaN.dist
+    stats::runif(1, 1, 5), stats::runif(1, 0, 1), # juliaScope.power, juliaScope.dist
     stats::runif(1, 1, pi), stats::runif(1, 1, 5), # radialBlur.angle, v_36
     sample(1:10, size = 1), stats::runif(1, 1, pi), stats::runif(1, 1, 5), # pie.slices, pie.rotation, pie.thickness
     stats::runif(1, 1, 4), 2 * pi / sample(3:10, size = 1), sample(2:10, size = 1), stats::runif(1, 0, 1), # ngon.power, ngon.sides, ngon.corners, ngon.circle

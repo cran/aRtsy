@@ -57,13 +57,10 @@ canvas_ant <- function(colors, background = "#fafafa", iterations = 50000,
     stop(paste0("'iterations' must be >= ", length(colors)))
   }
   palette <- c(background, colors)
-  directions <- .ant_directions(length(colors))
-  canvas <- matrix(0, nrow = resolution, ncol = resolution)
   full_canvas <- draw_ant(
-    X = canvas, iters = iterations, ncolors = length(colors),
-    x = sample(ceiling(resolution * 0.05):ceiling(resolution * 0.95), size = 1),
-    y = sample(ceiling(resolution * 0.05):ceiling(resolution * 0.95), size = 1),
-    dx = directions[, 1], dy = directions[, 2]
+    directions = .ant_directions(length(colors)),
+    iterations = iterations,
+    resolution = resolution
   )
   full_canvas <- .unraster(full_canvas, names = c("x", "y", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +
@@ -81,5 +78,5 @@ canvas_ant <- function(colors, background = "#fafafa", iterations = 50000,
   pos <- pos[which(pos[, 1] == pos[, 2]), ] # Remove all combinations that have two 0s or two 1s
   pos[2:nrow(pos), ] <- pos[sample(2:nrow(pos), size = length(2:nrow(pos))), ] # Mix the possible positions randomly
   pos <- pos[1:n, ] # Select only as many positions as there are colors given by the user
-  return(pos)
+  return(as.matrix(pos))
 }

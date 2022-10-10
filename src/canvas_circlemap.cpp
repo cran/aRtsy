@@ -14,12 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppArmadillo.h>
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <cstdlib>
-#include <iterator>
-
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
@@ -29,18 +23,16 @@ arma::mat draw_circlemap(arma::mat X,
                          double bottom,
                          double top,
                          int iters) {
-  int m = X.n_rows;
-  int n = X.n_cols;
-  double K = right;
-  double phi = bottom;
+  int nrows = X.n_rows, ncols = X.n_cols;
+  double K = right, phi = bottom;
   for (int iter = 0; iter < iters; iter++) {
-    for (int row = 0; row < m; row++) {
-      for (int col = 0; col < n; col++) {
+    for (int row = 0; row < nrows; row++) {
+      for (int col = 0; col < ncols; col++) {
         Rcpp::checkUserInterrupt();
-        X(row, col) = X(row, col) + phi + (K / (2 * M_PI)) * sin(2 * M_PI * X(row, col));
-        K = K - ((right - left) / m);
+        X(row, col) = X(row, col) + phi + K / (2 * M_PI) * sin(2 * M_PI * X(row, col));
+        K = K - (right - left) / nrows;
       }
-      phi = phi + ((top - bottom) / n);
+      phi = phi + (top - bottom) / ncols;
       K = right;
     }
   }

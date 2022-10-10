@@ -1,3 +1,7 @@
+# aRtsy 0.2.0
+
+- Fixed cpp warnings `warning: use of bitwise '&' with boolean operands [-Wbitwise-instead-of-logical]` in the flame algorithm.
+
 # aRtsy 0.1.9
 
 - Added new function `canvas_mesh()`.

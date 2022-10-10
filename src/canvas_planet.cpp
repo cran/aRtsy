@@ -14,13 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppArmadillo.h>
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <cstdlib>
-#include <iterator>
-#include <math.h>
-
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]

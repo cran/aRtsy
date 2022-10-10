@@ -13,22 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppArmadillo.h>
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <cstdlib>
-#include <iterator>
-
-// [[Rcpp::depends(RcppArmadillo)]]
+#include <Rcpp.h>
 
 // [[Rcpp::export]]
 Rcpp::NumericVector iterate_chladni(Rcpp::NumericVector x,
-                          Rcpp::NumericVector y,
-                          Rcpp::NumericVector waves) {
-  int n = x.length();
-  int k = waves.length();
-  Rcpp::NumericVector z (n);
+                                    Rcpp::NumericVector y,
+                                    Rcpp::NumericVector waves) {
+  int n = x.length(), k = waves.length();
+  Rcpp::NumericVector z(n);
   for (int i = 0; i < k; i++) {
     for (int j = 0; j < n; j++) {
       Rcpp::checkUserInterrupt();

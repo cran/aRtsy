@@ -12,19 +12,15 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // draw_ant
-arma::mat draw_ant(arma::mat X, int iters, int ncolors, int x, int y, std::vector<int> dx, std::vector<int> dy);
-RcppExport SEXP _aRtsy_draw_ant(SEXP XSEXP, SEXP itersSEXP, SEXP ncolorsSEXP, SEXP xSEXP, SEXP ySEXP, SEXP dxSEXP, SEXP dySEXP) {
+arma::mat draw_ant(arma::mat directions, int iterations, int resolution);
+RcppExport SEXP _aRtsy_draw_ant(SEXP directionsSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< int >::type ncolors(ncolorsSEXP);
-    Rcpp::traits::input_parameter< int >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type y(ySEXP);
-    Rcpp::traits::input_parameter< std::vector<int> >::type dx(dxSEXP);
-    Rcpp::traits::input_parameter< std::vector<int> >::type dy(dySEXP);
-    rcpp_result_gen = Rcpp::wrap(draw_ant(X, iters, ncolors, x, y, dx, dy));
+    Rcpp::traits::input_parameter< arma::mat >::type directions(directionsSEXP);
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type resolution(resolutionSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_ant(directions, iterations, resolution));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -58,7 +54,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_collatz_sequence
-std::vector<int> get_collatz_sequence(int x);
+Rcpp::IntegerVector get_collatz_sequence(int x);
 RcppExport SEXP _aRtsy_get_collatz_sequence(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -69,13 +65,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_collatz
-arma::mat draw_collatz(arma::mat empty, std::vector<int> series, double even, double odd);
+arma::mat draw_collatz(arma::mat empty, Rcpp::IntegerVector series, double even, double odd);
 RcppExport SEXP _aRtsy_draw_collatz(SEXP emptySEXP, SEXP seriesSEXP, SEXP evenSEXP, SEXP oddSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type empty(emptySEXP);
-    Rcpp::traits::input_parameter< std::vector<int> >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type series(seriesSEXP);
     Rcpp::traits::input_parameter< double >::type even(evenSEXP);
     Rcpp::traits::input_parameter< double >::type odd(oddSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_collatz(empty, series, even, odd));
@@ -83,46 +79,31 @@ BEGIN_RCPP
 END_RCPP
 }
 // iterate_flame
-Rcpp::DataFrame iterate_flame(int iterations, Rcpp::DoubleVector functions, Rcpp::DoubleVector variations, Rcpp::DoubleVector point, Rcpp::DoubleVector w_i, arma::mat mat_coef, bool blend_variations, arma::mat v_ij, Rcpp::DoubleVector v_params, bool transform_p, arma::mat p_coef, bool transform_f, Rcpp::DoubleVector f_coef, bool transform_e, Rcpp::DoubleVector e_coef, arma::mat colors);
-RcppExport SEXP _aRtsy_iterate_flame(SEXP iterationsSEXP, SEXP functionsSEXP, SEXP variationsSEXP, SEXP pointSEXP, SEXP w_iSEXP, SEXP mat_coefSEXP, SEXP blend_variationsSEXP, SEXP v_ijSEXP, SEXP v_paramsSEXP, SEXP transform_pSEXP, SEXP p_coefSEXP, SEXP transform_fSEXP, SEXP f_coefSEXP, SEXP transform_eSEXP, SEXP e_coefSEXP, SEXP colorsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type functions(functionsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type variations(variationsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type point(pointSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type w_i(w_iSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type mat_coef(mat_coefSEXP);
-    Rcpp::traits::input_parameter< bool >::type blend_variations(blend_variationsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type v_ij(v_ijSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type v_params(v_paramsSEXP);
-    Rcpp::traits::input_parameter< bool >::type transform_p(transform_pSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type p_coef(p_coefSEXP);
-    Rcpp::traits::input_parameter< bool >::type transform_f(transform_fSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type f_coef(f_coefSEXP);
-    Rcpp::traits::input_parameter< bool >::type transform_e(transform_eSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type e_coef(e_coefSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type colors(colorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(iterate_flame(iterations, functions, variations, point, w_i, mat_coef, blend_variations, v_ij, v_params, transform_p, p_coef, transform_f, f_coef, transform_e, e_coef, colors));
-    return rcpp_result_gen;
-END_RCPP
-}
-// color_flame
-arma::cube color_flame(arma::cube canvas, Rcpp::DoubleVector binsx, Rcpp::DoubleVector binsy, Rcpp::DoubleVector x, Rcpp::DoubleVector y, Rcpp::DoubleVector c1, Rcpp::DoubleVector c2, Rcpp::DoubleVector c3);
-RcppExport SEXP _aRtsy_color_flame(SEXP canvasSEXP, SEXP binsxSEXP, SEXP binsySEXP, SEXP xSEXP, SEXP ySEXP, SEXP c1SEXP, SEXP c2SEXP, SEXP c3SEXP) {
+arma::cube iterate_flame(arma::cube canvas, int iterations, int resolution, int edge, bool blend, bool weighted, bool post, bool final, bool extra, arma::mat colors, Rcpp::DoubleVector functions, Rcpp::DoubleVector funcWeights, arma::mat funcPars, Rcpp::DoubleVector variations, arma::mat varWeights, Rcpp::DoubleVector varParams, arma::mat postPars, Rcpp::DoubleVector finalPars, Rcpp::DoubleVector extraPars);
+RcppExport SEXP _aRtsy_iterate_flame(SEXP canvasSEXP, SEXP iterationsSEXP, SEXP resolutionSEXP, SEXP edgeSEXP, SEXP blendSEXP, SEXP weightedSEXP, SEXP postSEXP, SEXP finalSEXP, SEXP extraSEXP, SEXP colorsSEXP, SEXP functionsSEXP, SEXP funcWeightsSEXP, SEXP funcParsSEXP, SEXP variationsSEXP, SEXP varWeightsSEXP, SEXP varParamsSEXP, SEXP postParsSEXP, SEXP finalParsSEXP, SEXP extraParsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::cube >::type canvas(canvasSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsx(binsxSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type binsy(binsySEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c1(c1SEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c2(c2SEXP);
-    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type c3(c3SEXP);
-    rcpp_result_gen = Rcpp::wrap(color_flame(canvas, binsx, binsy, x, y, c1, c2, c3));
+    Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
+    Rcpp::traits::input_parameter< int >::type resolution(resolutionSEXP);
+    Rcpp::traits::input_parameter< int >::type edge(edgeSEXP);
+    Rcpp::traits::input_parameter< bool >::type blend(blendSEXP);
+    Rcpp::traits::input_parameter< bool >::type weighted(weightedSEXP);
+    Rcpp::traits::input_parameter< bool >::type post(postSEXP);
+    Rcpp::traits::input_parameter< bool >::type final(finalSEXP);
+    Rcpp::traits::input_parameter< bool >::type extra(extraSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type colors(colorsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type functions(functionsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type funcWeights(funcWeightsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type funcPars(funcParsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type variations(variationsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type varWeights(varWeightsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type varParams(varParamsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type postPars(postParsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type finalPars(finalParsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DoubleVector >::type extraPars(extraParsSEXP);
+    rcpp_result_gen = Rcpp::wrap(iterate_flame(canvas, iterations, resolution, edge, blend, weighted, post, final, extra, colors, functions, funcWeights, funcPars, variations, varWeights, varParams, postPars, finalPars, extraPars));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -389,13 +370,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 7},
+    {"_aRtsy_draw_ant", (DL_FUNC) &_aRtsy_draw_ant, 3},
     {"_aRtsy_iterate_chladni", (DL_FUNC) &_aRtsy_iterate_chladni, 3},
     {"_aRtsy_draw_circlemap", (DL_FUNC) &_aRtsy_draw_circlemap, 6},
     {"_aRtsy_get_collatz_sequence", (DL_FUNC) &_aRtsy_get_collatz_sequence, 1},
     {"_aRtsy_draw_collatz", (DL_FUNC) &_aRtsy_draw_collatz, 4},
-    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 16},
-    {"_aRtsy_color_flame", (DL_FUNC) &_aRtsy_color_flame, 8},
+    {"_aRtsy_iterate_flame", (DL_FUNC) &_aRtsy_iterate_flame, 19},
     {"_aRtsy_iterate_flow", (DL_FUNC) &_aRtsy_iterate_flow, 8},
     {"_aRtsy_iterate_maze", (DL_FUNC) &_aRtsy_iterate_maze, 3},
     {"_aRtsy_iterate_mesh", (DL_FUNC) &_aRtsy_iterate_mesh, 7},

@@ -6,10 +6,9 @@
 \usage{
 canvas_flame(colors, background = "#000000",
              iterations = 1000000, zoom = 1, resolution = 1000,
-             variations = NULL, blend = TRUE,
+             variations = 0, blend = TRUE, weighted = FALSE,
              display = c("colored", "logdensity"),
-             post = FALSE, final = FALSE, extra = FALSE,
-             verbose = FALSE)
+             post = FALSE, final = FALSE, extra = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -20,11 +19,13 @@ canvas_flame(colors, background = "#000000",
 
 \item{zoom}{a positive value specifying the amount of zooming.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{NULL} includes a random number of variations. See the details section for more information about possible variations.}
+\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.}
 
-\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = FALSE} significantly speeds up the computation time.}
+\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
+
+\item{weighted}{logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.}
 
 \item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
 
@@ -33,8 +34,6 @@ canvas_flame(colors, background = "#000000",
 \item{final}{logical. Whether to apply a final transformation in each iteration.}
 
 \item{extra}{logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.}
-
-\item{verbose}{logical. Whether to print information.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -99,13 +98,19 @@ The \code{variation} argument can be used to include specific variations into th
 }
 \examples{
 \donttest{
-set.seed(2)
+set.seed(3)
 
-# Simple example
-canvas_flame(colors = c("dodgerblue", "green"))
+# Simple example, linear variation, relatively few iterations
+canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
 
-# Advanced example (no-blend sine and spherical variations)
-canvas_flame(colors = colorPalette("origami"), variations = c(1, 2), blend = FALSE)
+# Advanced example (no-blend, weighted, sine and spherical variations)
+canvas_flame(
+  colors = colorPalette("origami"), variations = c(1, 2),
+  blend = FALSE, weighted = TRUE, iterations = 1e7
+)
+
+# More iterations give much better images
+canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(2, 5, 23, 27))
 }
 
 }

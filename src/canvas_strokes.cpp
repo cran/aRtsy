@@ -14,12 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppArmadillo.h>
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <cstdlib>
-#include <iterator>
-
 // [[Rcpp::depends(RcppArmadillo)]]
 
 int neighboring_block(int L, int i) {

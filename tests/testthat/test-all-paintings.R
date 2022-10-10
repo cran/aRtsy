@@ -45,7 +45,7 @@ test_that("canvas_ant()", {
 
 test_that("canvas_planet()", {
   set.seed(1)
-  artwork <- canvas_planet(colors = c("black", "white"))
+  artwork <- canvas_planet(colors = c("black", "white"), iterations = 10)
   expect_equal(!is.null(artwork), TRUE)
 })
 
@@ -194,7 +194,7 @@ test_that("canvas_mesh()", {
 })
 
 test_that("canvas_flame()", {
-  set.seed(1)
-  artwork <- canvas_flame(colors = "white", iterations = 10)
+  set.seed(2)
+  artwork <- canvas_flame(colors = c("dodgerblue", "green"), iterations = 10000)
   expect_equal(!is.null(artwork), TRUE)
 })
