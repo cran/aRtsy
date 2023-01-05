@@ -51,7 +51,7 @@ canvas_circlemap <- function(colors, left = 0, right = 12.56, bottom = 0, top = 
   .checkUserInput(resolution = resolution)
   canvas <- matrix(1, nrow = resolution, ncol = resolution)
   canvas <- draw_circlemap(
-    X = canvas, left = left, right = right,
+    canvas = canvas, left = left, right = right,
     bottom = bottom, top = top, iters = iterations
   )
   canvas <- (canvas / iterations) / length(colors)

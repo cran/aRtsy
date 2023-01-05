@@ -60,7 +60,7 @@ canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
   }
   for (i in 1:length(colorSequence)) {
     canvas <- basePolygons[[labelSequence[i]]]
-    canvas <- deform(canvas, maxdepth = depth, resolution)
+    canvas <- deform(x = canvas[, 1], y = canvas[, 2], s = canvas[, 3], maxdepth = depth, resolution = resolution)
     canvas <- cbind(canvas, z = i)
     plotData <- rbind(plotData, canvas)
   }
@@ -89,6 +89,6 @@ canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
   coords[nrow(coords) + 1, ] <- coords[1, ]
   varsegments <- stats::rnorm(nrow(coords), mean = 6, sd = 1.5)
   canvas <- data.frame(x = coords$x, y = coords$y, s = varsegments)
-  canvas <- deform(canvas, maxdepth = 5, resolution)
+  canvas <- deform(canvas[, 1], canvas[, 2], canvas[, 3], maxdepth = 5, resolution)
   return(canvas)
 }

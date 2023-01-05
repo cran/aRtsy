@@ -17,26 +17,24 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_ant(arma::mat directions,
-                   int iterations,
-                   int resolution) {
-  arma::mat canvas(resolution, resolution, arma::fill::zeros);
-  int ncolors = directions.n_rows;
-  int x = floor(R::runif(resolution * 0.05, resolution * 0.95));
-  int y = floor(R::runif(resolution * 0.05, resolution * 0.95));
-  int i = 0, d = 0, c = 0, t0 = 0, t1 = 0;
-  int s = iterations / ncolors; // When to switch colors in the ant
-  while (i < iterations) {
-    Rcpp::checkUserInterrupt();
+arma::mat draw_ant(arma::mat& canvas,
+                   const arma::mat& directions,
+                   const int& iterations,
+                   const int& resolution) {
+  const int ncolors = directions.n_rows, s = iterations / ncolors;
+  int d = 0, c = 0, t0 = 0, t1 = 0, x = floor(R::runif(resolution * 0.05, resolution * 0.95)), y = floor(R::runif(resolution * 0.05, resolution * 0.95));
+  for (int i = 0; i < iterations; ++i) {
+    if (i % 1000 == 0) {
+      Rcpp::checkUserInterrupt();
+    }
     if (i % s == 0) { // Switch color every s iterations
       ++c; // Next color
       if (c > ncolors) {
         c = 1;
       }
-      t0 = directions(c - 1, 0);
-      t1 = directions(c - 1, 1);
+      t0 = directions.at(c - 1, 0), t1 = directions.at(c - 1, 1);
     }
-    if (canvas(x, y) == 0) { // White square
+    if (canvas.at(x, y) == 0) { // White square
       if (t0 == 0) { // Turn 90 degrees clockwise for R (Langtons Ant)
         ++d;
         if (d == 5) {
@@ -49,7 +47,7 @@ arma::mat draw_ant(arma::mat directions,
         }
       }
       // Color the square
-      canvas(x, y) = c;
+      canvas.at(x, y) = c;
     } else { // Colored square
       if (t1 == 0) { // Turn 90 degrees counter-clockwise for L (Langtons ant)
         --d;
@@ -60,10 +58,10 @@ arma::mat draw_ant(arma::mat directions,
         ++d;
         if (d == 5) {
           d = 1;
-        }	  
+        }
       }
       // Undo the color on the square
-      canvas(x, y) = 0;
+      canvas.at(x, y) = 0;
     }
     // Move the ant
     if (d == 1) {
@@ -87,7 +85,6 @@ arma::mat draw_ant(arma::mat directions,
         y = 0;
       }
     }
-    ++i;
   }
   return canvas;
 }

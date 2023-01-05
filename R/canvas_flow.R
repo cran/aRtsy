@@ -96,16 +96,28 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
       stop(paste0("'angles' must be a ", nrows, " x ", ncols, " matrix"))
     }
   }
-  plotData <- data.frame(x = numeric(), y = numeric(), z = numeric(), size = numeric(), color = numeric())
+  canvas <- iterate_flow(
+    canvas = matrix(NA, nrow = iterations * lines, ncol = 5),
+    angles = angles,
+    lines = lines,
+    iters = iterations,
+    ncolors = length(colors),
+    left = left,
+    right = right,
+    top = top,
+    bottom = bottom,
+    stepmax = stepmax
+  )
+  canvas <- canvas[!is.na(canvas[, 1]), ]
   for (j in 1:lines) {
-    step <- stats::runif(1, min = 0, max = 100 * stepmax)
-    rows <- iterate_flow(angles, j, iterations, left, right, top, bottom, step)
-    rows$color <- sample(colors, size = 1)
-    rows$size <- .bmline(n = nrow(rows), lwd)
-    plotData <- rbind(plotData, rows)
+    index <- which(canvas[, 3] == j)
+    canvas[index, 5] <- .bmline(n = length(index), lwd)
   }
-  artwork <- ggplot2::ggplot(data = plotData, mapping = ggplot2::aes(x = x, y = y, group = factor(z))) +
-    ggplot2::geom_path(size = plotData$size, color = plotData$color, lineend = "round")
+  canvas <- as.data.frame(canvas)
+  colnames(canvas) <- c("x", "y", "z", "color", "size")
+  canvas$color <- colors[canvas[["color"]]]
+  artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, group = factor(z))) +
+    ggplot2::geom_path(size = canvas[["size"]], color = canvas[["color"]], lineend = "round")
   if (polar) {
     artwork <- artwork + ggplot2::coord_polar()
   } else {
@@ -113,10 +125,4 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
   }
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
-}
-
-.bmline <- function(n, lwd) {
-  x <- cumsum(stats::rnorm(n = n, sd = sqrt(1)))
-  x <- abs(x / stats::sd(x) * lwd)
-  return(x)
 }

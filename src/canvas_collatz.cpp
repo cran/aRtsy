@@ -17,32 +17,34 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-Rcpp::IntegerVector get_collatz_sequence(int x) {
+Rcpp::IntegerVector get_collatz_sequence(int& x) {
   Rcpp::IntegerVector sequence = {1};
   while (x > 1) {
     Rcpp::checkUserInterrupt();
-    if (x % 2 == 1) {
-      x = 3 * x + 1;
-      sequence.push_back(1);
-    } else {
+    if (x % 2 == 0) {
       x = x / 2;
       sequence.push_back(0);
+    } else {
+      x = 3 * x + 1;
+      sequence.push_back(1);
     }
   }
   return sequence;
 }
 
 // [[Rcpp::export]]
-arma::mat draw_collatz(arma::mat empty,
-                       Rcpp::IntegerVector series,
-                       double even,
-                       double odd) {
+arma::mat draw_collatz(arma::mat& empty,
+                       const Rcpp::IntegerVector& series,
+                       const double& even,
+                       const double& odd) {
   int s = series.size();
   double angle = M_PI / 2;
-  for (int i = 1; i < s; i++) {
-    Rcpp::checkUserInterrupt();
-    empty(i, 0) = cos(angle) + empty(i - 1, 0);
-    empty(i, 1) = sin(angle) + empty(i - 1, 1);
+  for (int i = 1; i < s; ++i) {
+    if (i % 10 == 0) {
+      Rcpp::checkUserInterrupt();
+    }
+    empty.at(i, 0) = cos(angle) + empty.at(i - 1, 0);
+    empty.at(i, 1) = sin(angle) + empty.at(i - 1, 1);
     if (series[i] == 0) {
       angle = angle - even;
     } else {

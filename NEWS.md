@@ -1,3 +1,8 @@
+# aRtsy 0.2.1
+
+- Added `symmetry` argument to the `canvas_flame()` function. This argument can be used to include dihedral or rotation symmetry into the flame.
+- Added a new color palette `flag`, thanks to [jacobpstein](https://github.com/jacobpstein).
+
 # aRtsy 0.2.0
 
 - Fixed cpp warnings `warning: use of bitwise '&' with boolean operands [-Wbitwise-instead-of-logical]` in the flame algorithm.

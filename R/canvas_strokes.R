@@ -56,11 +56,10 @@ canvas_strokes <- function(colors, neighbors = 1, p = 0.01, iterations = 1,
   if (length(colors) == 1) {
     colors <- c("#fafafa", colors)
   }
-  neighborsLocations <- expand.grid(-(neighbors):neighbors, -(neighbors):neighbors)
-  colnames(neighborsLocations) <- c("x", "y")
+  neighborsLocations <- as.matrix(expand.grid(-(neighbors):neighbors, -(neighbors):neighbors))
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
   for (i in 1:iterations) {
-    canvas <- draw_strokes(X = canvas, neighbors = neighborsLocations, s = length(colors), p = p)
+    canvas <- draw_strokes(canvas = canvas, neighbors = neighborsLocations, s = length(colors), p = p)
   }
   full_canvas <- .unraster(canvas, names = c("x", "y", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +

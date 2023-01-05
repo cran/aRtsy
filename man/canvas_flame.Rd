@@ -4,36 +4,40 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#000000",
-             iterations = 1000000, zoom = 1, resolution = 1000,
-             variations = 0, blend = TRUE, weighted = FALSE,
+canvas_flame(colors, background = "#000000", iterations = 1000000,
+             variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
+             post = FALSE, final = FALSE, extra = FALSE,
              display = c("colored", "logdensity"),
-             post = FALSE, final = FALSE, extra = FALSE)
+             zoom = 1, resolution = 1000, gamma = 1)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
 
 \item{background}{a character specifying the color used for the background.}
 
-\item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
+\item{iterations}{a positive integer specifying the number of iterations of the algorithm. Using more iterations results in images of higher quality but also increases the computation time.}
 
-\item{zoom}{a positive value specifying the amount of zooming.}
+\item{variations}{an integer (vector) with a minimum of 0 and a maximum of 48 specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations (e.g., \code{c(1, 2, 3)}) increases the computation time. See the details section for more information about possible variations.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
+\item{symmetry}{an integer with a minimum of -6 and a maximum of 6 indicating the type of symmetry to include in the flame. The default \code{0} includes no symmetry. Including symmetry decreases the computation time as a function of the absolute \code{symmetry} value. See the details section for more information about possible symmetries.}
 
-\item{variations}{an integer (vector) specifying the variations to be included in the flame. The default \code{0} includes only a linear variation. Including multiple variations increases the computation time. See the details section for more information about possible variations.}
+\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} increases computation time as a function of the number of included variations.}
 
-\item{blend}{logical. Whether to blend the variations (\code{TRUE}) or pick a unique variation in each iteration (\code{FALSE}). \code{blend = TRUE} significantly increases computation time.}
-
-\item{weighted}{logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a unique function and equally weigh all variations in each iteration (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.}
-
-\item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
+\item{weighted}{logical. Whether to weigh the functions and the variations (\code{TRUE}) or pick a function at random and equally weigh all variations (\code{FALSE}). \code{weighted = TRUE} significantly increases the computation time.}
 
 \item{post}{logical. Whether to apply a post transformation in each iteration.}
 
 \item{final}{logical. Whether to apply a final transformation in each iteration.}
 
 \item{extra}{logical. Whether to apply an additional post transformation after the final transformation. Only has an effect when \code{final = TRUE}.}
+
+\item{display}{a character indicating how to display the flame. \code{colored} (the default) displays colors according to which function they originate from. \code{logdensity} plots a gradient using the log density of the pixel count.}
+
+\item{zoom}{a positive value specifying the amount of zooming.}
+
+\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution does not increases the computation time of this algorithm.}
+
+\item{gamma}{a numeric value specifying the gamma correction (only used when \code{display = "colored"}). Larger values result in brighter images and vice versa.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
@@ -45,7 +49,7 @@ This function implements the fractal flame algorithm.
 The \code{variation} argument can be used to include specific variations into the flame. See the appendix in the references for examples of all variations. Possible variations are:
 
 \itemize{
- \item{\code{0}: Linear}
+ \item{\code{0}: Linear (default)}
  \item{\code{1}: Sine}
  \item{\code{2}: Spherical}
  \item{\code{3}: Swirl}
@@ -95,6 +99,19 @@ The \code{variation} argument can be used to include specific variations into th
  \item{\code{47}: Twintrian}
  \item{\code{48}: Cross}
 }
+
+The \code{symmetry} argument can be used to include symmetry into the flame. Possible options are:
+
+\itemize{
+ \item{\code{0}: No symmetry (default)}
+ \item{\code{-1}: Dihedral symmetry}
+ \item{\code{1}: Two-way rotational symmetry}
+ \item{\code{(-)2}: (Dihedral) Three-way rotational symmetry}
+ \item{\code{(-)3}: (Dihedral) Four-way rotational symmetry}
+ \item{\code{(-)4}: (Dihedral) Five-way rotational symmetry}
+ \item{\code{(-)5}: (Dihedral) Six-way rotational symmetry}
+ \item{\code{(-)6}: (Dihedral) Snowflake symmetry}
+}
 }
 \examples{
 \donttest{
@@ -103,14 +120,18 @@ set.seed(3)
 # Simple example, linear variation, relatively few iterations
 canvas_flame(colors = c("dodgerblue", "green"), variations = 0)
 
+# Simple example, linear variation, dihedral symmetry
+canvas_flame(colors = c("hotpink", "yellow"), variations = 0, symmetry = -1, iterations = 1e7)
+
 # Advanced example (no-blend, weighted, sine and spherical variations)
 canvas_flame(
   colors = colorPalette("origami"), variations = c(1, 2),
-  blend = FALSE, weighted = TRUE, iterations = 1e7
+  blend = FALSE, weighted = TRUE, iterations = 1e8
 )
 
 # More iterations give much better images
-canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(2, 5, 23, 27))
+set.seed(123)
+canvas_flame(colors = c("red", "blue"), iterations = 1e8, variations = c(10, 17))
 }
 
 }

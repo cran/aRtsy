@@ -16,75 +16,67 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-int neighboring_block(int L, int i) {
-  if (i < 0)
-    return (L + i % L) % L;
-  if (i >= L)
-    return i % L;
-  return i;
+int neighboring_block(const int& L, 
+                      const int& i) {
+  int x = i;
+  if (i < 0) {
+    x = (L + i % L) % L;
+  } else if (i >= L) {
+    x = i % L;
+  }
+  return x;
 }
 
 // [[Rcpp::export]]
-arma::mat draw_strokes(arma::mat X,
-                       Rcpp::DataFrame neighbors,
-                       int s,
-                       double p) {
-  int m = X.n_rows;
-  int n = X.n_cols;
-  int k = neighbors.nrows();
-  Rcpp::IntegerVector dx = neighbors["x"];
-  Rcpp::IntegerVector dy = neighbors["y"];
-  double backwardsprob = R::runif(0, 1);
-  if (backwardsprob < 0.5) { // Go forward through the loop
-    for (int x = 0; x < n; x++) { // Loop over the columns of the frame
-      for (int y = 0; y < m; y++) { // Loop over the rows of the frame
-        Rcpp::checkUserInterrupt();
-        std::vector<int> colors;
-        for (int z = 0; z < k; z++) { // Loop over all neighboring blocks of the current block
-          int ix  = neighboring_block(n, x + dx[z]); // Select the (adjusted) neighboring x location
-          int iy  = neighboring_block(m, y + dy[z]); // Select the (adjusted) neighboring y location
-          int color = X(ix, iy); // Select the color of the neighboring block
+arma::mat draw_strokes(arma::mat& canvas,
+                       arma::mat& neighbors,
+                       const int& s,
+                       const double& p) {
+  const double backwards = R::runif(0, 1);
+  const int nrows = canvas.n_rows, ncols = canvas.n_cols, k = neighbors.n_rows;
+  for (int x = 0; x < ncols; ++x) {
+    if (x % 100 == 0) {
+      Rcpp::checkUserInterrupt();
+    }
+    if (backwards < 0.5) {
+      for (int y = 0; y < nrows; ++y) {
+        Rcpp::IntegerVector colors(k);
+        int len = 0;
+        for (int z = 0; z < k; ++z) {
+          int color = canvas.at(neighboring_block(ncols, x + neighbors.at(z, 0)), neighboring_block(nrows, y + neighbors.at(z, 1)));
           if (color > 0) {
-            colors.push_back(color); // Add the color of this block to the adjacent color vector
+            colors[len] = color;
+            ++len;
           }
         }
-        double noTake = R::runif(0, 1); // Check whether the block is subject to a random change
-        if (colors.size() > 0 && noTake > p) { // The current block takes over the color of an adjacent block with probability p
-          int takeIndex = floor(R::runif(0, colors.size())); // Sample a number between 0 and colors.size()
-          X(x,y) = colors[takeIndex];
+        const double prob = R::runif(0, 1);
+        if (len > 0 && prob > p) {
+          const int index = floor(R::runif(0, len));
+          canvas.at(x, y) = colors[index];
         } else {
-          // If the current block does not take a color from the surroundings, a new color selected from the palette
-          int newColor;
-          newColor = ceil(R::runif(0, s));
-          X(x,y) = newColor;
+          canvas.at(x, y) = ceil(R::runif(0, s));
         }
       }
-    }
-  } else { // Go backward through the loop  
-    for (int x = 0; x < n; x++) {
-      for (int y = m; y --> 0;) {
-        Rcpp::checkUserInterrupt();
-        std::vector<int> colors;
-        for (int z = 0; z < k; z++) { // Loop over all neighboring blocks of the current block
-          int ix  = neighboring_block(n, x + dx[z]); // Select the (adjusted) neighboring x location
-          int iy  = neighboring_block(m, y + dy[z]); // Select the (adjusted) neighboring y location
-          int color = X(ix, iy); // Select the color of the neighboring block
+    } else {
+      for (int y = nrows; y --> 0;) {
+        Rcpp::IntegerVector colors(k);
+        int len = 0;
+        for (int z = 0; z < k; ++z) {
+          int color = canvas.at(neighboring_block(ncols, x + neighbors.at(z, 0)), neighboring_block(nrows, y + neighbors.at(z, 1)));
           if (color > 0) {
-            colors.push_back (color); // Add the color of this block to the adjacent color vector
+            colors[len] = color;
+            ++len;
           }
         }
-        double noTake = R::runif(0, 1); // Check whether the block is subject to a random change
-        if (colors.size() > 0 && noTake > p) { // The current block takes over the color of an adjacent block with probability p
-          int takeIndex = floor(R::runif(0, colors.size()));
-          X(x,y) = colors[takeIndex];
+        const double prob = R::runif(0, 1);
+        if (len > 0 && prob > p) {
+          const int index = floor(R::runif(0, len));
+          canvas.at(x, y) = colors[index];
         } else {
-          // If the current block does not take a color from the surroundings, a new color selected from the palette
-          int newColor;
-          newColor = ceil(R::runif(0, s));
-          X(x,y) = newColor;
+          canvas.at(x, y) = ceil(R::runif(0, s));
         }
       }
     }
   }
-  return X;
+  return canvas;
 }

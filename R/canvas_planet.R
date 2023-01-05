@@ -90,26 +90,22 @@ canvas_planet <- function(colors, threshold = 4, iterations = 200, starprob = 0.
   if (length(unique(c(length(radius), length(center.y), length(center.x)))) != 1) {
     stop("Radius, center.y, and center.x do not have equal length.")
   }
-  if (light.right) {
-    lightright <- 1
-  } else {
-    lightright <- 0
-  }
   planets <- length(radius)
   colorsused <- 0
   for (i in 1:planets) {
     canvas <- draw_planet(
-      X = canvas,
+      canvas = canvas,
+      resolution = resolution,
       radius = radius[i],
       xcenter = center.x[i],
       ycenter = center.y[i],
       threshold = threshold,
       iterations = ceiling(iterations / i),
-      starprob = starprob,
       ncolors = length(palette[[i]]),
       colorsused = colorsused,
+      starprob = starprob,
       fade = fade,
-      lightright = lightright
+      lightright = light.right
     )
     colorsused <- colorsused + length(colors[[i]])
   }

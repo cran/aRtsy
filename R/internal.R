@@ -23,7 +23,7 @@
     } else if (length(dims) == 2) {
       vec <- expand.grid(seq(limits[1], limits[2], length.out = dims[1]), seq(limits[1], limits[2], length.out = dims[2]))
     }
-    z <- c_noise_knn(stats::runif(n), stats::runif(n), stats::runif(n), vec[, 1], vec[, 2], k, n)
+    z <- c_noise_knn(stats::runif(n), stats::runif(n), stats::runif(n), vec[, 1], vec[, 2], k)
   } else if (type == "svm") {
     train <- data.frame(
       x = stats::runif(n, limits[1], limits[2]),
@@ -117,4 +117,20 @@
     }
   }
   return(matrix(c(p[, 1] + c(cos(angles)) * c(distances), p[, 2] + c(sin(angles)) * c(distances)), ncol = 2))
+}
+
+# This function returns a brownian motion line
+.bmline <- function(n, lwd) {
+  x <- cumsum(stats::rnorm(n = n, sd = sqrt(1)))
+  x <- abs(x / stats::sd(x) * lwd)
+  return(x)
+}
+
+# This function returns the time elapsed
+.runtime <- function(expression, name = NULL) {
+  s1 <- Sys.time()
+  eval(expression)
+  s2 <- Sys.time()
+  cat("\n", if (is.null(name)) NULL else paste0("[", name, "]"), "Runtime:", round(s2 - s1, 5), "seconds\n")
+  return(invisible(as.numeric(s2 - s1)))
 }

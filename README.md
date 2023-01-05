@@ -1,11 +1,9 @@
-[![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)](https://github.com/koenderks/aRtsy/tree/development/R)
-[![Cpp](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://github.com/koenderks/aRtsy/tree/development/src)
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/aRtsy_package)
 [![CRAN](https://img.shields.io/cran/v/aRtsy?color=yellow&label=CRAN&logo=r)](https://cran.r-project.org/package=aRtsy)
 [![R_build_status](https://github.com/koenderks/aRtsy/workflows/Build/badge.svg)](https://github.com/koenderks/aRtsy/actions)
 [![Codecov](https://codecov.io/gh/koenderks/aRtsy/branch/development/graph/badge.svg?token=ZoxIB8p8PW)](https://app.codecov.io/gh/koenderks/aRtsy)
 [![Bugs](https://img.shields.io/github/issues/koenderks/aRtsy/bug?label=Bugs&logo=github&logoColor=%23FFF&color=brightgreen)](https://github.com/koenderks/aRtsy/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 [![Total](https://cranlogs.r-pkg.org/badges/grand-total/aRtsy?color=blue)](https://cranlogs.r-pkg.org)
+[![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 # aRtsy: Generative Art with `R` and `ggplot2`
 
@@ -19,7 +17,7 @@ Good luck hunting for some good `seed`'s!
 
 ## Artwork of the day
 
-Every 24 hours this repository randomly generates and tweets an artwork from the `aRtsy` library. The full collection of daily artworks is available on the [aRtsy twitter feed](https://twitter.com/aRtsy_package). This is today's artwork:
+Every 24 hours this repository randomly generates and tweets an artwork from the `aRtsy` library. The full collection of daily artworks is available on the [twitter](https://twitter.com/aRtsy_package) feed and the [mastodon](https://botsin.space/web/@aRtsy_package) feed. This is today's artwork:
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/daily.png' width='50%'>
@@ -185,7 +183,7 @@ canvas_chladni(colors = colorPalette("tuscany1"))
 
 #### Fractal flames
 
-This function implements the Fractal Flame algorithm described in [this article](https://flam3.com/flame_draves.pdf) by Scott Draves and Erik Reckase. It iterates a set of randomly determined function systems following one or multiple specific variations to determine a set of points. You can specify which variations from the article to include in the flame, whether to blend the variations using a weight or to pick a single variation for each iteration, whether to apply a post transformation and whether to apply a final transformation (optionally including an additional posttransformation). The final image can either be based on a the origin of the attractors or on the log density of the hit count of each pixel (for a more rigid look).
+This function implements the Fractal Flame algorithm described in [this article](https://flam3.com/flame_draves.pdf) by Scott Draves and Erik Reckase. It iterates a set of randomly determined function systems following one or multiple specific variations to determine a set of points. You can specify which variations from the article to include in the flame, what type of symmetry to include, whether to blend the variations using weights or to pick a single variation for each iteration, whether to apply a post transformation and whether to apply a final transformation (optionally including an additional posttransformation). The final image can either be based on a the origin of the attractors or on the log density of the hit count of each pixel (for a more rigid look).
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/flames/2022-10-06.png' width='30%'>

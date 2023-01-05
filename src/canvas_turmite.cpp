@@ -17,66 +17,62 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_turmite(arma::mat X,
-                       int iters,
-                       int row,
-                       int col,
-                       double p) {
-  int m = X.n_rows;
-  int n = X.n_cols;
-  int i = 0;
+arma::mat draw_turmite(arma::mat& canvas,
+                       const int& iters,
+                       int& row,
+                       int& col,
+                       const double& p) {
+  const int nrows = canvas.n_rows, ncols = canvas.n_cols;
   int state = 0;
-  while (i < iters) {
-    Rcpp::checkUserInterrupt();
-    double swap = ceil(R::runif(0, 2));
-    if (swap < p) {
-      if (state == 0) {
-        state = 1;
-      } else if (state == 1) {
-        state = 0;
-      }
+  for (int i = 0; i < iters; ++i) {
+    if (i % 1000 == 0) {
+      Rcpp::checkUserInterrupt();
     }
-    if (X(row,col) == 1) {
+    double swap = R::runif(0, 1);
+    if (swap < p) {
+      state = (state == 0) ? 1 : 0;
+    }
+    if (canvas.at(row, col) == 1) {
       // Color
-      if (state == 0 && X(row,col) == 0) {
-        state = 0;
-      } else if (state == 0 && X(row,col) == 1) {
-        state = 1;
-        X(row,col) = 0;
-      } else if (state == 1 && X(row,col) == 0) {
-        state = 0;
-        X(row,col) = 0;
-      } else if (state == 1 && X(row,col) == 1) {
-        state = 1;
+      if (state == 0) {
+        if (canvas.at(row, col) == 0) {
+          state = 0;
+        } else {
+          state = 1;
+          canvas.at(row, col) = 0;
+        }
+      } else {
+        if (canvas.at(row, col) == 0) {
+          state = 0;
+          canvas.at(row, col) = 0;
+        }
       }
     } else {
-      X(row,col) = 1;
+      canvas.at(row,col) = 1;
     }
     // Turn
-    int direction;
-    direction = ceil(R::runif(0, 4));
+    int direction = ceil(R::runif(0, 4));
     if (state == 0) {
-      if (direction == 1 && row < (m - 1)) {
-        row++; 
+      if (direction == 1 && row < (nrows - 1)) {
+        ++row; 
       } else if (direction == 2 && row >= 1) {
-        row--;
-      } else if (direction == 3 && col < (n - 1)) {
-        col++;
+        --row;
+      } else if (direction == 3 && col < (ncols - 1)) {
+        ++col;
       } else if (direction == 4 && col >= 1) {
-        col--;
+        --col;
       } 
     } else if (state == 1) {
-      if (direction == 4 && row < (m - 2)) {
-        row++;
+      if (direction == 4 && row < (nrows - 2)) {
+        ++row;
       } else if (direction == 1 && row >= 2) {
-        row--;
-      } else if (direction == 2 && col < (n - 2)) {
-        col++;
+        --row;
+      } else if (direction == 2 && col < (ncols - 2)) {
+        ++col;
       } else if (direction == 3 && col >= 2) {
-        col--;
+        --col;
       }
     }
-    i++;
   }
-  return X;
+  return canvas;
 }

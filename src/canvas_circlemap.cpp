@@ -17,24 +17,25 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_circlemap(arma::mat X,
-                         double left,
-                         double right,
-                         double bottom,
-                         double top,
-                         int iters) {
-  int nrows = X.n_rows, ncols = X.n_cols;
+arma::mat draw_circlemap(arma::mat& canvas,
+                         const double& left,
+                         const double& right,
+                         const double& bottom,
+                         const double& top,
+                         const int& iters) {
+  const int nrows = canvas.n_rows, ncols = canvas.n_cols;
+  const double twopi = 2 * M_PI, xrange = right - left, yrange = top - bottom;
   double K = right, phi = bottom;
   for (int iter = 0; iter < iters; iter++) {
-    for (int row = 0; row < nrows; row++) {
-      for (int col = 0; col < ncols; col++) {
-        Rcpp::checkUserInterrupt();
-        X(row, col) = X(row, col) + phi + K / (2 * M_PI) * sin(2 * M_PI * X(row, col));
-        K = K - (right - left) / nrows;
+    Rcpp::checkUserInterrupt();
+    for (int row = 0; row < nrows; ++row) {
+      for (int col = 0; col < ncols; ++col) {
+        canvas.at(row, col) = canvas.at(row, col) + phi + K / twopi * sin(twopi * canvas.at(row, col));
+        K = K - xrange / nrows;
       }
-      phi = phi + (top - bottom) / ncols;
+      phi = phi + yrange / ncols;
       K = right;
     }
   }
-  return X;
+  return canvas;
 }

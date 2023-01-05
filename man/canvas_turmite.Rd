@@ -4,7 +4,7 @@
 \alias{canvas_turmite}
 \title{Draw Turmites}
 \usage{
-canvas_turmite(colors, background = "#fafafa", p = 0.5, iterations = 1e6,
+canvas_turmite(colors, background = "#fafafa", p = 0, iterations = 1e6,
                resolution = 500, noise = FALSE)
 }
 \arguments{

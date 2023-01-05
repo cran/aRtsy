@@ -16,14 +16,14 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector iterate_chladni(Rcpp::NumericVector x,
-                                    Rcpp::NumericVector y,
-                                    Rcpp::NumericVector waves) {
-  int n = x.length(), k = waves.length();
+Rcpp::NumericVector iterate_chladni(const Rcpp::NumericVector& x,
+                                    const Rcpp::NumericVector& y,
+                                    const Rcpp::NumericVector& waves) {
+  const int n = x.length(), k = waves.length();
   Rcpp::NumericVector z(n);
   for (int i = 0; i < k; i++) {
+    Rcpp::checkUserInterrupt();
     for (int j = 0; j < n; j++) {
-      Rcpp::checkUserInterrupt();
       z[j] += fabs(sin(waves[i] *  x[j]) * sin(waves[i] * y[j]));
     }
   }

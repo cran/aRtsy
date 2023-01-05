@@ -17,34 +17,36 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-Rcpp::DataFrame iterate_flow(arma::mat angles,
-                             int j,
-                             int iters,
-                             int left,
-                             int right,
-                             int top,
-                             int bottom,
-                             double step) {
-  Rcpp::DoubleVector x = {ceil(R::runif(left + 1, right - 1))};
-  Rcpp::DoubleVector y = {ceil(R::runif(bottom + 1, top - 1))};
-  int m = angles.n_rows;
-  int n = angles.n_cols;
-  for (int i = 0; i < iters; i++) {
+Rcpp::DataFrame iterate_flow(arma::mat& canvas,
+                             const arma::mat& angles,
+                             const int& lines,
+                             const int& iters,
+                             const int& ncolors,
+                             const int& left,
+                             const int& right,
+                             const int& top,
+                             const int& bottom,
+                             const double& stepmax) {
+  const int nrows = angles.n_rows, ncols = angles.n_cols;
+  for (int j = 0; j < lines; ++j) {
     Rcpp::checkUserInterrupt();
-    int col_index = x[x.length() - 1] - left;
-    int row_index = y[y.length() - 1] - bottom;
-    if (col_index >= n || col_index <= 0 || row_index >= m || row_index <= 0) {
-      break;
+    double x = {ceil(R::runif(left + 1, right - 1))};
+    double y = {ceil(R::runif(bottom + 1, top - 1))};
+    double step = R::runif(0, 100 * stepmax);
+    int c = ceil(R::runif(0, ncolors));
+    for (int i = 0; i < iters; i++) {
+      canvas.at(j * iters + i, 0) = x;
+      canvas.at(j * iters + i, 1) = y;
+      canvas.at(j * iters + i, 2) = j + 1;
+      canvas.at(j * iters + i, 3) = c;
+      const int col_index = x - left;
+      const int row_index = y - bottom;
+      if ((col_index >= ncols) || (col_index <= 0) || (row_index >= nrows) || (row_index <= 0)) {
+        break;
+      }
+      x += step * cos(angles.at(row_index, col_index));
+      y += step * sin(angles.at(row_index, col_index));
     }
-    double angle = angles(row_index, col_index);
-    double xnew = x[x.length() - 1] + step * cos(angle);
-    double ynew = y[y.length() - 1] + step * sin(angle);
-    x.push_back(xnew);
-    y.push_back(ynew);
   }
-  Rcpp::IntegerVector z (x.length(), j);
-  Rcpp::DataFrame flow = Rcpp::DataFrame::create(Rcpp::Named("x") = x,
-                                                 Rcpp::Named("y") = y,
-                                                 Rcpp::Named("z") = z);
-  return flow;
+  return canvas;
 }

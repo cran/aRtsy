@@ -4,7 +4,7 @@
 \alias{canvas_ant}
 \title{Draw Langton's Ant}
 \usage{
-canvas_ant(colors, background = "#fafafa", iterations = 50000,
+canvas_ant(colors, background = "#fafafa", iterations = 1000000,
            resolution = 500)
 }
 \arguments{

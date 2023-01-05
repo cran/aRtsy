@@ -74,15 +74,24 @@ canvas_mesh <- function(colors, background = "#fafafa",
     radius_increase <- data.frame(x = 1:lines, y = stats::rnorm(lines, mean = 0, sd = stats::runif(1, min = 0.01, max = 0.5)))
     circle_radius_increase <- predict(stats::loess(y ~ x, data = radius_increase), newdata = radius_increase)
     x <- rep(0:iterations, each = lines) + 0.75 * cos(circle_points)
-    mesh <- iterate_mesh(iterations, start, 1:lines, circle_points, circle_centers, circle_radius, circle_radius_increase)
+    mesh <- iterate_mesh(
+      canvas = matrix(NA, nrow = lines * (iterations + 1), ncol = 2),
+      points = circle_points,
+      centers = circle_centers,
+      iterations = iterations,
+      start = start,
+      order = 1:lines,
+      radii = circle_radius,
+      increase = circle_radius_increase
+    )
     if (mixprob > 0) {
       probs <- rep(1, length(colors))
       probs[j] <- probs[j] + 1 / mixprob
-      col <- sample(colors, size = length(mesh[["y"]]), replace = TRUE, prob = probs)
+      col <- sample(colors, size = length(mesh[, 1]), replace = TRUE, prob = probs)
     } else {
       col <- colors[j]
     }
-    df <- data.frame(x = x, y = mesh[["y"]], z = mesh[["z"]], col = col)
+    df <- data.frame(x = x, y = mesh[, 1], z = mesh[, 2], col = col)
     if (min(df[["y"]]) < miny) miny <- min(df[["y"]])
     if (max(df[["y"]]) > maxy) maxy <- max(df[["y"]])
     artwork <- artwork + ggplot2::geom_line(

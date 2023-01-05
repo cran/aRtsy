@@ -62,8 +62,7 @@ canvas_chladni <- function(colors, waves = 5, warp = 0, resolution = 500,
   } else {
     inputCanvas <- as.matrix(canvas)
   }
-  z <- iterate_chladni(x = inputCanvas[, 1], y = inputCanvas[, 2], waves)
-  full_canvas <- data.frame(x = canvas[, 1], y = canvas[, 2], z = z)
+  full_canvas <- data.frame(x = canvas[, 1], y = canvas[, 2], z = iterate_chladni(x = inputCanvas[, 1], y = inputCanvas[, 2], waves))
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +
     ggplot2::scale_fill_gradientn(colours = colors)

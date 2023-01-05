@@ -16,41 +16,39 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::DataFrame deform(Rcpp::DataFrame canvas,
-                       int maxdepth,
-                       int resolution) {
-  Rcpp::DoubleVector x = canvas["x"];
-  Rcpp::DoubleVector y = canvas["y"];
-  Rcpp::DoubleVector s = canvas["s"];
-  for (int i = 0; i < maxdepth; i++) {
-    int times = x.length() - 1;
-    Rcpp::IntegerVector indexes (times, 0);
-    int isize = indexes.length();
+Rcpp::DataFrame deform(Rcpp::DoubleVector& x,
+                       Rcpp::DoubleVector& y,
+                       Rcpp::DoubleVector& s,
+                       const int& maxdepth,
+                       const int& resolution) {
+  for (int i = 0; i < maxdepth; ++i) {
+    Rcpp::checkUserInterrupt();
+    const int times = x.length() - 1;
+    Rcpp::IntegerVector indexes(times, 0);
     // Create seq(0, length(x) * 2 - 1, by = 2)
-    for (int l = 1; l < isize; l++) {
+    for (int l = 1; l < times; ++l) {
       indexes[l] = indexes[l - 1] + 2;
     }
     // Perform deformation on each of the lines
-    for (int j = 0; j < isize; j++) {
-      Rcpp::checkUserInterrupt();
+    for (int j = 0; j < times; ++j) {
       // For each line A -> C in the polygon, find the midpoint, B.
-      double bx = (x[indexes[j]] + x[indexes[j] + 1]) / 2;
-      double by = (y[indexes[j]] + y[indexes[j] + 1]) / 2;
+      const int index = indexes[j];
+      const double bx = (x[index] + x[index + 1]) / 2;
+      const double by = (y[index] + y[index + 1]) / 2;
       // Determine the variance, angle, and length of break
-      double edgevar = (s[indexes[j]] + s[indexes[j] + 1]) / 2;
-      double angle = R::rnorm(0, 2);
-      // Pick a new point B'.
-      double bstarx = bx + edgevar * sin(angle);
-      double bstary = by + edgevar * cos(angle);
-      // Insert new point into the data
-      x.insert(indexes[j] + 1, bstarx);
-      y.insert(indexes[j] + 1, bstary);
-      s.insert(indexes[j] + 1, edgevar * 0.5);
+      const double edgevar = (s[index] + s[index + 1]) / 2;
+      const double angle = R::rnorm(0, 2);
+      // Insert a new point B into the data
+      x.insert(index + 1, bx + edgevar * sin(angle));
+      y.insert(index + 1, by + edgevar * cos(angle));
+      s.insert(index + 1, edgevar * 0.5);
     }
   }
   // Check bounds
-  for (int i = 0; i < x.length(); i++) {
-    Rcpp::checkUserInterrupt();
+  for (int i = 0; i < x.length(); ++i) {
+    if (i % (x.length() / 10) == 0) {
+      Rcpp::checkUserInterrupt();
+    }
     if (x[i] < 0) {
       x[i] = 0;
     } else if (x[i] > resolution) {

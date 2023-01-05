@@ -17,7 +17,7 @@
 #'
 #' @description This function paints a turmite. A turmite is a Turing machine which has an orientation in addition to a current state and a "tape" that consists of a two-dimensional grid of cells.
 #'
-#' @usage canvas_turmite(colors, background = "#fafafa", p = 0.5, iterations = 1e6,
+#' @usage canvas_turmite(colors, background = "#fafafa", p = 0, iterations = 1e6,
 #'                resolution = 500, noise = FALSE)
 #'
 #' @param colors       a character specifying the color used for the artwork. The number of colors determines the number of turmites.
@@ -49,7 +49,7 @@
 #'
 #' @export
 
-canvas_turmite <- function(colors, background = "#fafafa", p = 0.5, iterations = 1e6,
+canvas_turmite <- function(colors, background = "#fafafa", p = 0, iterations = 1e6,
                            resolution = 500, noise = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
@@ -57,19 +57,17 @@ canvas_turmite <- function(colors, background = "#fafafa", p = 0.5, iterations =
   palette <- c(background, colors)
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
   for (i in 1:length(colors)) {
-    k <- sample(0:1, size = 1)
-    row <- 0
-    col <- 0
-    if (k == 1) {
-      col <- sample(0:(resolution - 1), size = 1)
-    }
-    if (k == 0) {
-      row <- sample(0:(resolution - 1), size = 1)
-    }
-    turmite <- draw_turmite(matrix(0, nrow = resolution, ncol = resolution), iterations, row, col, p = p)
+    k <- sample(x = 0:1, size = 1)
+    turmite <- draw_turmite(
+      canvas = matrix(0, nrow = resolution, ncol = resolution),
+      iters = iterations,
+      row = if (k == 0) sample(0:(resolution - 1), size = 1) else 0,
+      col = if (k == 1) sample(0:(resolution - 1), size = 1) else 0,
+      p = p
+    )
     if (noise) {
       turmite[which(turmite == 0)] <- NA
-      turmite <- turmite - .noise(dims = c(resolution, resolution))
+      turmite <- turmite - .noise(dims = c(resolution, resolution), type = "perlin")
       turmite[which(is.na(turmite))] <- 0
     }
     canvas <- canvas + turmite
