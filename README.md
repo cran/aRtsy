@@ -65,6 +65,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_petri()`](#petri-dishes)
 * [`canvas_planet()`](#planets)
 * [`canvas_splits()`](#split-lines)
+* [`canvas_smoke()`](#rainbow-smoke)
 * [`canvas_stripes()`](#stripes)
 * [`canvas_strokes()`](#paint-strokes)
 * [`canvas_phyllotaxis()`](#phyllotaxis)
@@ -305,6 +306,24 @@ You can use the `canvas_splits()` function to make your own artwork using this a
 set.seed(1)
 canvas_splits(colors = colorPalette("origami"))
 # see ?canvas_splits for more input parameters of this function
+```
+
+#### Rainbow Smoke
+
+This function implements the [rainbow smoke](http://rainbowsmoke.hu/home) algorithm, an original idea from Jozsef Fejes. The algorithm works as follows: First, we select an initial color and apply it to a randomly chosen pixel. Next, we proceed to use the remaining colors one at the time and color pixels in a manner where colors that are alike are positioned near each other.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/smokes/2023-01-10.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/smokes/2023-01-08.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/smokes/2023-01-09.png' width='30%'>
+</p>
+
+You can use the `canvas_smoke()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_smoke(colors = colorPalette("random", 1024))
+# see ?canvas_smoke for more input parameters of this function
 ```
 
 #### Stripes

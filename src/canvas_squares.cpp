@@ -1,4 +1,4 @@
-// Copyright (C) 2021-2022 Koen Derks
+// Copyright (C) 2021-2023 Koen Derks
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,8 +16,7 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-int neighbor(int L, int i)
-{
+int neighbor(int L, int i) {
   if (i < 0)
     return 0;
   if (i >= L)
@@ -27,45 +26,48 @@ int neighbor(int L, int i)
 
 // [[Rcpp::export]]
 arma::mat draw_squares(arma::mat X,
-                       Rcpp::DataFrame neighbors,
-                       int s,
-                       int cuts,
-                       double ratio) {
-  int m = X.n_rows;
-  int n = X.n_cols;
-  int row = m;
-  int col = n;
-  Rcpp::IntegerVector dx = neighbors["x"];
-  Rcpp::IntegerVector dy = neighbors["y"];
-  for (int i = 0; i < cuts; i++) {
+                       const Rcpp::DataFrame neighbors,
+                       const int s,
+                       const int cuts,
+                       const double ratio) {
+  // Constants
+  const int m = X.n_rows, n = X.n_cols;
+  // Variables
+  bool cutfromtop, cutfromleft;
+  int cutx, cuty, color, c;
+  int row = m, col = n;
+  Rcpp::IntegerVector dx = neighbors["x"], dy = neighbors["y"];
+  // Main loop
+  for (int i = 0; i < cuts; ++i) {
+    // Check for interrupt
     Rcpp::checkUserInterrupt();
-    int cutx = ceil(row / ratio);
-    int cuty = ceil(col / ratio);
-    double cutfromtop = R::runif(0, 1);
-    double cutfromleft = R::runif(0, 1);
-    int color = ceil(R::runif(0, s)); // Sample color from 1 to s
-    if (cutfromtop >= 0.5 && cutfromleft >= 0.5) {
-      for (int x = 0; x < cutx; x++) {
-        for (int y = 0; y < cuty; y++) {
-          X(y, x) = color;
+    cutx = ceil(row / ratio);
+    cuty = ceil(col / ratio);
+    cutfromtop = R::runif(0, 1) < 0.5;
+    cutfromleft = R::runif(0, 1) < 0.5;
+    color = ceil(R::runif(0, s)); // Sample color from 1 to s
+    if (cutfromtop && cutfromleft) {
+      for (int x = 0; x < cutx; ++x) {
+        for (int y = 0; y < cuty; ++y) {
+          X.at(y, x) = color;
         }
       }
-    } else if (cutfromtop >= 0.5 && cutfromleft < 0.5) {
-      for (int x = 0; x < cutx; x++) {
-        for (int y = cuty; y < m; y++) {
-          X(y, x) = color;
+    } else if (cutfromtop && !cutfromleft) {
+      for (int x = 0; x < cutx; ++x) {
+        for (int y = cuty; y < m; ++y) {
+          X.at(y, x) = color;
         }
       }
-    } else if (cutfromtop < 0.5 && cutfromleft >= 0.5) {
-      for (int x = cutx; x < n; x++) {
-        for (int y = 0; y < cuty; y++) {
-          X(y, x) = color;
+    } else if (!cutfromtop && cutfromleft) {
+      for (int x = cutx; x < n; ++x) {
+        for (int y = 0; y < cuty; ++y) {
+          X.at(y, x) = color;
         }
       }
-    } else if (cutfromtop < 0.5 && cutfromleft < 0.5) {
-      for (int x = cutx; x < n; x++) {
-        for (int y = cuty; y < m; y++) {
-          X(y, x) = color;
+    } else if (!cutfromtop && !cutfromleft) {
+      for (int x = cutx; x < n; ++x) {
+        for (int y = cuty; y < m; ++y) {
+          X.at(y, x) = color;
         }
       }
     }
@@ -73,20 +75,18 @@ arma::mat draw_squares(arma::mat X,
     col = floor(R::runif(0, n));
   }
   arma::mat X_new = X;
-  for (int x = 0; x < n; x++) {
+  // Second main loop
+  for (int x = 0; x < n; ++x) {
     Rcpp::checkUserInterrupt();
-    for (int y = 0; y < m; y++) {
-      std::vector<int> colors;
-      for (int z = 0; z < dx.size(); z++) {
-        int ix  = neighbor(n, x + dx[z]);
-        int iy  = neighbor(m, y + dy[z]);
-        int color = X(iy, ix);
-        colors.push_back (color);
+    for (int y = 0; y < m; ++y) {
+      Rcpp::IntegerVector colors(dx.size());
+      for (int z = 0; z < dx.size(); ++z) {
+        colors[z] = X.at(neighbor(m, y + dy[z]), neighbor(n, x + dx[z]));
       }
       std::sort(colors.begin(), colors.end());
-      int uniqueCount = std::unique(colors.begin(), colors.end()) - colors.begin();
-      if (uniqueCount > 1) {
-        X_new(y, x) = 0;
+      c = std::unique(colors.begin(), colors.end()) - colors.begin();
+      if (c > 1) {
+        X_new.at(y, x) = 0;
       }
     }
   }

@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ canvas_function <- function(colors, background = "#fafafa", by = 0.01,
       x = quote(runif(1, -5, 5) * x_i^sample(1:5, 1) - sin(y_i^sample(1:5, 1))),
       y = quote(runif(1, -5, 5) * y_i^sample(1:5, 1) - cos(x_i^sample(1:5, 1)))
     )
-    painting_formula <- painting_formulas[[sample(1:length(painting_formulas), 1)]]
+    painting_formula <- painting_formulas[[sample(seq_len(length(painting_formulas)), 1)]]
   } else {
     if (!is.list(formula) || !("x" %in% names(formula)) || !("y" %in% names(formula))) {
       stop("'formula' must be a named list containing 'x' and 'y'")
@@ -80,7 +80,7 @@ canvas_function <- function(colors, background = "#fafafa", by = 0.01,
     painting_formula <- list(x = formula[["x"]], y = formula[["y"]])
   }
   grid <- expand.grid(x_i = seq(from = -pi, to = pi, by = by), y_i = seq(from = -pi, to = pi, by = by))
-  x_i <- grid$x_i
+  x_i <- grid$x_i # nolint
   y_i <- grid$y_i
   full_canvas <- data.frame(x = eval(painting_formula$x), y = eval(painting_formula$y))
   z <- y_i[stats::complete.cases(full_canvas)]

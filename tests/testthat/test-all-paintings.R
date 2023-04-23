@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -258,5 +258,13 @@ test_that("canvas_flame()", {
   .runtime(expression = {
     artwork <- canvas_flame(colors = c("dodgerblue", "green"))
   }, name = "Flame")
+  expect_equal(!is.null(artwork), TRUE)
+})
+
+test_that("canvas_smoke()", {
+  set.seed(2)
+  .runtime(expression = {
+    artwork <- canvas_smoke(colors = c("red", "blue", "green"), resolution = 10)
+  }, name = "Smoke")
   expect_equal(!is.null(artwork), TRUE)
 })

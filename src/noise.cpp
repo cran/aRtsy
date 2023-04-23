@@ -1,4 +1,4 @@
-// Copyright (C) 2021-2022 Koen Derks
+// Copyright (C) 2021-2023 Koen Derks
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,14 +23,17 @@ arma::vec c_noise_knn(const arma::vec& x,
                       const arma::vec& newx,
                       const arma::vec& newy,
                       const int& k) {
+  // Constants
   const int n = newx.n_elem;
+  // Variables
   arma::vec newz(n);
+  // Main loop
   for(int i = 0; i < n; ++i) {
-    if (i % 1000 == 0) {
-      Rcpp::checkUserInterrupt();
-    }
-    const arma::uvec si = arma::sort_index(sqrt(pow(x - newx[i], 2) + pow(y - newy[i], 2)));
-    for (int j = 0; j < k; ++j) {
+    // Check for interrupt
+    Rcpp::checkUserInterrupt();
+    const arma::uvec si = arma::sort_index(sqrt(arma::square(x - newx[i]) + arma::square(y - newy[i])));
+    // Inner loop
+	for (int j = 0; j < k; ++j) {
       newz.at(i) += z.at(si.at(j)) / k;
     }
   }

@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ canvas_planet <- function(colors, threshold = 4, iterations = 200, starprob = 0.
   .checkUserInput(resolution = resolution, iterations = iterations)
   if (is.list(colors)) {
     palette <- list()
-    for (i in 1:length(colors)) {
+    for (i in seq_along(colors)) {
       palette[[i]] <- c("#000000", "#787878", "#fafafa", colors[[i]])
     }
   } else {

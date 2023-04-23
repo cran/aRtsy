@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ canvas_collatz <- function(colors, background = "#fafafa", n = 200,
   .checkUserInput(background = background)
   canvas <- data.frame(x = numeric(), y = numeric(), col = numeric(), z = numeric())
   if (length(n) == 1) {
-    n <- sample(1:1000000, size = n, replace = F)
+    n <- sample(1:1000000, size = n, replace = FALSE)
   }
   for (i in n) {
     series <- rev(get_collatz_sequence(i))
@@ -72,7 +72,7 @@ canvas_collatz <- function(colors, background = "#fafafa", n = 200,
   canvas$size <- 1 - (canvas$size / max(canvas$size))
   canvas$alpha <- 1 - canvas$size
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, group = z)) +
-    ggplot2::geom_path(size = canvas$size, color = canvas$col, alpha = canvas$alpha, lineend = "round") +
+    ggplot2::geom_path(linewidth = canvas$size, color = canvas$col, alpha = canvas$alpha, lineend = "round") +
     ggplot2::xlim(range(canvas$x)) +
     ggplot2::ylim(range(canvas$y))
   if (side) {

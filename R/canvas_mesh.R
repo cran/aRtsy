@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ canvas_mesh <- function(colors, background = "#fafafa",
   artwork <- ggplot2::ggplot()
   miny <- Inf
   maxy <- -Inf
-  for (j in 1:length(colors)) {
+  for (j in seq_along(colors)) {
     circle_points <- seq(from = -pi, to = pi, length.out = lines)
     start <- stats::runif(1, min = -10, max = 10)
     centers <- data.frame(x = 0:iterations, y = c(start, start + .bmline(n = iterations, lwd = stats::runif(1, min = 1, max = 10))))
@@ -97,7 +97,7 @@ canvas_mesh <- function(colors, background = "#fafafa",
     artwork <- artwork + ggplot2::geom_line(
       data = df,
       mapping = ggplot2::aes(x = x, y = y, group = z, col = col),
-      alpha = 0.2, size = 0.05
+      alpha = 0.2, linewidth = 0.05
     )
   }
   artwork <- artwork + ggplot2::scale_color_manual(values = colors) +

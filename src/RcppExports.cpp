@@ -282,6 +282,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// draw_smoke
+arma::cube draw_smoke(arma::cube& canvas, arma::umat coords, const arma::umat& color_mat, const int& init, const int& algorithm, const int& shape, const bool& all_colors);
+RcppExport SEXP _aRtsy_draw_smoke(SEXP canvasSEXP, SEXP coordsSEXP, SEXP color_matSEXP, SEXP initSEXP, SEXP algorithmSEXP, SEXP shapeSEXP, SEXP all_colorsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type canvas(canvasSEXP);
+    Rcpp::traits::input_parameter< arma::umat >::type coords(coordsSEXP);
+    Rcpp::traits::input_parameter< const arma::umat& >::type color_mat(color_matSEXP);
+    Rcpp::traits::input_parameter< const int& >::type init(initSEXP);
+    Rcpp::traits::input_parameter< const int& >::type algorithm(algorithmSEXP);
+    Rcpp::traits::input_parameter< const int& >::type shape(shapeSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type all_colors(all_colorsSEXP);
+    rcpp_result_gen = Rcpp::wrap(draw_smoke(canvas, coords, color_mat, init, algorithm, shape, all_colors));
+    return rcpp_result_gen;
+END_RCPP
+}
 // draw_splits
 Rcpp::DataFrame draw_splits(Rcpp::NumericVector x, Rcpp::NumericVector xend, Rcpp::NumericVector y, Rcpp::NumericVector yend, Rcpp::NumericVector col, double sda, int ncols, int iterations);
 RcppExport SEXP _aRtsy_draw_splits(SEXP xSEXP, SEXP xendSEXP, SEXP ySEXP, SEXP yendSEXP, SEXP colSEXP, SEXP sdaSEXP, SEXP ncolsSEXP, SEXP iterationsSEXP) {
@@ -301,16 +318,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // draw_squares
-arma::mat draw_squares(arma::mat X, Rcpp::DataFrame neighbors, int s, int cuts, double ratio);
+arma::mat draw_squares(arma::mat X, const Rcpp::DataFrame neighbors, const int s, const int cuts, const double ratio);
 RcppExport SEXP _aRtsy_draw_squares(SEXP XSEXP, SEXP neighborsSEXP, SEXP sSEXP, SEXP cutsSEXP, SEXP ratioSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type neighbors(neighborsSEXP);
-    Rcpp::traits::input_parameter< int >::type s(sSEXP);
-    Rcpp::traits::input_parameter< int >::type cuts(cutsSEXP);
-    Rcpp::traits::input_parameter< double >::type ratio(ratioSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DataFrame >::type neighbors(neighborsSEXP);
+    Rcpp::traits::input_parameter< const int >::type s(sSEXP);
+    Rcpp::traits::input_parameter< const int >::type cuts(cutsSEXP);
+    Rcpp::traits::input_parameter< const double >::type ratio(ratioSEXP);
     rcpp_result_gen = Rcpp::wrap(draw_squares(X, neighbors, s, cuts, ratio));
     return rcpp_result_gen;
 END_RCPP
@@ -345,7 +362,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // deform
-Rcpp::DataFrame deform(Rcpp::DoubleVector& x, Rcpp::DoubleVector& y, Rcpp::DoubleVector& s, const int& maxdepth, const int& resolution);
+Rcpp::DataFrame deform(Rcpp::DoubleVector& x, Rcpp::DoubleVector& y, Rcpp::DoubleVector& s, const int& maxdepth, const double& resolution);
 RcppExport SEXP _aRtsy_deform(SEXP xSEXP, SEXP ySEXP, SEXP sSEXP, SEXP maxdepthSEXP, SEXP resolutionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -354,7 +371,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< Rcpp::DoubleVector& >::type s(sSEXP);
     Rcpp::traits::input_parameter< const int& >::type maxdepth(maxdepthSEXP);
-    Rcpp::traits::input_parameter< const int& >::type resolution(resolutionSEXP);
+    Rcpp::traits::input_parameter< const double& >::type resolution(resolutionSEXP);
     rcpp_result_gen = Rcpp::wrap(deform(x, y, s, maxdepth, resolution));
     return rcpp_result_gen;
 END_RCPP
@@ -394,6 +411,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_aRtsy_draw_planet", (DL_FUNC) &_aRtsy_draw_planet, 12},
     {"_aRtsy_draw_polylines", (DL_FUNC) &_aRtsy_draw_polylines, 5},
     {"_aRtsy_iterate_recaman", (DL_FUNC) &_aRtsy_iterate_recaman, 3},
+    {"_aRtsy_draw_smoke", (DL_FUNC) &_aRtsy_draw_smoke, 7},
     {"_aRtsy_draw_splits", (DL_FUNC) &_aRtsy_draw_splits, 8},
     {"_aRtsy_draw_squares", (DL_FUNC) &_aRtsy_draw_squares, 5},
     {"_aRtsy_draw_strokes", (DL_FUNC) &_aRtsy_draw_strokes, 4},

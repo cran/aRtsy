@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ canvas_polylines <- function(colors, background = "#fafafa", ratio = 0.5, iterat
   .checkUserInput(resolution = resolution, iterations = iterations)
   alphas <- seq(from = 1, to = 0.1, length.out = length(colors))
   full_canvas <- data.frame(x = numeric(), y = numeric(), type = character())
-  for (i in 1:length(colors)) {
+  for (i in seq_along(colors)) {
     mat <- draw_polylines(matrix(NA, nrow = iterations, ncol = 2), ratio, iterations, resolution, resolution)
     polygon <- data.frame(x = mat[, 1], y = mat[, 2], type = rep(colors[i], iterations))
     full_canvas <- rbind(full_canvas, polygon)
@@ -59,7 +59,7 @@ canvas_polylines <- function(colors, background = "#fafafa", ratio = 0.5, iterat
     ggplot2::xlim(c(0, resolution)) +
     ggplot2::ylim(c(0, resolution)) +
     ggplot2::geom_polygon(color = NA, alpha = rep(alphas, each = iterations)) +
-    ggplot2::geom_path(color = background, size = size) +
+    ggplot2::geom_path(color = background, linewidth = size) +
     ggplot2::scale_fill_manual(values = colors)
   artwork <- theme_canvas(artwork, background)
   return(artwork)

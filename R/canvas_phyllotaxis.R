@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #'
 #' @description This function draws a phyllotaxis which resembles the arrangement of leaves on a plant stem.
 #'
-#' @usage canvas_phyllotaxis(colors, background = '#fafafa', iterations = 10000,
+#' @usage canvas_phyllotaxis(colors, background = "#fafafa", iterations = 10000,
 #'                angle = 137.5, size = 0.01, alpha = 1, p = 0.5)
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
@@ -52,7 +52,7 @@ canvas_phyllotaxis <- function(colors, background = "#fafafa", iterations = 1000
                                angle = 137.5, size = 0.01, alpha = 1, p = 0.5) {
   .checkUserInput(background = background, iterations = iterations)
   canvas <- iterate_phyllotaxis(iterations, angle, p)
-  canvas$z <- 1:nrow(canvas)
+  canvas$z <- seq_len(nrow(canvas))
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, color = z)) +
     ggplot2::geom_point(size = size, alpha = alpha) +
     ggplot2::scale_color_gradientn(colors = colors)

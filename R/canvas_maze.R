@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ canvas_maze <- function(color = "#fafafa", walls = "black", background = "#fafaf
 
 .connectMaze <- function(maze, canvas) {
   # From https://github.com/matfmc/mazegenerator
-  for (i in 1:nrow(maze)) {
+  for (i in seq_len(nrow(maze))) {
     if (i == 1) {
       maze[i, 3:4] <- (maze[i, 1:2] - maze[i + 1, 1:2])
     } else if (i == nrow(maze)) {
@@ -95,24 +95,24 @@ canvas_maze <- function(color = "#fafafa", walls = "black", background = "#fafaf
   maze[maze$conec == "AC" | maze$conec == "CA" | maze$conec == "AD" | maze$conec == "DA" | maze$conec == "ANA" | maze$conec == "AA", "cell"] <- 2
   maze[maze$conec == "BC" | maze$conec == "CB" | maze$conec == "BD" | maze$conec == "DB" | maze$conec == "BNA" | maze$conec == "BB", "cell"] <- 3
   maze[maze$conec == "AB" | maze$conec == "BA", "cell"] <- 4
-  for (i in 1:nrow(maze)) {
+  for (i in seq_len(nrow(maze))) {
     if (canvas[maze$x[i], maze$y[i]] == 0) {
       canvas[maze$x[i], maze$y[i]] <- maze$cell[i]
     } else if (canvas[maze$x[i], maze$y[i]] == 4) {
       next
-    } else if (canvas[maze$x[i], maze$y[i]] == 2 & maze$cell[i] == 3) {
+    } else if (canvas[maze$x[i], maze$y[i]] == 2 && maze$cell[i] == 3) {
       canvas[maze$x[i], maze$y[i]] <- 4
-    } else if (canvas[maze$x[i], maze$y[i]] == 3 & maze$cell[i] == 2) {
+    } else if (canvas[maze$x[i], maze$y[i]] == 3 && maze$cell[i] == 2) {
       canvas[maze$x[i], maze$y[i]] <- 4
     } else if (canvas[maze$x[i], maze$y[i]] == 1) {
       canvas[maze$x[i], maze$y[i]] <- maze$cell[i]
     }
   }
-  cell_type_0 <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0), ncol = 3, byrow = T)
-  cell_type_1 <- matrix(c(0, 0, 1, 0, 0, 1, 1, 1, 1), ncol = 3, byrow = T)
-  cell_type_2 <- matrix(c(0, 0, 1, 0, 0, 1, 0, 0, 1), ncol = 3, byrow = T)
-  cell_type_3 <- matrix(c(0, 0, 0, 0, 0, 0, 1, 1, 1), ncol = 3, byrow = T)
-  cell_type_4 <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 1), ncol = 3, byrow = T)
+  cell_type_0 <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0), ncol = 3, byrow = TRUE)
+  cell_type_1 <- matrix(c(0, 0, 1, 0, 0, 1, 1, 1, 1), ncol = 3, byrow = TRUE)
+  cell_type_2 <- matrix(c(0, 0, 1, 0, 0, 1, 0, 0, 1), ncol = 3, byrow = TRUE)
+  cell_type_3 <- matrix(c(0, 0, 0, 0, 0, 0, 1, 1, 1), ncol = 3, byrow = TRUE)
+  cell_type_4 <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 1), ncol = 3, byrow = TRUE)
   subCanvas <- as.list(canvas)
   dim(subCanvas) <- c(nrow(canvas), ncol(canvas))
   subCanvas[, ][subCanvas[, ] %in% 0] <- list(cell_type_0)
@@ -120,9 +120,9 @@ canvas_maze <- function(color = "#fafafa", walls = "black", background = "#fafaf
   subCanvas[, ][subCanvas[, ] %in% 2] <- list(cell_type_2)
   subCanvas[, ][subCanvas[, ] %in% 3] <- list(cell_type_3)
   subCanvas[, ][subCanvas[, ] %in% 4] <- list(cell_type_4)
-  b <- do.call(cbind, subCanvas[1, 1:ncol(canvas)])
+  b <- do.call(cbind, subCanvas[1, seq_len(ncol(canvas))])
   for (i in 2:nrow(canvas)) {
-    a <- do.call(cbind, subCanvas[i, 1:ncol(canvas)])
+    a <- do.call(cbind, subCanvas[i, seq_len(ncol(canvas))])
     b <- rbind(b, a)
   }
   full_canvas <- t(rbind(1, cbind(1, b)))

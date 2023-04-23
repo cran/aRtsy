@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ canvas_stripes <- function(colors, n = 300, H = 1, burnin = 1) {
     stop("'burnin' must be a value >= 1")
   }
   mat <- matrix(NA, nrow = n, ncol = n)
-  for (i in 1:nrow(mat)) {
+  for (i in seq_len(nrow(mat))) {
     t <- 1:(n + burnin)
     x <- stats::rnorm(n = length(t) - 1, sd = sqrt(H))
     x <- c(0, cumsum(x))

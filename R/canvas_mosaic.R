@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ canvas_mosaic <- function(colors, n = 1000, resolution = 500) {
   colnames(canvas) <- c("x", "y")
   z <- predict(fit, newdata = canvas)
   full_canvas <- data.frame(x = canvas$x, y = canvas$y, z = z)
-  artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
+  artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +
     ggplot2::xlim(c(-1, resolution + 1)) +
     ggplot2::ylim(c(-1, resolution + 1)) +

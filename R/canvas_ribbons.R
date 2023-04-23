@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -53,11 +53,11 @@ canvas_ribbons <- function(colors, background = "#fdf5e6", triangle = TRUE) {
   tpl <- tpl[which(tpl$y < y_max_top), ]
   tpr <- data.frame(x = 51:84, y = seq(from = 74, to = 16, length.out = 34))
   tpr <- tpr[which(tpr$y < y_max_top), ]
-  for (i in 1:length(colors)) {
+  for (i in seq_along(colors)) {
     # Determine points on left side of triangle
     bpb <- data.frame(x = 0, y = sample(10:90, size = 1))
-    fpb <- tpl[sample(1:nrow(tpl), size = 1), ]
-    spb <- tpr[sample(1:nrow(tpr), size = 1), ]
+    fpb <- tpl[sample(seq_len(nrow(tpl)), size = 1), ]
+    spb <- tpr[sample(seq_len(nrow(tpr)), size = 1), ]
     epb <- data.frame(x = 100, y = sample(10:90, size = 1))
     # Determine points on right side of triangle
     bpt <- data.frame(x = 0, y = bpb$y + 5)
@@ -77,7 +77,7 @@ canvas_ribbons <- function(colors, background = "#fdf5e6", triangle = TRUE) {
     artwork <- artwork + ggplot2::geom_polygon(
       data = data.frame(x = c(15, 50, 85), y = c(15, 75, 15)), mapping = ggplot2::aes(x = x, y = y),
       fill = NA, color = "black",
-      stat = "identity", size = 1
+      stat = "identity", linewidth = 1
     )
   }
   artwork <- theme_canvas(artwork, background)

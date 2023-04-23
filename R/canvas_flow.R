@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -96,18 +96,9 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
       stop(paste0("'angles' must be a ", nrows, " x ", ncols, " matrix"))
     }
   }
-  canvas <- iterate_flow(
-    canvas = matrix(NA, nrow = iterations * lines, ncol = 5),
-    angles = angles,
-    lines = lines,
-    iters = iterations,
-    ncolors = length(colors),
-    left = left,
-    right = right,
-    top = top,
-    bottom = bottom,
-    stepmax = stepmax
-  )
+  canvas <- matrix(NA, nrow = iterations * lines, ncol = 5)
+  ncolors <- length(colors)
+  canvas <- iterate_flow(canvas, angles, lines, iterations, ncolors, left, right, top, bottom, stepmax)
   canvas <- canvas[!is.na(canvas[, 1]), ]
   for (j in 1:lines) {
     index <- which(canvas[, 3] == j)
@@ -117,7 +108,7 @@ canvas_flow <- function(colors, background = "#fafafa", lines = 500, lwd = 0.05,
   colnames(canvas) <- c("x", "y", "z", "color", "size")
   canvas$color <- colors[canvas[["color"]]]
   artwork <- ggplot2::ggplot(data = canvas, mapping = ggplot2::aes(x = x, y = y, group = factor(z))) +
-    ggplot2::geom_path(size = canvas[["size"]], color = canvas[["color"]], lineend = "round")
+    ggplot2::geom_path(linewidth = canvas[["size"]], color = canvas[["color"]], lineend = "round")
   if (polar) {
     artwork <- artwork + ggplot2::coord_polar()
   } else {

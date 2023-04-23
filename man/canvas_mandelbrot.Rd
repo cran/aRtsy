@@ -4,8 +4,10 @@
 \alias{canvas_mandelbrot}
 \title{Draw the Mandelbrot Set}
 \usage{
-canvas_mandelbrot(colors, iterations = 100, zoom = 1, left = -1.7, right = -0.2,
-                   bottom = -0.2999, top = 0.8001, resolution = 500)
+canvas_mandelbrot(colors, iterations = 100, zoom = 1,
+                   set = c("mandelbrot", "multibrot", "julia", "ship"),
+                   left = -2.16, right = 1.16, bottom = -1.66, top = 1.66,
+                   resolution = 500)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -13,6 +15,8 @@ canvas_mandelbrot(colors, iterations = 100, zoom = 1, left = -1.7, right = -0.2,
 \item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
 
 \item{zoom}{a positive value specifying the amount of zoom to apply.}
+
+\item{set}{a character indicating which fractal set to draw. Possible options are \code{mandelbrot} for the Mandelbrot set, \code{multibrot} for variations of the Mandelbrot set (aka the Multibrot sets), \code{julia} for the Julia set and \code{ship} for the Burning ship set.}
 
 \item{left}{a value specifying the minimum location on the x-axis.}
 
@@ -28,11 +32,12 @@ canvas_mandelbrot(colors, iterations = 100, zoom = 1, left = -1.7, right = -0.2,
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws the Mandelbrot set on the canvas.
+This function draws the Mandelbrot set and other related fractal sets on the canvas.
 }
 \examples{
 \donttest{
-canvas_mandelbrot(colors = colorPalette("tuscany1"))
+canvas_mandelbrot(colors = colorPalette("tuscany1"), set = "mandelbrot")
+canvas_mandelbrot(colors = colorPalette("flag"), set = "julia", zoom = 2)
 }
 
 }

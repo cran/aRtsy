@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ canvas_cobweb <- function(colors, background = "#fafafa", lines = 300,
   artwork <- ggplot2::ggplot() +
     ggplot2::geom_curve(
       data = canvas, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = z),
-      color = canvas$col, curvature = stats::runif(1, 0, 0.8), ncp = 25, size = canvas$lwd, alpha = 0.01
+      color = canvas$col, curvature = stats::runif(1, 0, 0.8), ncp = 25, linewidth = canvas$lwd, alpha = 0.01
     ) +
     ggplot2::coord_cartesian(
       xlim = c(min(canvas$x) / 4, max(canvas$x) / 4),

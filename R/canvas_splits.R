@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,12 +57,12 @@ canvas_splits <- function(colors, background = "#fafafa", iterations = 6,
   line <- data.frame(
     x = c(0, 1, 1, 0), xend = c(1, 1, 0, 0),
     y = c(0, 0, 1, 1), yend = c(0, 1, 1, 0),
-    col = sample(1:length(colors), size = 4, replace = TRUE)
+    col = sample(seq_along(colors), size = 4, replace = TRUE)
   )
   canvas <- draw_splits(line$x, line$xend, line$y, line$yend, line$col, sd, length(colors), iterations)
   breaks <- range(c(canvas$x, canvas$xend, canvas$y, canvas$yend))
   p <- ggplot2::ggplot(data = canvas) +
-    ggplot2::geom_segment(mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, col = factor(col)), size = lwd, alpha = alpha) +
+    ggplot2::geom_segment(mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, col = factor(col)), linewidth = lwd, alpha = alpha) +
     ggplot2::scale_x_continuous(limits = breaks) +
     ggplot2::scale_y_continuous(limits = breaks) +
     ggplot2::scale_color_manual(values = colors)

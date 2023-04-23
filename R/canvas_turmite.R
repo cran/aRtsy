@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ canvas_turmite <- function(colors, background = "#fafafa", p = 0, iterations = 1
   )
   palette <- c(background, colors)
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
-  for (i in 1:length(colors)) {
+  for (i in seq_along(colors)) {
     k <- sample(x = 0:1, size = 1)
     turmite <- draw_turmite(
       canvas = matrix(0, nrow = resolution, ncol = resolution),

@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ canvas_petri <- function(colors, background = "#fafafa", dish = "black",
       yend = node_data$yend + directions$yend
     )
     new_nodes <- new_nodes[stats::complete.cases(new_nodes), ]
-    node_data[nrow(node_data) + 1:nrow(new_nodes), ] <- new_nodes
+    node_data[nrow(node_data) + seq_len(nrow(new_nodes)), ] <- new_nodes
     attractor_data <- kill_attractors(attractor_data$x, attractor_data$y, node_data$x, node_data$y, kill_distance)
     if (nrow(attractor_data) < 1) {
       break
@@ -95,7 +95,7 @@ canvas_petri <- function(colors, background = "#fafafa", dish = "black",
   artwork <- ggplot2::ggplot(data = node_data, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = factor(z))) +
     ggplot2::geom_polygon(data = circle_points, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE, fill = dish) +
     ggplot2::geom_polygon(data = hole_points, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE, fill = background) +
-    ggplot2::geom_segment(mapping = ggplot2::aes(color = factor(z)), size = node_data$size, linejoin = "round", lineend = "round") +
+    ggplot2::geom_segment(mapping = ggplot2::aes(color = factor(z)), linewidth = node_data$size, linejoin = "round", lineend = "round") +
     ggplot2::scale_color_manual(values = colors) +
     ggplot2::coord_equal(xlim = limits, ylim = limits)
   artwork <- theme_canvas(artwork, background = background)

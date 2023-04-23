@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,13 +52,13 @@ canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
   nlayers <- length(colors)
   plotData <- data.frame(x = numeric(), y = numeric(), s = numeric(), z = numeric())
   colorSequence <- rep(colors, times = ceiling(layers / 5), each = 5)
-  labelSequence <- rep(1:length(colors), times = ceiling(layers / 5), each = 5)
+  labelSequence <- rep(seq_along(colors), times = ceiling(layers / 5), each = 5)
   corners <- sample(3:10, size = nlayers, replace = TRUE)
   basePolygons <- list()
   for (i in 1:nlayers) {
     basePolygons[[i]] <- .createBasePolygon(i, nlayers, corners[i], resolution)
   }
-  for (i in 1:length(colorSequence)) {
+  for (i in seq_along(colorSequence)) {
     canvas <- basePolygons[[labelSequence[i]]]
     canvas <- deform(x = canvas[, 1], y = canvas[, 2], s = canvas[, 3], maxdepth = depth, resolution = resolution)
     canvas <- cbind(canvas, z = i)

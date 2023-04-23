@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -42,14 +42,13 @@ colorPalette <- function(name, n = NULL) {
     stop("'n' must be an integer > 0")
   }
   if (name == "random") {
-    if (is.null(n)) {
-      stop("'n' is missing for palette = 'random'")
-    }
+    stopifnot("'n' is missing for palette = 'random'" = !is.null(n))
     palette <- character(n)
-    for (i in 1:length(palette)) {
+    for (i in seq_along(palette)) {
       palette[i] <- .hsl_to_rgb(h = stats::runif(1, 1, 360), stats::runif(1), stats::runif(1))
     }
   } else if (name == "complement") {
+    stopifnot("'n' is missing for palette = 'random'" = !is.null(n))
     palette <- character(n)
     tmp <- stats::runif(1, 1, 360)
     palette[1] <- .hsl_to_rgb(h = tmp, stats::runif(1, .4, .8), stats::runif(1, .4, .8))
@@ -69,11 +68,12 @@ colorPalette <- function(name, n = NULL) {
       }
     }
   } else if (name == "divergent") {
+    stopifnot("'n' is missing for palette = 'random'" = !is.null(n))
     palette <- character(n)
     start <- stats::runif(1, 0, 260)
     colSeq <- seq(from = 1, to = 360, length.out = n)
     h <- (colSeq + start) %% 360
-    for (i in 1:length(palette)) {
+    for (i in seq_along(palette)) {
       palette[i] <- .hsl_to_rgb(h = h[i], stats::runif(1, .4, .7), stats::runif(1, .4, .7))
     }
   } else {
@@ -133,7 +133,7 @@ colorPalette <- function(name, n = NULL) {
       n <- length(palette)
     }
     if (n > length(palette)) {
-      warning("attempt to select more colors than are available in this palette, returning the requested palette with the maximum number of colors")
+      message("attempt to select more colors than are available in this palette, returning the requested palette with the maximum number of colors")
       return(palette)
     }
     palette <- palette[sample(1:n)]

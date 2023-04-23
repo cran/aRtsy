@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -63,10 +63,11 @@ canvas_segments <- function(colors, background = "#fafafa", n = 250,
     }
     full_canvas <- rbind(full_canvas, row)
   }
+  sizes <- sample(size, size = n, replace = TRUE)
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend)) +
     ggplot2::xlim(c(0, 1)) +
     ggplot2::ylim(c(0, 1)) +
-    ggplot2::geom_segment(color = full_canvas$col, size = size)
+    ggplot2::geom_segment(color = full_canvas$col, linewidth = sizes)
   artwork <- theme_canvas(artwork, background)
   return(artwork)
 }

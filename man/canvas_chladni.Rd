@@ -5,7 +5,7 @@
 \title{Draw Chladni Figures}
 \usage{
 canvas_chladni(colors, waves = 5, warp = 0, resolution = 500,
-               angles = NULL, distances = NULL)
+               angles = NULL, distances = NULL, flatten = FALSE)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -19,6 +19,8 @@ canvas_chladni(colors, waves = 5, warp = 0, resolution = 500,
 \item{angles}{optional, a resolution x resolution matrix containing the angles for the warp, or a character indicating the type of noise to use (\code{svm}, \code{knn}, \code{rf}, \code{perlin}, \code{cubic}, \code{simplex}, or \code{worley}). If \code{NULL} (the default), the noise type is chosen randomly.}
 
 \item{distances}{optional, a resolution x resolution matrix containing the distances for the warp, or a character indicating the type of noise to use (\code{svm}, \code{knn}, \code{rf}, \code{perlin}, \code{cubic}, \code{simplex}, or \code{worley}). If \code{NULL} (the default), the noise type is chosen randomly.}
+
+\item{flatten}{logical, should colors be flattened after being assigned to a point.}
 }
 \value{
 A \code{ggplot} object containing the artwork.

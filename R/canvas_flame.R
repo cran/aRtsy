@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 Koen Derks
+# Copyright (C) 2021-2023 Koen Derks
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -165,7 +165,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
   fs <- .createFunctionSystem(n, symmetry)
   w_i <- stats::runif(n = fs[["n"]], min = 0, max = 1)
   v_ij <- matrix(stats::runif(fs[["n"]] * length(variations), min = 0, max = 1), nrow = fs[["n"]], ncol = length(variations))
-  for (i in 1:nrow(v_ij)) {
+  for (i in seq_len(nrow(v_ij))) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
   canvas <- iterate_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
