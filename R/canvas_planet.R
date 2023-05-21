@@ -17,10 +17,18 @@
 #'
 #' @description This function paints one or multiple planets and uses a cellular automata to fill their surfaces.
 #'
-#' @usage canvas_planet(colors, threshold = 4, iterations = 200,
-#'               starprob = 0.01, fade = 0.2,
-#'               radius = NULL, center.x = NULL, center.y = NULL,
-#'               light.right = TRUE, resolution = 1500)
+#' @usage canvas_planet(
+#'   colors,
+#'   threshold = 4,
+#'   iterations = 200,
+#'   starprob = 0.01,
+#'   fade = 0.2,
+#'   radius = NULL,
+#'   center.x = NULL,
+#'   center.y = NULL,
+#'   light.right = TRUE,
+#'   resolution = 1500
+#' )
 #'
 #' @param colors      a character specifying the colors used for a single planet. Can also be a list where each entry is a vector of colors for a planet.
 #' @param threshold   a character specifying the threshold for a color take.
@@ -44,7 +52,7 @@
 #' set.seed(1)
 #'
 #' # Simple example
-#' canvas_planet(colors = colorPalette("retro3"))
+#' canvas_planet(colors = colorPalette("lava"), threshold = 3)
 #'
 #' # Advanced example
 #' colors <- list(
@@ -64,8 +72,15 @@
 #'
 #' @export
 
-canvas_planet <- function(colors, threshold = 4, iterations = 200, starprob = 0.01, fade = 0.2,
-                          radius = NULL, center.x = NULL, center.y = NULL, light.right = TRUE,
+canvas_planet <- function(colors,
+                          threshold = 4,
+                          iterations = 200,
+                          starprob = 0.01,
+                          fade = 0.2,
+                          radius = NULL,
+                          center.x = NULL,
+                          center.y = NULL,
+                          light.right = TRUE,
                           resolution = 1500) {
   .checkUserInput(resolution = resolution, iterations = iterations)
   if (is.list(colors)) {
@@ -93,7 +108,7 @@ canvas_planet <- function(colors, threshold = 4, iterations = 200, starprob = 0.
   planets <- length(radius)
   colorsused <- 0
   for (i in 1:planets) {
-    canvas <- draw_planet(
+    canvas <- cpp_planet(
       canvas = canvas,
       resolution = resolution,
       radius = radius[i],

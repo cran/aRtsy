@@ -17,8 +17,14 @@
 #'
 #' @description This function draws line segments on a canvas. The length and direction of the line segments is determined randomly.
 #'
-#' @usage canvas_segments(colors, background = "#fafafa", n = 250,
-#'                 p = 0.5, H = 0.1, size = 0.2)
+#' @usage canvas_segments(
+#'   colors,
+#'   background = "#fafafa",
+#'   n = 250,
+#'   p = 0.5,
+#'   H = 0.1,
+#'   size = 0.2
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -45,8 +51,12 @@
 #'
 #' @export
 
-canvas_segments <- function(colors, background = "#fafafa", n = 250,
-                            p = 0.5, H = 0.1, size = 0.2) {
+canvas_segments <- function(colors,
+                            background = "#fafafa",
+                            n = 250,
+                            p = 0.5,
+                            H = 0.1,
+                            size = 0.2) {
   .checkUserInput(background = background)
   full_canvas <- data.frame(
     x = numeric(), xend = numeric(),
@@ -67,7 +77,7 @@ canvas_segments <- function(colors, background = "#fafafa", n = 250,
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend)) +
     ggplot2::xlim(c(0, 1)) +
     ggplot2::ylim(c(0, 1)) +
-    ggplot2::geom_segment(color = full_canvas$col, linewidth = sizes)
+    ggplot2::geom_segment(color = full_canvas[["col"]], linewidth = sizes)
   artwork <- theme_canvas(artwork, background)
   return(artwork)
 }

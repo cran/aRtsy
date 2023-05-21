@@ -46,7 +46,7 @@ theme_canvas <- function(x, background = NULL, margin = 0) {
     strip.text = ggplot2::element_blank()
   )
   if (is.null(background)) {
-    x <- x + ggplot2::theme(panel.background = ggplot2::element_blank())
+    x <- x + ggplot2::theme(panel.background = ggplot2::element_rect(fill = NA, colour = NA))
   } else {
     x <- x + ggplot2::theme(panel.background = ggplot2::element_rect(fill = background, colour = background))
   }

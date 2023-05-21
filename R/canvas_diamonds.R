@@ -17,8 +17,15 @@
 #'
 #' @description This function draws diamonds on a canvas and (optionally) places two lines behind them. The diamonds can be transparent or have a random color sampled from the input.
 #'
-#' @usage canvas_diamonds(colors, background = "#fafafa", col.line = "black",
-#'                 radius = 10, alpha = 1, p = 0.2, resolution = 500)
+#' @usage canvas_diamonds(
+#'   colors,
+#'   background = "#fafafa",
+#'   col.line = "black",
+#'   radius = 10,
+#'   alpha = 1,
+#'   p = 0.2,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -46,8 +53,13 @@
 #'
 #' @export
 
-canvas_diamonds <- function(colors, background = "#fafafa", col.line = "black",
-                            radius = 10, alpha = 1, p = 0.2, resolution = 500) {
+canvas_diamonds <- function(colors,
+                            background = "#fafafa",
+                            col.line = "black",
+                            radius = 10,
+                            alpha = 1,
+                            p = 0.2,
+                            resolution = 500) {
   .checkUserInput(background = background, resolution = resolution)
   x <- seq(from = resolution / 5, to = resolution / 5 * 4, by = radius)
   top <- seq(from = resolution / 2 + radius, to = resolution / 5 * 4, by = radius)
@@ -62,8 +74,8 @@ canvas_diamonds <- function(colors, background = "#fafafa", col.line = "black",
   for (j in seq_len(nrow(locs))) {
     rs <- ceiling((top[j] - bottom[j]) / (radius * 2)) # required squares
     for (i in 1:rs) {
-      xvec <- c(locs$x[j], locs$x[j] + radius, locs$x[j], locs$x[j] - radius, locs$x[j])
-      yvec <- c(locs$top[j] - radius * ((i - 1) * 2), (locs$top[j] - radius * ((i - 1) * 2)) - radius, (locs$top[j] - radius * ((i - 1) * 2)) - (radius * 2), (locs$top[j] - radius * ((i - 1) * 2)) - radius, locs$top[j] - radius * ((i - 1) * 2))
+      xvec <- c(locs[["x"]][j], locs[["x"]][j] + radius, locs[["x"]][j], locs[["x"]][j] - radius, locs[["x"]][j])
+      yvec <- c(locs[["top"]][j] - radius * ((i - 1) * 2), (locs[["top"]][j] - radius * ((i - 1) * 2)) - radius, (locs[["top"]][j] - radius * ((i - 1) * 2)) - (radius * 2), (locs[["top"]][j] - radius * ((i - 1) * 2)) - radius, locs[["top"]][j] - radius * ((i - 1) * 2))
       col <- sample(c(NA, sample(colors, size = 1)), size = 1, prob = c(p, 1 - p))
       if (!(col %in% palette)) {
         palette <- c(palette, col)
@@ -85,7 +97,7 @@ canvas_diamonds <- function(colors, background = "#fafafa", col.line = "black",
       mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend),
       colour = col.line, linewidth = stats::runif(1, 5, 15), curvature = stats::runif(1, -0.5, 0)
     ) +
-    ggplot2::geom_polygon(fill = full_canvas$col, color = NA, alpha = alpha) +
+    ggplot2::geom_polygon(fill = full_canvas[["col"]], color = NA, alpha = alpha) +
     ggplot2::scale_fill_manual(values = palette)
   artwork <- theme_canvas(artwork, background)
   return(artwork)

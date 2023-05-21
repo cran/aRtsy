@@ -4,7 +4,10 @@
 \alias{colorPalette}
 \title{Color Palette Generator}
 \usage{
-colorPalette(name, n = NULL)
+colorPalette(
+  name,
+  n = NULL
+)
 }
 \arguments{
 \item{name}{name of the color palette. Can be \code{random} for random colors, \code{complement} for complementing colors, \code{divergent} for equally spaced colors, or \code{random-palette} for a random palette, but can also be the name of a pre-implemented palette. See the \code{details} section for a list of pre-implemented palettes.}

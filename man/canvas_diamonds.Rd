@@ -4,8 +4,15 @@
 \alias{canvas_diamonds}
 \title{Draw Diamonds}
 \usage{
-canvas_diamonds(colors, background = "#fafafa", col.line = "black",
-                radius = 10, alpha = 1, p = 0.2, resolution = 500)
+canvas_diamonds(
+  colors,
+  background = "#fafafa",
+  col.line = "black",
+  radius = 10,
+  alpha = 1,
+  p = 0.2,
+  resolution = 500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

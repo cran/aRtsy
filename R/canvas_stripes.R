@@ -17,7 +17,12 @@
 #'
 #' @description This function creates a brownian motion on each row of the artwork and colors it according to the height of the motion.
 #'
-#' @usage canvas_stripes(colors, n = 300, H = 1, burnin = 1)
+#' @usage canvas_stripes(
+#'   colors,
+#'   n = 300,
+#'   H = 1,
+#'   burnin = 1
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param n           a positive integer specifying the length of the brownian motion (effectively the width of the artwork).
@@ -42,13 +47,14 @@
 #'
 #' @export
 
-canvas_stripes <- function(colors, n = 300, H = 1, burnin = 1) {
-  if (burnin < 1) {
-    stop("'burnin' must be a value >= 1")
-  }
+canvas_stripes <- function(colors,
+                           n = 300,
+                           H = 1,
+                           burnin = 1) {
+  stopifnot("'burnin' must be a single integer >= 1" = burnin > 0 && burnin %% 1 == 0 && length(burnin) == 1)
   mat <- matrix(NA, nrow = n, ncol = n)
   for (i in seq_len(nrow(mat))) {
-    t <- 1:(n + burnin)
+    t <- seq_len(n + burnin)
     x <- stats::rnorm(n = length(t) - 1, sd = sqrt(H))
     x <- c(0, cumsum(x))
     mat[i, ] <- rev(x[-(1:burnin)])

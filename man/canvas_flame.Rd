@@ -4,11 +4,22 @@
 \alias{canvas_flame}
 \title{Draw a Fractal Flame}
 \usage{
-canvas_flame(colors, background = "#000000", iterations = 1000000,
-             variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
-             post = FALSE, final = FALSE, extra = FALSE,
-             display = c("colored", "logdensity"),
-             zoom = 1, resolution = 1000, gamma = 1)
+canvas_flame(
+  colors,
+  background = "#000000",
+  iterations = 1000000,
+  variations = 0,
+  symmetry = 0,
+  blend = TRUE,
+  weighted = FALSE,
+  post = FALSE,
+  final = FALSE,
+  extra = FALSE,
+  display = c("colored", "logdensity"),
+  zoom = 1,
+  resolution = 1000,
+  gamma = 1
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

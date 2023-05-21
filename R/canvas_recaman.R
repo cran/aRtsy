@@ -17,9 +17,17 @@
 #'
 #' @description This function draws Recaman's sequence on a canvas. The algorithm takes increasingly large steps backward on the positive number line, but if it is unable to it takes a step forward.
 #'
-#' @usage canvas_recaman(colors, background = "#fafafa", iterations = 100, start = 0,
-#'                increment = 1, curvature = 1, angle = 0, size = 0.1,
-#'                closed = FALSE)
+#' @usage canvas_recaman(
+#'   colors,
+#'   background = "#fafafa",
+#'   iterations = 100,
+#'   start = 0,
+#'   increment = 1,
+#'   curvature = 1,
+#'   angle = 0,
+#'   size = 0.1,
+#'   closed = FALSE
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background.
@@ -51,8 +59,14 @@
 #'
 #' @export
 
-canvas_recaman <- function(colors, background = "#fafafa", iterations = 100, start = 0,
-                           increment = 1, curvature = 1, angle = 0, size = 0.1,
+canvas_recaman <- function(colors,
+                           background = "#fafafa",
+                           iterations = 100,
+                           start = 0,
+                           increment = 1,
+                           curvature = 1,
+                           angle = 0,
+                           size = 0.1,
                            closed = FALSE) {
   .checkUserInput(background = background, iterations = iterations)
   if (!(angle %in% c(0, 45))) {
@@ -65,7 +79,7 @@ canvas_recaman <- function(colors, background = "#fafafa", iterations = 100, sta
   if (increment < 1) {
     stop("'increment' must be a single integer >= 0")
   }
-  x <- iterate_recaman(iterations, start, increment)
+  x <- cpp_recaman(iterations, start, increment)
   if (closed) {
     xend <- c(x[-1], x[1])
   } else {
@@ -73,8 +87,8 @@ canvas_recaman <- function(colors, background = "#fafafa", iterations = 100, sta
     x <- x[-length(x)]
   }
   canvas <- data.frame(z = seq_along(x), x = x, xend = xend)
-  canvas$y <- x * sin(angle %% 360)
-  canvas$yend <- canvas$y[match(canvas$xend, canvas$x)]
+  canvas[["y"]] <- x * sin(angle %% 360)
+  canvas[["yend"]] <- canvas[["y"]][match(canvas[["xend"]], canvas[["x"]])]
   minx <- apply(canvas[, 2:3], 1, min, na.rm = TRUE)
   maxx <- apply(canvas[, 2:3], 1, max, na.rm = TRUE)
   miny <- apply(canvas[, 4:5], 1, min, na.rm = TRUE)

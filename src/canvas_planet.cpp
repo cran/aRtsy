@@ -17,18 +17,18 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_planet(arma::mat& canvas,
-                      const int& resolution,
-                      const int& radius,
-                      const int& xcenter,
-                      const int& ycenter,
-                      const int& threshold,
-                      const int& iterations,
-                      const int& ncolors,
-                      const int& colorsused,
-                      const double& starprob,
-                      const double& fade,
-                      const bool& lightright) {
+arma::mat cpp_planet(arma::mat& canvas,
+                     const int& resolution,
+                     const int& radius,
+                     const int& xcenter,
+                     const int& ycenter,
+                     const int& threshold,
+                     const int& iterations,
+                     const int& ncolors,
+                     const int& colorsused,
+                     const double& starprob,
+                     const double& fade,
+                     const bool& lightright) {
   const int nrows = canvas.n_rows, ncols = canvas.n_cols, n = resolution * resolution;
   Rcpp::IntegerVector xcircle(n), ycircle(n);
   int l = 0;
@@ -39,7 +39,7 @@ arma::mat draw_planet(arma::mat& canvas,
     }
     for (int col = 0; col < ncols; ++col) {
       const double dist = sqrt(pow(xcenter - col, 2) + pow(ycenter - row, 2));
-      if (canvas.at(row, col) != 0) { // The point lies in outer space
+      if (dist >= ceil(radius * 1.01) && canvas.at(row, col) == 0) { // The point lies in outer space
         double star = R::runif(0, 1);
         if (star < starprob) {
           canvas.at(row, col) = 2;
@@ -49,7 +49,7 @@ arma::mat draw_planet(arma::mat& canvas,
         ycircle[l] = row;
         canvas.at(row, col) = 3 + colorsused + floor(R::runif(0, ncolors - 3));
         ++l;
-      } else if (dist > (radius + 1) && dist < ceil(radius * 1.01)) { // The point lies on the edge
+      } else if (dist > radius && dist < ceil(radius * 1.01)) { // The point lies on the edge
         canvas.at(row, col) = 0;
       }
     }
@@ -61,7 +61,7 @@ arma::mat draw_planet(arma::mat& canvas,
       Rcpp::checkUserInterrupt();
     }
     for (int j = 0; j < l; ++j) {
-      const int& x = xcircle[j], y = ycircle[j];
+      const int x = xcircle[j], y = ycircle[j];
       if ((y > 0) && (y < (nrows - 1)) && (x > 0) && (x < (ncols - 1))) {
         const int level = ref.at(y, x); // Get the current level 
         const int newlevel = (level + 1) == (ncolors + colorsused) ? 3 + colorsused : level + 1;

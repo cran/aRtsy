@@ -17,7 +17,12 @@
 #'
 #' @description This function creates an artwork from randomly generated k-nearest neighbors noise.
 #'
-#' @usage canvas_nebula(colors, k = 50, n = 500, resolution = 500)
+#' @usage canvas_nebula(
+#'   colors,
+#'   k = 50,
+#'   n = 500,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param k           a positive integer specifying the number of nearest neighbors to consider.
@@ -42,7 +47,10 @@
 #'
 #' @export
 
-canvas_nebula <- function(colors, k = 50, n = 500, resolution = 500) {
+canvas_nebula <- function(colors,
+                          k = 50,
+                          n = 500,
+                          resolution = 500) {
   .checkUserInput(resolution = resolution)
   canvas <- .noise(dims = c(resolution, resolution), n = n, type = "artsy-knn", k = k)
   canvas <- .unraster(canvas, names = c("x", "y", "z"))

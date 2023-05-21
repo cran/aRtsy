@@ -17,8 +17,14 @@
 #'
 #' @description This function creates an artwork that resembles paints strokes. The algorithm is based on the simple idea that each next point on the grid has a chance to take over the color of an adjacent colored point but also has a change of generating a new color.
 #'
-#' @usage canvas_strokes(colors, neighbors = 1, p = 0.01, iterations = 1,
-#'                resolution = 500, side = FALSE)
+#' @usage canvas_strokes(
+#'   colors,
+#'   neighbors = 1,
+#'   p = 0.01,
+#'   iterations = 1,
+#'   resolution = 500,
+#'   side = FALSE
+#' )
 #'
 #' @param colors     a string or character vector specifying the color(s) used for the artwork.
 #' @param neighbors  a positive integer specifying the number of neighbors a block considers when taking over a color. More neighbors fades the artwork.
@@ -45,21 +51,23 @@
 #'
 #' @export
 
-canvas_strokes <- function(colors, neighbors = 1, p = 0.01, iterations = 1,
-                           resolution = 500, side = FALSE) {
+canvas_strokes <- function(colors,
+                           neighbors = 1,
+                           p = 0.01,
+                           iterations = 1,
+                           resolution = 500,
+                           side = FALSE) {
   .checkUserInput(
     resolution = resolution, iterations = iterations
   )
-  if (neighbors < 1 || neighbors %% 1 != 0 || length(neighbors) != 1) {
-    stop("'neighbors' must be a single integer >= 1")
-  }
+  stopifnot("'neighbors' must be a single integer >= 1" = neighbors > 0 && neighbors %% 1 == 0 && length(neighbors) == 1)
   if (length(colors) == 1) {
     colors <- c("#fafafa", colors)
   }
   neighborsLocations <- as.matrix(expand.grid(-(neighbors):neighbors, -(neighbors):neighbors))
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
-  for (i in 1:iterations) {
-    canvas <- draw_strokes(canvas = canvas, neighbors = neighborsLocations, s = length(colors), p = p)
+  for (i in seq_len(iterations)) {
+    canvas <- cpp_strokes(canvas, neighborsLocations, length(colors), p)
   }
   full_canvas <- .unraster(canvas, names = c("x", "y", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +

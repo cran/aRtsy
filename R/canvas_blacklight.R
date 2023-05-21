@@ -15,13 +15,27 @@
 
 #' Draw Blacklights
 #'
-#' @description This function draws the predictions from a support vector machine algorithm trained on randomly generated continuous data.
+#' @description This function draws Blacklights on a canvas using a Support
+#'   Vector Machine (SVM) algorithm. SVM's are a type of supervised learning
+#'   algorithm that can be used for classification and regression purposes. The
+#'   main goal of the SVM technique is to find a hyperplane (decision boundary)
+#'   that best separates the values in the training dataset. This function draws
+#'   the predictions from the SVM algorithm fitted on a randomly generated
+#'   continuous training data set.
 #'
-#' @usage canvas_blacklight(colors, n = 1000, resolution = 500)
+#' @usage canvas_blacklight(
+#'   colors,
+#'   n = 1000,
+#'   resolution = 500
+#' )
 #'
-#' @param colors      a string or character vector specifying the color(s) used for the artwork.
-#' @param n           a positive integer specifying the number of random data points to generate.
-#' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
+#' @param colors      a string or character vector specifying the color(s) used
+#'   for the artwork.
+#' @param n           a positive integer specifying the number of random data
+#'   points to generate.
+#' @param resolution  resolution of the artwork in pixels per row/column.
+#'   Increasing the resolution increases the quality of the artwork but also
+#'   increases the computation time exponentially.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -43,7 +57,9 @@
 #'
 #' @export
 
-canvas_blacklight <- function(colors, n = 1000, resolution = 500) {
+canvas_blacklight <- function(colors,
+                              n = 1000,
+                              resolution = 500) {
   .checkUserInput(resolution = resolution)
   canvas <- .noise(dims = c(resolution, resolution), n = n, type = "svm")
   canvas <- .unraster(canvas, names = c("x", "y", "z"))

@@ -16,9 +16,9 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::NumericVector iterate_chladni(const Rcpp::NumericVector& x,
-                                    const Rcpp::NumericVector& y,
-                                    const Rcpp::NumericVector& waves) {
+Rcpp::NumericVector cpp_chladni(const Rcpp::NumericVector& x,
+                                const Rcpp::NumericVector& y,
+                                const Rcpp::NumericVector& waves) {
   // Constants
   const int n = x.length(), k = waves.length();
   // Variables

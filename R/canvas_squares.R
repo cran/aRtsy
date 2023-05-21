@@ -17,8 +17,14 @@
 #'
 #' @description This function paints random squares and rectangles. It works by repeatedly cutting into the canvas at random locations and coloring the area that these cuts create.
 #'
-#' @usage canvas_squares(colors, background = "#000000", cuts = 50, ratio = 1.618,
-#'                resolution = 200, noise = FALSE)
+#' @usage canvas_squares(
+#'   colors,
+#'   background = "#000000",
+#'   cuts = 50,
+#'   ratio = 1.618,
+#'   resolution = 200,
+#'   noise = FALSE
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the borders of the squares.
@@ -45,17 +51,19 @@
 #'
 #' @export
 
-canvas_squares <- function(colors, background = "#000000", cuts = 50, ratio = 1.618,
-                           resolution = 200, noise = FALSE) {
+canvas_squares <- function(colors,
+                           background = "#000000",
+                           cuts = 50,
+                           ratio = 1.618,
+                           resolution = 200,
+                           noise = FALSE) {
   .checkUserInput(resolution = resolution, background = background)
-  if (cuts <= 1) {
-    stop("'cuts' must be a single value >= 1")
-  }
+  stopifnot("'cuts' must be a single value > 0" = cuts > 0)
   palette <- c(background, colors)
   neighbors <- expand.grid(-1:1, -1:1)
   colnames(neighbors) <- c("x", "y")
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
-  full_canvas <- draw_squares(canvas, neighbors, length(colors), cuts, ratio)
+  full_canvas <- cpp_squares(canvas, neighbors, length(colors), cuts, ratio)
   if (noise) {
     full_canvas <- full_canvas - .noise(dims = c(resolution, resolution))
   }

@@ -4,10 +4,18 @@
 \alias{canvas_planet}
 \title{Draw Planets}
 \usage{
-canvas_planet(colors, threshold = 4, iterations = 200,
-              starprob = 0.01, fade = 0.2,
-              radius = NULL, center.x = NULL, center.y = NULL,
-              light.right = TRUE, resolution = 1500)
+canvas_planet(
+  colors,
+  threshold = 4,
+  iterations = 200,
+  starprob = 0.01,
+  fade = 0.2,
+  radius = NULL,
+  center.x = NULL,
+  center.y = NULL,
+  light.right = TRUE,
+  resolution = 1500
+)
 }
 \arguments{
 \item{colors}{a character specifying the colors used for a single planet. Can also be a list where each entry is a vector of colors for a planet.}
@@ -41,7 +49,7 @@ This function paints one or multiple planets and uses a cellular automata to fil
 set.seed(1)
 
 # Simple example
-canvas_planet(colors = colorPalette("retro3"))
+canvas_planet(colors = colorPalette("lava"), threshold = 3)
 
 # Advanced example
 colors <- list(

@@ -17,11 +17,11 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_turmite(arma::mat& canvas,
-                       const int& iters,
-                       int& row,
-                       int& col,
-                       const double& p) {
+arma::mat cpp_turmite(arma::mat& canvas,
+                      const int& iters,
+                      int& row,
+                      int& col,
+                      const double& p) {
   const int nrows = canvas.n_rows, ncols = canvas.n_cols;
   int state = 0;
   for (int i = 0; i < iters; ++i) {

@@ -4,8 +4,14 @@
 \alias{canvas_splits}
 \title{Draw Split Lines}
 \usage{
-canvas_splits(colors, background = "#fafafa", iterations = 6,
-              sd = 0.2, lwd = 0.05, alpha = 0.5)
+canvas_splits(
+  colors,
+  background = "#fafafa",
+  iterations = 6,
+  sd = 0.2,
+  lwd = 0.05,
+  alpha = 0.5
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

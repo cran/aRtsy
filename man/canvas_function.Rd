@@ -4,8 +4,13 @@
 \alias{canvas_function}
 \title{Draw Functions}
 \usage{
-canvas_function(colors, background = "#fafafa", by = 0.01,
-               polar = TRUE, formula = NULL)
+canvas_function(
+  colors,
+  background = "#fafafa",
+  by = 0.01,
+  polar = TRUE,
+  formula = NULL
+)
 }
 \arguments{
 \item{colors}{a string specifying the color used for the artwork.}

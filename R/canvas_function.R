@@ -17,8 +17,13 @@
 #'
 #' @description This function paints functions with random parameters on a canvas.
 #'
-#' @usage canvas_function(colors, background = "#fafafa", by = 0.01,
-#'                polar = TRUE, formula = NULL)
+#' @usage canvas_function(
+#'   colors,
+#'   background = "#fafafa",
+#'   by = 0.01,
+#'   polar = TRUE,
+#'   formula = NULL
+#' )
 #'
 #' @param colors      a string specifying the color used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -55,8 +60,11 @@
 #'
 #' @export
 
-canvas_function <- function(colors, background = "#fafafa", by = 0.01,
-                            polar = TRUE, formula = NULL) {
+canvas_function <- function(colors,
+                            background = "#fafafa",
+                            by = 0.01,
+                            polar = TRUE,
+                            formula = NULL) {
   .checkUserInput(background = background)
   if (is.null(formula)) {
     painting_formulas <- list()
@@ -80,9 +88,9 @@ canvas_function <- function(colors, background = "#fafafa", by = 0.01,
     painting_formula <- list(x = formula[["x"]], y = formula[["y"]])
   }
   grid <- expand.grid(x_i = seq(from = -pi, to = pi, by = by), y_i = seq(from = -pi, to = pi, by = by))
-  x_i <- grid$x_i # nolint
-  y_i <- grid$y_i
-  full_canvas <- data.frame(x = eval(painting_formula$x), y = eval(painting_formula$y))
+  x_i <- grid[["x_i"]] # nolint
+  y_i <- grid[["y_i"]]
+  full_canvas <- data.frame(x = eval(painting_formula[["x"]]), y = eval(painting_formula[["y"]]))
   z <- y_i[stats::complete.cases(full_canvas)]
   full_canvas <- full_canvas[stats::complete.cases(full_canvas), ]
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, color = z)) +

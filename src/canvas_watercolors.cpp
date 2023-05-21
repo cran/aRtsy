@@ -16,20 +16,20 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::DataFrame deform(Rcpp::DoubleVector& x,
-                       Rcpp::DoubleVector& y,
-                       Rcpp::DoubleVector& s,
-                       const int& maxdepth,
-                       const double& resolution) {
+Rcpp::DataFrame cpp_watercolors(Rcpp::DoubleVector& x,
+                                Rcpp::DoubleVector& y,
+                                Rcpp::DoubleVector& s,
+                                const int& maxdepth,
+                                const double& resolution) {
   // Variables
   int times, index;
   double bx, by, edgevar, angle;
   // Main loop
   for (int i = 0; i < maxdepth; ++i) {
-	// Check for interrupt
+    // Check for interrupt
     Rcpp::checkUserInterrupt();
     times = x.length() - 1;
-	Rcpp::IntegerVector indexes(times, 0);
+    Rcpp::IntegerVector indexes(times, 0);
     // Inner loop
     for (int l = 1; l < times; ++l) {
       indexes[l] = indexes[l - 1] + 2; // Create seq(0, length(x) * 2 - 1, by = 2)

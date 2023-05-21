@@ -16,11 +16,11 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::IntegerVector get_closest_node(const Rcpp::DoubleVector& attractor_x,
-                                     const Rcpp::DoubleVector& attractor_y,
-                                     const Rcpp::DoubleVector& nodes_x,
-                                     const Rcpp::DoubleVector& nodes_y,
-                                     const double& attraction_distance) {
+Rcpp::IntegerVector cpp_petri_closest(const Rcpp::DoubleVector& attractor_x,
+                                      const Rcpp::DoubleVector& attractor_y,
+                                      const Rcpp::DoubleVector& nodes_x,
+                                      const Rcpp::DoubleVector& nodes_y,
+                                      const double& attraction_distance) {
   const int n_attractors = attractor_x.length(), n_nodes = nodes_x.length();
   Rcpp::IntegerVector nodes;
   for (int i = 0; i < n_attractors; ++i) {
@@ -40,11 +40,11 @@ Rcpp::IntegerVector get_closest_node(const Rcpp::DoubleVector& attractor_x,
 }
 
 // [[Rcpp::export]]
-Rcpp::DataFrame kill_attractors(Rcpp::DoubleVector& attractor_x,
-                                Rcpp::DoubleVector& attractor_y,
-                                Rcpp::DoubleVector& nodes_x,
-                                Rcpp::DoubleVector& nodes_y,
-                                const double& kill_distance) {
+Rcpp::DataFrame cpp_petri_kill(Rcpp::DoubleVector& attractor_x,
+                               Rcpp::DoubleVector& attractor_y,
+                               Rcpp::DoubleVector& nodes_x,
+                               Rcpp::DoubleVector& nodes_y,
+                               const double& kill_distance) {
   const int n_attractors = attractor_x.length(), n_nodes = nodes_x.length();
   Rcpp::DoubleVector new_attractor_x, new_attractor_y;
   for (int i = 0; i < n_attractors; ++i) {
@@ -68,10 +68,10 @@ Rcpp::DataFrame kill_attractors(Rcpp::DoubleVector& attractor_x,
 }
 
 // [[Rcpp::export]]
-Rcpp::DataFrame draw_circle(const double& center_x,
-                            const double& center_y,
-                            const double& diameter,
-                            const int& n) {
+Rcpp::DataFrame cpp_draw_circle(const double& center_x,
+                                const double& center_y,
+                                const double& diameter,
+                                const int& n) {
   const double r = diameter / 2, twopidivn = 2 * M_PI / n;
   double t = 0;
   Rcpp::DoubleVector x(n), y(n);
@@ -89,11 +89,11 @@ Rcpp::DataFrame draw_circle(const double& center_x,
 }
 
 // [[Rcpp::export]]
-Rcpp::DataFrame get_directions(Rcpp::DoubleVector& attractor_x,
-                               Rcpp::DoubleVector& attractor_y,
-                               Rcpp::DoubleVector& nodes_x,
-                               Rcpp::DoubleVector& nodes_y,
-                               Rcpp::IntegerVector& closest_nodes) {
+Rcpp::DataFrame cpp_petri_directions(Rcpp::DoubleVector& attractor_x,
+                                     Rcpp::DoubleVector& attractor_y,
+                                     Rcpp::DoubleVector& nodes_x,
+                                     Rcpp::DoubleVector& nodes_y,
+                                     Rcpp::IntegerVector& closest_nodes) {
   const int n = nodes_x.length();
   Rcpp::DoubleVector directionx(n), directiony(n);
   for (int i = 0; i < n; ++i) {

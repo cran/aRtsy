@@ -28,10 +28,10 @@ int neighboring_block(const int& L,
 }
 
 // [[Rcpp::export]]
-arma::mat draw_strokes(arma::mat& canvas,
-                       arma::mat& neighbors,
-                       const int& s,
-                       const double& p) {
+arma::mat cpp_strokes(arma::mat& canvas,
+                      arma::mat& neighbors,
+                      const int& s,
+                      const double& p) {
   const double backwards = R::runif(0, 1);
   const int nrows = canvas.n_rows, ncols = canvas.n_cols, k = neighbors.n_rows;
   for (int x = 0; x < ncols; ++x) {

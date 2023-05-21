@@ -396,29 +396,29 @@ void variation(double& x,
 }
 
 // [[Rcpp::export]]
-arma::cube iterate_flame(arma::cube& canvas,
-                         const int& iterations,
-                         const int& resolution,
-                         const int& edge,
-                         const bool& blend,
-                         const bool& weighted,
-                         const bool& post,
-                         const bool& final,
-                         const bool& extra,
-                         const arma::mat& colors,
-                         const Rcpp::DoubleVector& functions,
-                         const Rcpp::DoubleVector& funcWeights,
-                         const arma::mat& funcPars,
-                         const Rcpp::DoubleVector& variations,
-                         const arma::mat& varWeights,
-                         const Rcpp::DoubleVector& varParams,
-                         const arma::mat& postPars,
-                         const Rcpp::DoubleVector& finalPars,
-                         const Rcpp::DoubleVector& extraPars,
-                         const int& bsym) {
+arma::cube cpp_flame(arma::cube& canvas,
+                     const int& iterations,
+                     const int& resolution,
+                     const int& edge,
+                     const bool& blend,
+                     const bool& weighted,
+                     const bool& post,
+                     const bool& final,
+                     const bool& extra,
+                     const arma::mat& colors,
+                     const Rcpp::DoubleVector& functions,
+                     const Rcpp::DoubleVector& funcWeights,
+                     const arma::mat& funcPars,
+                     const Rcpp::DoubleVector& variations,
+                     const arma::mat& varWeights,
+                     const Rcpp::DoubleVector& varParams,
+                     const arma::mat& postPars,
+                     const Rcpp::DoubleVector& finalPars,
+                     const Rcpp::DoubleVector& extraPars,
+                     const int& bsym) {
   const int nvar = variations.length(), nfunc = functions.length();
   double x = R::runif(-1, 1), y = R::runif(-1, 1), c1 = R::runif(0, 1), c2 = R::runif(0, 1), c3 = R::runif(0, 1);
-  bool vary = !((nvar == 1) && (variations[0] == 0));
+  const bool vary = !((nvar == 1) && (variations[0] == 0));
   for (int iter = 1; iter < iterations; ++iter) {
     if (iter % 1000 == 0) {
       Rcpp::checkUserInterrupt();
@@ -431,8 +431,8 @@ arma::cube iterate_flame(arma::cube& canvas,
       if (vary) { // Do not vary if the only affine is linear
         if (blend) { // Blend variations
           double xc = 0, yc = 0;
-          for (int j = 0; j < nvar; j++) {
-            double& xp = x, yp = y;
+          for (int j = 0; j < nvar; ++j) {
+            double xp = x, yp = y;
             variation(xp, yp, variations[j], funcPars.at(i, 0), funcPars.at(i, 1), funcPars.at(i, 2), funcPars.at(i, 3), funcPars.at(i, 4), funcPars.at(i, 5), varParams);
             xc += varWeights.at(i, j) * xp;
             yc += varWeights.at(i, j) * yp;

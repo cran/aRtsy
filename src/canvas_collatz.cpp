@@ -17,7 +17,7 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-Rcpp::IntegerVector get_collatz_sequence(int& x) {
+Rcpp::IntegerVector cpp_collatz_sequence(int& x) {
   Rcpp::IntegerVector sequence = {1};
   while (x > 1) {
     Rcpp::checkUserInterrupt();
@@ -33,10 +33,10 @@ Rcpp::IntegerVector get_collatz_sequence(int& x) {
 }
 
 // [[Rcpp::export]]
-arma::mat draw_collatz(arma::mat& empty,
-                       const Rcpp::IntegerVector& series,
-                       const double& even,
-                       const double& odd) {
+arma::mat cpp_collatz(arma::mat& empty,
+                      const Rcpp::IntegerVector& series,
+                      const double& even,
+                      const double& odd) {
   int s = series.size();
   double angle = M_PI / 2;
   for (int i = 1; i < s; ++i) {

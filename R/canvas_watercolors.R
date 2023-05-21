@@ -17,8 +17,13 @@
 #'
 #' @description This function paints watercolors on a canvas.
 #'
-#' @usage canvas_watercolors(colors, background = "#fafafa", layers = 50,
-#'                    depth = 2, resolution = 250)
+#' @usage canvas_watercolors(
+#'   colors,
+#'   background = "#fafafa",
+#'   layers = 50,
+#'   depth = 2,
+#'   resolution = 250
+#' )
 #'
 #' @param colors       a string specifying the color used for the artwork.
 #' @param background   a character specifying the color used for the background.
@@ -46,8 +51,11 @@
 #'
 #' @export
 
-canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
-                               depth = 2, resolution = 250) {
+canvas_watercolors <- function(colors,
+                               background = "#fafafa",
+                               layers = 50,
+                               depth = 2,
+                               resolution = 250) {
   .checkUserInput(resolution = resolution, background = background)
   nlayers <- length(colors)
   plotData <- data.frame(x = numeric(), y = numeric(), s = numeric(), z = numeric())
@@ -55,12 +63,12 @@ canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
   labelSequence <- rep(seq_along(colors), times = ceiling(layers / 5), each = 5)
   corners <- sample(3:10, size = nlayers, replace = TRUE)
   basePolygons <- list()
-  for (i in 1:nlayers) {
-    basePolygons[[i]] <- .createBasePolygon(i, nlayers, corners[i], resolution)
+  for (i in seq_len(nlayers)) {
+    basePolygons[[i]] <- .watercolors_basepolygon(i, nlayers, corners[i], resolution)
   }
   for (i in seq_along(colorSequence)) {
     canvas <- basePolygons[[labelSequence[i]]]
-    canvas <- deform(x = canvas[, 1], y = canvas[, 2], s = canvas[, 3], maxdepth = depth, resolution = resolution)
+    canvas <- cpp_watercolors(canvas[, 1], canvas[, 2], canvas[, 3], depth, resolution)
     canvas <- cbind(canvas, z = i)
     plotData <- rbind(plotData, canvas)
   }
@@ -73,7 +81,7 @@ canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
   return(artwork)
 }
 
-.createBasePolygon <- function(color, nlayers, corners, resolution) {
+.watercolors_basepolygon <- function(color, nlayers, corners, resolution) {
   if (nlayers == 1) {
     xmid <- (resolution / 2)
     ymid <- (resolution / 2)
@@ -88,7 +96,7 @@ canvas_watercolors <- function(colors, background = "#fafafa", layers = 50,
   coords <- data.frame(x = polyx, y = polyy)
   coords[nrow(coords) + 1, ] <- coords[1, ]
   varsegments <- stats::rnorm(nrow(coords), mean = 6, sd = 1.5)
-  canvas <- data.frame(x = coords$x, y = coords$y, s = varsegments)
-  canvas <- deform(canvas[, 1], canvas[, 2], canvas[, 3], maxdepth = 5, resolution)
+  canvas <- data.frame(x = coords[["x"]], y = coords[["y"]], s = varsegments)
+  canvas <- cpp_watercolors(canvas[, 1], canvas[, 2], canvas[, 3], 5, resolution)
   return(canvas)
 }

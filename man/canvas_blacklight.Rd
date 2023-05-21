@@ -4,20 +4,34 @@
 \alias{canvas_blacklight}
 \title{Draw Blacklights}
 \usage{
-canvas_blacklight(colors, n = 1000, resolution = 500)
+canvas_blacklight(
+  colors,
+  n = 1000,
+  resolution = 500
+)
 }
 \arguments{
-\item{colors}{a string or character vector specifying the color(s) used for the artwork.}
+\item{colors}{a string or character vector specifying the color(s) used
+for the artwork.}
 
-\item{n}{a positive integer specifying the number of random data points to generate.}
+\item{n}{a positive integer specifying the number of random data
+points to generate.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+\item{resolution}{resolution of the artwork in pixels per row/column.
+Increasing the resolution increases the quality of the artwork but also
+increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws the predictions from a support vector machine algorithm trained on randomly generated continuous data.
+This function draws Blacklights on a canvas using a Support
+  Vector Machine (SVM) algorithm. SVM's are a type of supervised learning
+  algorithm that can be used for classification and regression purposes. The
+  main goal of the SVM technique is to find a hyperplane (decision boundary)
+  that best separates the values in the training dataset. This function draws
+  the predictions from the SVM algorithm fitted on a randomly generated
+  continuous training data set.
 }
 \examples{
 \donttest{

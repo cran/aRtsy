@@ -16,7 +16,8 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-int neighbor(int L, int i) {
+int neighbor(const int& L,
+             const int& i) {
   if (i < 0)
     return 0;
   if (i >= L)
@@ -25,11 +26,11 @@ int neighbor(int L, int i) {
 }
 
 // [[Rcpp::export]]
-arma::mat draw_squares(arma::mat X,
-                       const Rcpp::DataFrame neighbors,
-                       const int s,
-                       const int cuts,
-                       const double ratio) {
+arma::mat cpp_squares(arma::mat& X,
+                      const Rcpp::DataFrame& neighbors,
+                      const int& s,
+                      const int& cuts,
+                      const double& ratio) {
   // Constants
   const int m = X.n_rows, n = X.n_cols;
   // Variables

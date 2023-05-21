@@ -4,8 +4,17 @@
 \alias{canvas_flow}
 \title{Draw A Flow Field}
 \usage{
-canvas_flow(colors, background = "#fafafa", lines = 500, lwd = 0.05,
-            iterations = 100, stepmax = 0.01, polar = FALSE, angles = NULL)
+canvas_flow(
+  colors,
+  background = "#fafafa",
+  lines = 500,
+  lwd = 0.05,
+  iterations = 100,
+  stepmax = 0.01,
+  outline = c("none", "circle", "square"),
+  polar = FALSE,
+  angles = NULL
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -19,6 +28,8 @@ canvas_flow(colors, background = "#fafafa", lines = 500, lwd = 0.05,
 \item{iterations}{the maximum number of iterations for each line.}
 
 \item{stepmax}{the maximum proportion of the canvas covered in each iteration.}
+
+\item{outline}{character. Which outline to use for the artwork. Possible options are \code{none} (default), \code{circle} or \code{square}.}
 
 \item{polar}{logical. Whether to draw the flow field with polar coordinates.}
 
@@ -37,6 +48,18 @@ set.seed(1)
 # Simple example
 canvas_flow(colors = colorPalette("dark2"))
 
+# Outline example
+canvas_flow(
+  colors = colorPalette("vrolik1"), lines = 10000,
+  outline = "circle", iterations = 10, angles = "svm"
+)
+
+# Polar example
+canvas_flow(
+  colors = colorPalette("vrolik2"), lines = 300,
+  lwd = 0.5, polar = TRUE
+)
+
 # Advanced example
 angles <- matrix(0, 200, 200)
 angles[1:100, ] <- seq(from = 0, to = 2 * pi, length = 100)
@@ -46,9 +69,6 @@ canvas_flow(
   colors = colorPalette("tuscany1"), background = "black",
   angles = angles, lwd = 0.4, lines = 1000, stepmax = 0.001
 )
-
-# Polar example
-canvas_flow(colors = colorPalette("vrolik2"), lines = 300, lwd = 0.5, polar = TRUE)
 }
 
 }

@@ -16,27 +16,27 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-void shift_right(Rcpp::IntegerVector& x) {
-  const int& x1 = x[0];
+void shift_right_int(Rcpp::IntegerVector& x) {
+  const int x1 = x[0];
   x.erase(0);
   x.push_back(x1);
 }
 
-void shift_right(Rcpp::DoubleVector& x) {
-  const double& x1 = x[0];
+void shift_right_double(Rcpp::DoubleVector& x) {
+  const double x1 = x[0];
   x.erase(0);
   x.push_back(x1);
 }
 
 // [[Rcpp::export]]
-Rcpp::DataFrame iterate_mesh(arma::mat& canvas,
-                             const Rcpp::DoubleVector& points,
-                             const Rcpp::DoubleVector& centers,
-                             const int& iterations,
-                             const int& start,
-                             Rcpp::IntegerVector& order,
-                             Rcpp::DoubleVector& radii,
-                             Rcpp::DoubleVector& increase) {
+Rcpp::DataFrame cpp_mesh(arma::mat& canvas,
+                         const Rcpp::DoubleVector& points,
+                         const Rcpp::DoubleVector& centers,
+                         const int& iterations,
+                         const int& start,
+                         Rcpp::IntegerVector& order,
+                         Rcpp::DoubleVector& radii,
+                         Rcpp::DoubleVector& increase) {
   const int l = order.length();
   for (int i = 0; i < (iterations + 1); ++i) {
     if (i % 100 == 0) {
@@ -48,9 +48,9 @@ Rcpp::DataFrame iterate_mesh(arma::mat& canvas,
       canvas.at(index[j], 0) = newy[j];
       canvas.at(index[j], 1) = order[j];
     }
-    shift_right(order);
+    shift_right_int(order);
     radii += increase;
-    shift_right(radii);
+    shift_right_double(radii);
   }
   return canvas;
 }

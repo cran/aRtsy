@@ -4,8 +4,14 @@
 \alias{canvas_strokes}
 \title{Draw Strokes}
 \usage{
-canvas_strokes(colors, neighbors = 1, p = 0.01, iterations = 1,
-               resolution = 500, side = FALSE)
+canvas_strokes(
+  colors,
+  neighbors = 1,
+  p = 0.01,
+  iterations = 1,
+  resolution = 500,
+  side = FALSE
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

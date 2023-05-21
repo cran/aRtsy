@@ -4,7 +4,11 @@
 \alias{canvas_forest}
 \title{Draw a Random Forest}
 \usage{
-canvas_forest(colors, n = 1000, resolution = 500)
+canvas_forest(
+  colors,
+  n = 1000,
+  resolution = 500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

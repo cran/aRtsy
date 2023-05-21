@@ -4,8 +4,14 @@
 \alias{canvas_turmite}
 \title{Draw Turmites}
 \usage{
-canvas_turmite(colors, background = "#fafafa", p = 0, iterations = 1e6,
-               resolution = 500, noise = FALSE)
+canvas_turmite(
+  colors,
+  background = "#fafafa",
+  p = 0,
+  iterations = 1000000,
+  resolution = 500,
+  noise = FALSE
+)
 }
 \arguments{
 \item{colors}{a character specifying the color used for the artwork. The number of colors determines the number of turmites.}

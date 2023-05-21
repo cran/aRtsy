@@ -4,8 +4,15 @@
 \alias{canvas_phyllotaxis}
 \title{Draw a Phyllotaxis}
 \usage{
-canvas_phyllotaxis(colors, background = "#fafafa", iterations = 10000,
-               angle = 137.5, size = 0.01, alpha = 1, p = 0.5)
+canvas_phyllotaxis(
+  colors,
+  background = "#fafafa",
+  iterations = 10000,
+  angle = 137.5,
+  size = 0.01,
+  alpha = 1,
+  p = 0.5
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

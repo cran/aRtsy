@@ -4,11 +4,19 @@
 \alias{canvas_circlemap}
 \title{Draw a Circle Map}
 \usage{
-canvas_circlemap(colors, left = 0, right = 12.56, bottom = 0, top = 1,
-                 iterations = 10, resolution = 1500)
+canvas_circlemap(
+  colors,
+  left = 0,
+  right = 12.56,
+  bottom = 0,
+  top = 1,
+  iterations = 10,
+  resolution = 1500
+)
 }
 \arguments{
-\item{colors}{a string or character vector specifying the color(s) used for the artwork.}
+\item{colors}{a string or character vector specifying the color(s) used
+for the artwork.}
 
 \item{left}{a value specifying the minimum location on the x-axis.}
 
@@ -18,15 +26,25 @@ canvas_circlemap(colors, left = 0, right = 12.56, bottom = 0, top = 1,
 
 \item{top}{a value specifying the maximum location on the y-axis.}
 
-\item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
+\item{iterations}{a positive integer specifying the number of iterations of
+the algorithm.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+\item{resolution}{resolution of the artwork in pixels per row/column.
+Increasing the resolution increases the quality of the artwork but also
+increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws a circle map on the canvas. A circle map models the dynamics of a physical system consisting of two rotors or disks, one free to spin, and another one attached to a motor, with a long (weak) spring connecting the two.
+This function draws a circle map on a canvas. A circle map is a
+nonlinear dynamic system that can exhibit a phenomenon known as Arnold's
+tongue: a visualization of the frequency-locking behavior of a nonlinear
+oscillator with a periodic external force. The tongue is a region in the
+parameter space of the oscillator where the frequency of the oscillator
+matches the frequency of the external force. The tongue appears as a series
+of tongues of varying widths and shapes that can extend into regions of the
+parameter space where the frequency locking does not occur.
 }
 \examples{
 \donttest{

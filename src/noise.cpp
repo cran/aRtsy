@@ -17,23 +17,23 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::vec c_noise_knn(const arma::vec& x,
-                      const arma::vec& y,
-                      const arma::vec& z,
-                      const arma::vec& newx,
-                      const arma::vec& newy,
-                      const int& k) {
+arma::vec cpp_knn(const arma::vec& x,
+                  const arma::vec& y,
+                  const arma::vec& z,
+                  const arma::vec& newx,
+                  const arma::vec& newy,
+                  const int& k) {
   // Constants
-  const int n = newx.n_elem;
+  const int& n = newx.n_elem;
   // Variables
   arma::vec newz(n);
   // Main loop
   for(int i = 0; i < n; ++i) {
     // Check for interrupt
     Rcpp::checkUserInterrupt();
-    const arma::uvec si = arma::sort_index(sqrt(arma::square(x - newx[i]) + arma::square(y - newy[i])));
+    const arma::uvec& si = arma::sort_index(sqrt(arma::square(x - newx[i]) + arma::square(y - newy[i])));
     // Inner loop
-	for (int j = 0; j < k; ++j) {
+    for (int j = 0; j < k; ++j) {
       newz.at(i) += z.at(si.at(j)) / k;
     }
   }

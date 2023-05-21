@@ -17,18 +17,19 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-Rcpp::DataFrame iterate_flow(arma::mat& canvas,
-                             const arma::mat& angles,
-                             const int& lines,
-                             const int& iters,
-                             const int& ncolors,
-                             const int& left,
-                             const int& right,
-                             const int& top,
-                             const int& bottom,
-                             const double& stepmax) {
+Rcpp::DataFrame cpp_flow(arma::mat& canvas,
+                         const arma::mat& angles,
+                         const int& lines,
+                         const int& iters,
+                         const int& ncolors,
+                         const int& left,
+                         const int& right,
+                         const int& top,
+                         const int& bottom,
+                         const double& stepmax) {
   // Constants
   const int nrows = angles.n_rows, ncols = angles.n_cols;
+  const double crit_x = R::runif(0, 1), crit_y = R::runif(0, 1);
   // Variables
   double x, y, step;
   int col_index, row_index, c;
@@ -37,20 +38,29 @@ Rcpp::DataFrame iterate_flow(arma::mat& canvas,
     // Check for interrupt
     Rcpp::checkUserInterrupt();
     // Initialize variables
-    x = ceil(R::runif(left + 1, right - 1));
-    y = ceil(R::runif(bottom + 1, top - 1));
+    const double comp = R::runif(0, 1);
+    if (comp < crit_x) {
+      x = R::runif(left + 1, ceil(comp * right) - 1);
+    } else {
+      x = R::runif(ceil(comp * left), right - 1);
+    }
+    if (comp < crit_y) {
+      y = R::runif(bottom + 1, ceil(comp * top) - 1);
+    } else {
+      y = R::runif(ceil(comp * bottom), top - 1);
+    }
     step = R::runif(0, 100 * stepmax);
     c = ceil(R::runif(0, ncolors));
     // Inner loop
-    for (int i = 0; i < iters; i++) {
+    for (int i = 0; i < iters; ++i) {
       // Assign values
       canvas.at(j * iters + i, 0) = x;
       canvas.at(j * iters + i, 1) = y;
       canvas.at(j * iters + i, 2) = j + 1;
       canvas.at(j * iters + i, 3) = c;
       // Get position
-      col_index = x - left;
-      row_index = y - bottom;
+      col_index = ceil(x - left);
+      row_index = ceil(y - bottom);
       // Check bailout condition
       if ((col_index >= ncols) || (col_index <= 0) || (row_index >= nrows) || (row_index <= 0)) {
         break;

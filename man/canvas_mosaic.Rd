@@ -4,7 +4,11 @@
 \alias{canvas_mosaic}
 \title{Draw Moisaics}
 \usage{
-canvas_mosaic(colors, n = 1000, resolution = 500)
+canvas_mosaic(
+  colors,
+  n = 1000,
+  resolution = 500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

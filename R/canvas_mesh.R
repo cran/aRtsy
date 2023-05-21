@@ -17,10 +17,15 @@
 #'
 #' @description This function draws one or more rotating circular morphing meshes on the canvas.
 #'
-#' @usage canvas_mesh(colors, background = "#fafafa",
-#'              transform = c("perlin", "fbm", "simplex", "cubic",
-#'                            "worley", "knn", "rf", "svm"),
-#'              lines = 500, iterations = 500, mixprob = 0)
+#' @usage canvas_mesh(
+#'   colors,
+#'   background = "#fafafa",
+#'   transform = c("perlin", "fbm", "simplex", "cubic",
+#'                 "worley", "knn", "rf", "svm"),
+#'   lines = 500,
+#'   iterations = 500,
+#'   mixprob = 0
+#' )
 #'
 #' @param colors         a string or character vector specifying the color(s) used for the artwork.
 #' @param background     a character specifying the color used for the background (and the hole).
@@ -49,12 +54,15 @@
 #'
 #' @export
 
-canvas_mesh <- function(colors, background = "#fafafa",
+canvas_mesh <- function(colors,
+                        background = "#fafafa",
                         transform = c(
                           "perlin", "fbm", "simplex", "cubic",
                           "worley", "knn", "rf", "svm"
                         ),
-                        lines = 500, iterations = 500, mixprob = 0) {
+                        lines = 500,
+                        iterations = 500,
+                        mixprob = 0) {
   transform <- match.arg(transform)
   .checkUserInput(iterations = iterations, background = background)
   artwork <- ggplot2::ggplot()
@@ -74,13 +82,13 @@ canvas_mesh <- function(colors, background = "#fafafa",
     radius_increase <- data.frame(x = 1:lines, y = stats::rnorm(lines, mean = 0, sd = stats::runif(1, min = 0.01, max = 0.5)))
     circle_radius_increase <- predict(stats::loess(y ~ x, data = radius_increase), newdata = radius_increase)
     x <- rep(0:iterations, each = lines) + 0.75 * cos(circle_points)
-    mesh <- iterate_mesh(
+    mesh <- cpp_mesh(
       canvas = matrix(NA, nrow = lines * (iterations + 1), ncol = 2),
       points = circle_points,
       centers = circle_centers,
       iterations = iterations,
       start = start,
-      order = 1:lines,
+      order = seq_len(lines),
       radii = circle_radius,
       increase = circle_radius_increase
     )

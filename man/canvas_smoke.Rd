@@ -4,8 +4,13 @@
 \alias{canvas_smoke}
 \title{Draw Rainbow Smoke}
 \usage{
-canvas_smoke(colors, init = 1, shape = c("bursts", "clouds"),
-             algorithm = c("minimum", "average"), resolution = 150)
+canvas_smoke(
+  colors,
+  init = 1,
+  shape = c("bursts", "clouds"),
+  algorithm = c("minimum", "average"),
+  resolution = 150
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

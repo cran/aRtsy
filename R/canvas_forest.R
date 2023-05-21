@@ -17,7 +17,11 @@
 #'
 #' @description This function draws the predictions from a random forest algorithm trained on randomly generated categorical data.
 #'
-#' @usage canvas_forest(colors, n = 1000, resolution = 500)
+#' @usage canvas_forest(
+#'   colors,
+#'   n = 1000,
+#'   resolution = 500
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param n           a positive integer specifying the number of random data points to generate.
@@ -43,7 +47,9 @@
 #'
 #' @export
 
-canvas_forest <- function(colors, n = 1000, resolution = 500) {
+canvas_forest <- function(colors,
+                          n = 1000,
+                          resolution = 500) {
   .checkUserInput(resolution = resolution)
   train <- data.frame(
     x = stats::runif(n, 0, resolution),
@@ -55,7 +61,7 @@ canvas_forest <- function(colors, n = 1000, resolution = 500) {
   canvas <- expand.grid(sequence, sequence)
   colnames(canvas) <- c("x", "y")
   z <- predict(fit, newdata = canvas)
-  full_canvas <- data.frame(x = canvas$x, y = canvas$y, z = z)
+  full_canvas <- data.frame(x = canvas[["x"]], y = canvas[["y"]], z = z)
   artwork <- ggplot2::ggplot(data = full_canvas, mapping = ggplot2::aes(x = x, y = y, fill = z)) +
     ggplot2::geom_raster(interpolate = TRUE) +
     ggplot2::xlim(c(-1, resolution + 1)) +

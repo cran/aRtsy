@@ -15,10 +15,23 @@
 
 #' Draw Cobwebs
 #'
-#' @description This function draws many Fibonacci spirals shifted by random noise from a normal distribution.
+#' @description This function draws a cobweb on the canvas. The cobweb consists
+#' of many Fibonacci spirals shifted by random noise from a normal distribution.
+#' A Fibonacci spiral is a logarithmic spiral that is derived from the
+#' Fibonacci sequence, a mathematical sequence where each number is the sum of
+#' the two preceding ones. The spiral is created by connecting the corners of
+#' squares that are sized according to the Fibonacci sequence. Specifically, if
+#' we draw a sequence of squares with side lengths of 1, 1, 2, 3, 5, 8, 13, and
+#' so on, each square can be arranged so that it is tangent to the previous
+#' square at a corner. When we connect these corners with a smooth curve, the
+#' resulting shape is the Fibonacci spiral.
 #'
-#' @usage canvas_cobweb(colors, background = "#fafafa", lines = 300,
-#'               iterations = 100)
+#' @usage canvas_cobweb(
+#'   colors,
+#'   background = "#fafafa",
+#'   lines = 300,
+#'   iterations = 100
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -43,11 +56,13 @@
 #'
 #' @export
 
-canvas_cobweb <- function(colors, background = "#fafafa", lines = 300,
+canvas_cobweb <- function(colors,
+                          background = "#fafafa",
+                          lines = 300,
                           iterations = 100) {
   .checkUserInput(background = background, iterations = iterations)
-  fibonacci <- .fibonacci(n = iterations)
-  seqn <- 1:iterations
+  fibonacci <- .cobweb_fibonacci(n = iterations)
+  seqn <- seq_len(iterations)
   nrows <- length(seqn - 3) * lines
   canvas <- data.frame(x = rep(NA, nrows), xend = rep(NA, nrows), y = rep(NA, nrows), yend = rep(NA, nrows), z = rep(NA, nrows), lwd = rep(NA, nrows), col = rep(NA, nrows))
   for (i in 1:lines) {
@@ -62,25 +77,25 @@ canvas_cobweb <- function(colors, background = "#fafafa", lines = 300,
     xend <- c(x[-1], x[1])
     yend <- c(y[-1], y[1])
     subdata <- data.frame(x = x, xend = xend, y = y, yend = yend, z = i, lwd = stats::runif(1, 0, 0.1), col = sample(colors, size = 1))
-    subdata <- subdata[-which(subdata$x == subdata$xend | subdata$y == subdata$yend), ]
-    ind <- which(is.na(canvas$x))[1]
+    subdata <- subdata[-which(subdata[["x"]] == subdata[["xend"]] | subdata[["y"]] == subdata[["yend"]]), ]
+    ind <- which(is.na(canvas[["x"]]))[1]
     canvas[ind:(ind + nrow(subdata) - 1), ] <- subdata[stats::complete.cases(subdata), ]
   }
   canvas <- canvas[stats::complete.cases(canvas), ]
   artwork <- ggplot2::ggplot() +
     ggplot2::geom_curve(
       data = canvas, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend, group = z),
-      color = canvas$col, curvature = stats::runif(1, 0, 0.8), ncp = 25, linewidth = canvas$lwd, alpha = 0.01
+      color = canvas[["col"]], curvature = stats::runif(1, 0, 0.8), ncp = 25, linewidth = canvas[["lwd"]], alpha = 0.01
     ) +
     ggplot2::coord_cartesian(
-      xlim = c(min(canvas$x) / 4, max(canvas$x) / 4),
-      ylim = c(min(canvas$y) / 4, max(canvas$y) / 4)
+      xlim = c(min(canvas[["x"]]) / 4, max(canvas[["x"]]) / 4),
+      ylim = c(min(canvas[["y"]]) / 4, max(canvas[["y"]]) / 4)
     )
   artwork <- theme_canvas(artwork, background = background)
   return(artwork)
 }
 
-.fibonacci <- function(n) {
+.cobweb_fibonacci <- function(n) {
   x <- c(0, 1)
   for (i in 3:n) {
     x[i] <- x[i - 1] + x[i - 2]

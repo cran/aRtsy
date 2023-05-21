@@ -4,27 +4,54 @@
 \alias{canvas_ant}
 \title{Draw Langton's Ant}
 \usage{
-canvas_ant(colors, background = "#fafafa", iterations = 1000000,
-           resolution = 500)
+canvas_ant(
+  colors,
+  background = "#fafafa",
+  iterations = 1000000,
+  resolution = 500
+)
 }
 \arguments{
-\item{colors}{a character (vector) specifying the color(s) used for the artwork.}
+\item{colors}{a character (vector) specifying the color(s) used for the
+artwork.}
 
 \item{background}{a character specifying the color used for the background.}
 
-\item{iterations}{a positive integer specifying the number of iterations of the algorithm.}
+\item{iterations}{a positive integer specifying the number of iterations of
+the algorithm.}
 
-\item{resolution}{resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.}
+\item{resolution}{resolution of the artwork in pixels per row/column.
+Increasing the resolution increases the quality of the artwork but also
+increases the computation time exponentially.}
 }
 \value{
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws Langton's Ant on a canvas. Langton's ant is a two-dimensional universal Turing machine with a very simple set of rules. These simple rules can lead to complex emergent behavior.
+This function draws Langton's Ant on a canvas. Langton's Ant is
+  a two-dimensional cellular automaton that is named after its creator, Chris
+  Langton. See the \code{Details} section for more specific information about
+  the algorithm used in this function.
 }
 \details{
-The algorithm for Langton's Ant involves repeating the following rules: 1) on a non-colored block: turn 90 degrees clockwise, un-color the block, move forward one block; 2)
-         On a colored block: turn 90 degrees counter-clockwise, color the block, move forward one block; 3) If a certain number of iterations has passed, choose a different color which corresponds to a different combination of these rules.
+The algorithm for Langton's Ant involves the following steps:
+
+\itemize{
+  \item{Set up a two-dimensional grid of cells, where each cell can either be
+    "colored" or "non-colored." The initial state of the grid is usually a
+    single non-colored cell in the center of the grid.}
+  \item{Place an "ant" on the grid at the position of the initial non-colored
+    cell. The ant can move in four directions: up, down, left, or right.}
+  \item{At each step of the algorithm, the ant examines the color of the cell
+    it is currently on. If the cell is non-colored, the ant turns 90 degrees
+    clockwise, colors the cell, and moves forward one unit.}
+  \item{If the cell is colored, the ant turns 90 degrees counterclockwise,
+    uncolors the cell, and moves forward one unit.}
+  \item{The ant continues to move around the grid, following these rules at
+    each step. If a certain number of iterations has passed, the ant chooses
+    a different color which corresponds to a different combination of these
+    rules.}
+}
 }
 \examples{
 \donttest{

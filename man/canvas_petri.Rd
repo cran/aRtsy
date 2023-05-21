@@ -4,8 +4,14 @@
 \alias{canvas_petri}
 \title{Draw Petri Dish Colonies}
 \usage{
-canvas_petri(colors, background = "#fafafa", dish = "black",
-             attractors = 1000, iterations = 15, hole = 0)
+canvas_petri(
+  colors,
+  background = "#fafafa",
+  dish = "black",
+  attractors = 1000,
+  iterations = 15,
+  hole = 0
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

@@ -15,18 +15,36 @@
 
 #' Draw a Circle Map
 #'
-#' @description This function draws a circle map on the canvas. A circle map models the dynamics of a physical system consisting of two rotors or disks, one free to spin, and another one attached to a motor, with a long (weak) spring connecting the two.
+#' @description This function draws a circle map on a canvas. A circle map is a
+#' nonlinear dynamic system that can exhibit a phenomenon known as Arnold's
+#' tongue: a visualization of the frequency-locking behavior of a nonlinear
+#' oscillator with a periodic external force. The tongue is a region in the
+#' parameter space of the oscillator where the frequency of the oscillator
+#' matches the frequency of the external force. The tongue appears as a series
+#' of tongues of varying widths and shapes that can extend into regions of the
+#' parameter space where the frequency locking does not occur.
 #'
-#' @usage canvas_circlemap(colors, left = 0, right = 12.56, bottom = 0, top = 1,
-#'                  iterations = 10, resolution = 1500)
+#' @usage canvas_circlemap(
+#'   colors,
+#'   left = 0,
+#'   right = 12.56,
+#'   bottom = 0,
+#'   top = 1,
+#'   iterations = 10,
+#'   resolution = 1500
+#' )
 #'
-#' @param colors      a string or character vector specifying the color(s) used for the artwork.
+#' @param colors      a string or character vector specifying the color(s) used
+#'   for the artwork.
 #' @param left        a value specifying the minimum location on the x-axis.
 #' @param right       a value specifying the maximum location on the x-axis.
 #' @param bottom      a value specifying the minimum location on the y-axis.
 #' @param top         a value specifying the maximum location on the y-axis.
-#' @param iterations  a positive integer specifying the number of iterations of the algorithm.
-#' @param resolution  resolution of the artwork in pixels per row/column. Increasing the resolution increases the quality of the artwork but also increases the computation time exponentially.
+#' @param iterations  a positive integer specifying the number of iterations of
+#'   the algorithm.
+#' @param resolution  resolution of the artwork in pixels per row/column.
+#'   Increasing the resolution increases the quality of the artwork but also
+#'   increases the computation time exponentially.
 #'
 #' @return A \code{ggplot} object containing the artwork.
 #'
@@ -46,14 +64,16 @@
 #'
 #' @export
 
-canvas_circlemap <- function(colors, left = 0, right = 12.56, bottom = 0, top = 1,
-                             iterations = 10, resolution = 1500) {
+canvas_circlemap <- function(colors,
+                             left = 0,
+                             right = 12.56,
+                             bottom = 0,
+                             top = 1,
+                             iterations = 10,
+                             resolution = 1500) {
   .checkUserInput(resolution = resolution)
   canvas <- matrix(1, nrow = resolution, ncol = resolution)
-  canvas <- draw_circlemap(
-    canvas = canvas, left = left, right = right,
-    bottom = bottom, top = top, iters = iterations
-  )
+  canvas <- cpp_circlemap(canvas, left, right, bottom, top, iterations)
   canvas <- (canvas / iterations) / length(colors)
   full_canvas <- .unraster(canvas, names = c("y", "x", "z"))
   artwork <- ggplot2::ggplot(data = full_canvas, ggplot2::aes(x = x, y = y, fill = z)) +

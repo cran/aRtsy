@@ -16,14 +16,13 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::DataFrame iterate_phyllotaxis(int iter,
-                                    double a,
-                                    double p) {
-  Rcpp::NumericVector x;
-  Rcpp::NumericVector y;
-  for (int i = 1; i < iter + 1; i++) {
+Rcpp::DataFrame cpp_phyllotaxis(const int& iter,
+                                const double& a,
+                                const double& p) {
+  Rcpp::NumericVector x, y;
+  for (int i = 1; i < iter + 1; ++i) {
     Rcpp::checkUserInterrupt();
-    double s = R::runif(0, 1);
+    const double s = R::runif(0, 1);
     if (s < p) {
       x.push_back(sqrt( (double) i) * cos(a * i));
       y.push_back(sqrt( (double) i) * sin(a * i));

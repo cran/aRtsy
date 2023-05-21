@@ -4,10 +4,17 @@
 \alias{canvas_mandelbrot}
 \title{Draw the Mandelbrot Set}
 \usage{
-canvas_mandelbrot(colors, iterations = 100, zoom = 1,
-                   set = c("mandelbrot", "multibrot", "julia", "ship"),
-                   left = -2.16, right = 1.16, bottom = -1.66, top = 1.66,
-                   resolution = 500)
+canvas_mandelbrot(
+  colors,
+  iterations = 100,
+  zoom = 1,
+  set = c("mandelbrot", "multibrot", "julia", "ship"),
+  left = -2.16,
+  right = 1.16,
+  bottom = -1.66,
+  top = 1.66,
+  resolution = 500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

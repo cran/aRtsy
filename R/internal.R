@@ -23,7 +23,7 @@
     } else if (length(dims) == 2) {
       vec <- expand.grid(seq(limits[1], limits[2], length.out = dims[1]), seq(limits[1], limits[2], length.out = dims[2]))
     }
-    z <- c_noise_knn(stats::runif(n), stats::runif(n), stats::runif(n), vec[, 1], vec[, 2], k)
+    z <- cpp_knn(stats::runif(n), stats::runif(n), stats::runif(n), vec[, 1], vec[, 2], k)
   } else if (type == "svm") {
     train <- data.frame(
       x = stats::runif(n, limits[1], limits[2]),

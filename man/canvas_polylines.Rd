@@ -4,8 +4,14 @@
 \alias{canvas_polylines}
 \title{Draw Polygons and Lines}
 \usage{
-canvas_polylines(colors, background = "#fafafa", ratio = 0.5, iterations = 1000,
-                 size = 0.1, resolution = 500)
+canvas_polylines(
+  colors,
+  background = "#fafafa",
+  ratio = 0.5,
+  iterations = 1000,
+  size = 0.1,
+  resolution = 500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

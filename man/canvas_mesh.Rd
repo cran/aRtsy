@@ -4,10 +4,15 @@
 \alias{canvas_mesh}
 \title{Draw Meshes}
 \usage{
-canvas_mesh(colors, background = "#fafafa",
-             transform = c("perlin", "fbm", "simplex", "cubic",
-                           "worley", "knn", "rf", "svm"),
-             lines = 500, iterations = 500, mixprob = 0)
+canvas_mesh(
+  colors,
+  background = "#fafafa",
+  transform = c("perlin", "fbm", "simplex", "cubic",
+                "worley", "knn", "rf", "svm"),
+  lines = 500,
+  iterations = 500,
+  mixprob = 0
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

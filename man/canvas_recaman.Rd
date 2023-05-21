@@ -4,9 +4,17 @@
 \alias{canvas_recaman}
 \title{Draw Recaman's Sequence}
 \usage{
-canvas_recaman(colors, background = "#fafafa", iterations = 100, start = 0,
-               increment = 1, curvature = 1, angle = 0, size = 0.1,
-               closed = FALSE)
+canvas_recaman(
+  colors,
+  background = "#fafafa",
+  iterations = 100,
+  start = 0,
+  increment = 1,
+  curvature = 1,
+  angle = 0,
+  size = 0.1,
+  closed = FALSE
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

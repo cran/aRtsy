@@ -16,24 +16,23 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-Rcpp::DataFrame mazeNeighbors(int x, 
-                              int y,
-                              int m,
-                              int n) {
-  Rcpp::NumericVector nx;
-  Rcpp::NumericVector ny;
+Rcpp::DataFrame mazeNeighbors(const int& x, 
+                              const int& y,
+                              const int& m,
+                              const int& n) {
+  Rcpp::NumericVector nx, ny;
   if (y > 0 && y <= m) {
     if (x < n) {
       nx.push_back(x + 1);
       ny.push_back(y);
     }
-	if (x > 1) {
+    if (x > 1) {
       nx.push_back(x - 1);
       ny.push_back(y);
     }
   }
   if (x > 0 && x <= n) {
-	if (y > 1) {
+    if (y > 1) {
       nx.push_back(x);
       ny.push_back(y - 1);
     }
@@ -47,23 +46,22 @@ Rcpp::DataFrame mazeNeighbors(int x,
   return neighbors;
 }
 
-Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x, 
-                                Rcpp::NumericVector y,
-                                Rcpp::NumericVector vx,
-                                Rcpp::NumericVector vy) {
-  Rcpp::NumericVector nx;
-  Rcpp::NumericVector ny;
-  for (int i = 0; i < x.length(); i++) {
-	int contains = 0;
-	for (int j = 0; j < vx.length(); j++) {
-		if (x[i] == vx[j] && y[i] == vy[j]) {
-			contains = 1;
-		}
-	}
-	if (contains == 0) {
-		nx.push_back(x[i]);
-		ny.push_back(y[i]);
-	}
+Rcpp::DataFrame selectNeighbors(const Rcpp::NumericVector& x, 
+                                const Rcpp::NumericVector& y,
+                                const Rcpp::NumericVector& vx,
+                                const Rcpp::NumericVector& vy) {
+  Rcpp::NumericVector nx, ny;
+  for (int i = 0; i < x.length(); ++i) {
+    int contains = 0;
+    for (int j = 0; j < vx.length(); ++j) {
+      if (x[i] == vx[j] && y[i] == vy[j]) {
+        contains = 1;
+      }
+    }
+    if (contains == 0) {
+      nx.push_back(x[i]);
+      ny.push_back(y[i]);
+    }
   }
   Rcpp::DataFrame neighbors = Rcpp::DataFrame::create(Rcpp::Named("x") = nx,
                                                       Rcpp::Named("y") = ny);
@@ -71,18 +69,11 @@ Rcpp::DataFrame selectNeighbors(Rcpp::NumericVector x,
 }
 
 // [[Rcpp::export]]
-Rcpp::DataFrame iterate_maze(arma::mat X,
-                             double x, 
-                             double y) {
-  int m = X.n_rows;
-  int n = X.n_cols;
-  int dim = m * n;
-  Rcpp::NumericVector tx = {x};
-  Rcpp::NumericVector ty = {y};
-  Rcpp::NumericVector sx = {x};
-  Rcpp::NumericVector sy = {y};
-  Rcpp::NumericVector vx = {x};
-  Rcpp::NumericVector vy = {y};
+Rcpp::DataFrame cpp_maze(arma::mat& X,
+                         double x, 
+                         double y) {
+  const int m = X.n_rows, n = X.n_cols, dim = m * n;
+  Rcpp::NumericVector tx = {x}, ty = {y}, sx = {x}, sy = {y}, vx = {x}, vy = {y};
   while (vx.length() < dim) {
     Rcpp::checkUserInterrupt();
     Rcpp::DataFrame nn = mazeNeighbors(x, y, m, n);
@@ -91,7 +82,7 @@ Rcpp::DataFrame iterate_maze(arma::mat X,
     if (nrows > 0) {
       Rcpp::NumericVector nx = snn["x"];
       Rcpp::NumericVector ny = snn["y"];
-      int index = floor(R::runif(0, nrows));
+      const int index = floor(R::runif(0, nrows));
       x = nx[index];
       y = ny[index];
       sx.insert(0, x);

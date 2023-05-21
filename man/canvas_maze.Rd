@@ -4,8 +4,13 @@
 \alias{canvas_maze}
 \title{Draw Mazes}
 \usage{
-canvas_maze(color = "#fafafa", walls = "black", background = "#fafafa",
-            resolution = 20, polar = FALSE)
+canvas_maze(
+  color = "#fafafa",
+  walls = "black",
+  background = "#fafafa",
+  resolution = 20,
+  polar = FALSE
+)
 }
 \arguments{
 \item{color}{a character specifying the color used for the artwork.}

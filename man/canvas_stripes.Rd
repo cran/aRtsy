@@ -4,7 +4,12 @@
 \alias{canvas_stripes}
 \title{Draw Stripes}
 \usage{
-canvas_stripes(colors, n = 300, H = 1, burnin = 1)
+canvas_stripes(
+  colors,
+  n = 300,
+  H = 1,
+  burnin = 1
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

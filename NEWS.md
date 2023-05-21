@@ -1,3 +1,10 @@
+# aRtsy 0.2.3
+
+- Added new function `canvas_swirls()`.
+- Added new function `canvas_tiles()`.
+- Added argument `outline` to function `canvas_flow()`.
+- Fixed a bug in `canvas_planets()` where no stars would be drawn.
+
 # aRtsy 0.2.2
 
 - New function `canvas_smoke()`.

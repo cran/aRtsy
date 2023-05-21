@@ -4,8 +4,12 @@
 \alias{canvas_cobweb}
 \title{Draw Cobwebs}
 \usage{
-canvas_cobweb(colors, background = "#fafafa", lines = 300,
-              iterations = 100)
+canvas_cobweb(
+  colors,
+  background = "#fafafa",
+  lines = 300,
+  iterations = 100
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}
@@ -20,7 +24,16 @@ canvas_cobweb(colors, background = "#fafafa", lines = 300,
 A \code{ggplot} object containing the artwork.
 }
 \description{
-This function draws many Fibonacci spirals shifted by random noise from a normal distribution.
+This function draws a cobweb on the canvas. The cobweb consists
+of many Fibonacci spirals shifted by random noise from a normal distribution.
+A Fibonacci spiral is a logarithmic spiral that is derived from the
+Fibonacci sequence, a mathematical sequence where each number is the sum of
+the two preceding ones. The spiral is created by connecting the corners of
+squares that are sized according to the Fibonacci sequence. Specifically, if
+we draw a sequence of squares with side lengths of 1, 1, 2, 3, 5, 8, 13, and
+so on, each square can be arranged so that it is tangent to the previous
+square at a corner. When we connect these corners with a smooth curve, the
+resulting shape is the Fibonacci spiral.
 }
 \examples{
 \donttest{

@@ -4,8 +4,14 @@
 \alias{canvas_segments}
 \title{Draw Segments}
 \usage{
-canvas_segments(colors, background = "#fafafa", n = 250,
-                p = 0.5, H = 0.1, size = 0.2)
+canvas_segments(
+  colors,
+  background = "#fafafa",
+  n = 250,
+  p = 0.5,
+  H = 0.1,
+  size = 0.2
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

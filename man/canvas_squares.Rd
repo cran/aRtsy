@@ -4,8 +4,14 @@
 \alias{canvas_squares}
 \title{Draw Squares and Rectangles}
 \usage{
-canvas_squares(colors, background = "#000000", cuts = 50, ratio = 1.618,
-               resolution = 200, noise = FALSE)
+canvas_squares(
+  colors,
+  background = "#000000",
+  cuts = 50,
+  ratio = 1.618,
+  resolution = 200,
+  noise = FALSE
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

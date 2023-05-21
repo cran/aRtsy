@@ -17,8 +17,14 @@
 #'
 #' @description This function paints a turmite. A turmite is a Turing machine which has an orientation in addition to a current state and a "tape" that consists of a two-dimensional grid of cells.
 #'
-#' @usage canvas_turmite(colors, background = "#fafafa", p = 0, iterations = 1e6,
-#'                resolution = 500, noise = FALSE)
+#' @usage canvas_turmite(
+#'   colors,
+#'   background = "#fafafa",
+#'   p = 0,
+#'   iterations = 1000000,
+#'   resolution = 500,
+#'   noise = FALSE
+#' )
 #'
 #' @param colors       a character specifying the color used for the artwork. The number of colors determines the number of turmites.
 #' @param background  a character specifying the color used for the background.
@@ -49,8 +55,12 @@
 #'
 #' @export
 
-canvas_turmite <- function(colors, background = "#fafafa", p = 0, iterations = 1e6,
-                           resolution = 500, noise = FALSE) {
+canvas_turmite <- function(colors,
+                           background = "#fafafa",
+                           p = 0,
+                           iterations = 1000000,
+                           resolution = 500,
+                           noise = FALSE) {
   .checkUserInput(
     resolution = resolution, background = background, iterations = iterations
   )
@@ -58,7 +68,7 @@ canvas_turmite <- function(colors, background = "#fafafa", p = 0, iterations = 1
   canvas <- matrix(0, nrow = resolution, ncol = resolution)
   for (i in seq_along(colors)) {
     k <- sample(x = 0:1, size = 1)
-    turmite <- draw_turmite(
+    turmite <- cpp_turmite(
       canvas = matrix(0, nrow = resolution, ncol = resolution),
       iters = iterations,
       row = if (k == 0) sample(0:(resolution - 1), size = 1) else 0,

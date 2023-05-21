@@ -17,11 +17,22 @@
 #'
 #' @description This function implements the fractal flame algorithm.
 #'
-#' @usage canvas_flame(colors, background = "#000000", iterations = 1000000,
-#'              variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
-#'              post = FALSE, final = FALSE, extra = FALSE,
-#'              display = c("colored", "logdensity"),
-#'              zoom = 1, resolution = 1000, gamma = 1)
+#' @usage canvas_flame(
+#'   colors,
+#'   background = "#000000",
+#'   iterations = 1000000,
+#'   variations = 0,
+#'   symmetry = 0,
+#'   blend = TRUE,
+#'   weighted = FALSE,
+#'   post = FALSE,
+#'   final = FALSE,
+#'   extra = FALSE,
+#'   display = c("colored", "logdensity"),
+#'   zoom = 1,
+#'   resolution = 1000,
+#'   gamma = 1
+#' )
 #'
 #' @param colors      a string or character vector specifying the color(s) used for the artwork.
 #' @param background  a character specifying the color used for the background.
@@ -138,11 +149,20 @@
 #'
 #' @export
 
-canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
-                         variations = 0, symmetry = 0, blend = TRUE, weighted = FALSE,
-                         post = FALSE, final = FALSE, extra = FALSE,
+canvas_flame <- function(colors,
+                         background = "#000000",
+                         iterations = 1000000,
+                         variations = 0,
+                         symmetry = 0,
+                         blend = TRUE,
+                         weighted = FALSE,
+                         post = FALSE,
+                         final = FALSE,
+                         extra = FALSE,
                          display = c("colored", "logdensity"),
-                         zoom = 1, resolution = 1000, gamma = 1) {
+                         zoom = 1,
+                         resolution = 1000,
+                         gamma = 1) {
   display <- match.arg(display)
   .checkUserInput(
     resolution = resolution, background = background
@@ -162,13 +182,13 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
     colors <- c(colors, sample(x = colors, size = n, replace = TRUE))
     color_mat <- matrix(t(grDevices::col2rgb(colors) / 255), nrow = length(colors), ncol = 3)
   }
-  fs <- .createFunctionSystem(n, symmetry)
+  fs <- .flame_system(n, symmetry)
   w_i <- stats::runif(n = fs[["n"]], min = 0, max = 1)
   v_ij <- matrix(stats::runif(fs[["n"]] * length(variations), min = 0, max = 1), nrow = fs[["n"]], ncol = length(variations))
   for (i in seq_len(nrow(v_ij))) {
     v_ij[i, ] <- v_ij[i, ] / sum(v_ij[i, ])
   }
-  canvas <- iterate_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
+  canvas <- cpp_flame( # 1 = x, 2 = y, 3 = red, 4 = green, 5 = blue
     canvas = array(0, dim = c(resolution + 1, resolution + 1, 4)), iterations = iterations,
     resolution = resolution,
     edge = 2 * (1 / zoom),
@@ -183,7 +203,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
     funcPars = fs[["parameters"]],
     variations = variations,
     varWeights = v_ij,
-    varParams = .getVariationParameters(),
+    varParams = .flame_variations(),
     postPars = matrix(stats::runif(fs[["n"]] * 6, min = -1, max = 1), nrow = fs[["n"]], ncol = 6),
     finalPars = stats::runif(6, min = -1, max = 1),
     extraPars = stats::runif(6, min = -1, max = 1),
@@ -200,7 +220,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
       ggplot2::geom_raster(interpolate = TRUE) +
       ggplot2::scale_fill_gradientn(colors = colors, na.value = background)
   } else {
-    canvas <- .scaleColorChannels(canvas)
+    canvas <- .flame_scaling(canvas)
     canvas[, , 2:4] <- canvas[, , 2:4]^(1 / gamma) # Gamma correction
     maxVal <- max(c(1, c(canvas[, , 2]), c(canvas[, , 3]), c(canvas[, , 4])))
     if (maxVal == 0) {
@@ -215,7 +235,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
   return(artwork)
 }
 
-.getVariationParameters <- function() {
+.flame_variations <- function() {
   return(c(
     stats::runif(1, 1, 2), stats::runif(1, -2, -1), sample(3:7, size = 1), # blob.high, blob.low, blob.waves
     stats::runif(4, 0, 1), # padj.a, pdj.b, pdj.c, pdj.d
@@ -235,7 +255,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
   ))
 }
 
-.scaleColorChannels <- function(canvas) {
+.flame_scaling <- function(canvas) {
   hits <- which(canvas[, , 1] > 0)
   scaling <- log(canvas[, , 1][hits]) / canvas[, , 1][hits]
   canvas[, , 2][hits] <- canvas[, , 2][hits] * scaling
@@ -244,7 +264,7 @@ canvas_flame <- function(colors, background = "#000000", iterations = 1000000,
   return(canvas)
 }
 
-.createFunctionSystem <- function(n, symmetry) {
+.flame_system <- function(n, symmetry) {
   parameters <- matrix(stats::runif(n * 6, min = -1, max = 1), nrow = n, ncol = 6)
   indicator <- nrow(parameters)
   if (symmetry != 0) {

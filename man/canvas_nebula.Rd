@@ -4,7 +4,12 @@
 \alias{canvas_nebula}
 \title{Draw Nebulas}
 \usage{
-canvas_nebula(colors, k = 50, n = 500, resolution = 500)
+canvas_nebula(
+  colors,
+  k = 50,
+  n = 500,
+  resolution = 500
+)
 }
 \arguments{
 \item{colors}{a string or character vector specifying the color(s) used for the artwork.}

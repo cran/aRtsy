@@ -17,12 +17,12 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat draw_circlemap(arma::mat& canvas,
-                         const double& left,
-                         const double& right,
-                         const double& bottom,
-                         const double& top,
-                         const int& iters) {
+arma::mat cpp_circlemap(arma::mat& canvas,
+                        const double& left,
+                        const double& right,
+                        const double& bottom,
+                        const double& top,
+                        const int& iters) {
   const int nrows = canvas.n_rows, ncols = canvas.n_cols;
   const double twopi = 2 * M_PI, xrange = right - left, yrange = top - bottom;
   double K = right, phi = bottom;
