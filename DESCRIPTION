@@ -1,8 +1,8 @@
 Package: aRtsy
 Title: Generative Art with 'ggplot2'
 Description: Provides algorithms for creating artworks in the 'ggplot2' language that incorporate some form of randomness.
-Version: 0.2.4
-Date: 2023-08-21
+Version: 1.0.0
+Date: 2024-11-05
 Authors@R: 
     person(given = "Koen",
            family = "Derks",
@@ -20,11 +20,11 @@ LinkingTo: Rcpp, RcppArmadillo
 Language: en-US
 License: GPL (>= 3)
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Config/testthat/edition: 3
 NeedsCompilation: yes
-Packaged: 2023-08-21 06:28:15 UTC; koenderks
+Packaged: 2024-11-06 08:19:18 UTC; koenderks
 Author: Koen Derks [aut, cre]
 Maintainer: Koen Derks <koen-derks@hotmail.com>
 Repository: CRAN
-Date/Publication: 2023-08-21 07:32:36 UTC
+Date/Publication: 2024-11-06 08:50:10 UTC

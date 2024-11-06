@@ -1,6 +1,6 @@
-0667e604f33569019cf421ecb3883257 *DESCRIPTION
+19a810902dd597a88ed99dfbf15b067d *DESCRIPTION
 0c974deaf7d466f2ba5e0a262e0ffa3e *NAMESPACE
-0a2467b3891ba27b4f3a2bfde1f520cf *NEWS.md
+43f405269f4c1403ac9ae0791be3fd85 *NEWS.md
 6212fb5bace3203de58bd9ebb68bfd2c *R/RcppExports.R
 d4a8442fea40661df05ad3651af18771 *R/canvas_ant.R
 085ec9148ea7667bebddb94f0f147004 *R/canvas_blacklight.R
@@ -9,7 +9,7 @@ d4a8442fea40661df05ad3651af18771 *R/canvas_ant.R
 767e245349a7750f515433d48f1f3a4c *R/canvas_cobweb.R
 4e5ebad6828042bdb103eb05b9561957 *R/canvas_collatz.R
 24f1f963e9e46072982ab5f735ccce94 *R/canvas_diamonds.R
-bc0c10c11a932691f1b78ad087898322 *R/canvas_flame.R
+f0914d044c3f7a5b695a8df7c961f311 *R/canvas_flame.R
 b4a91d69672b5e5242c197e7332f8095 *R/canvas_flow.R
 62a51d6c310d92dc18fe50046103b8e8 *R/canvas_forest.R
 885f832ea9ce3fa7525d816f3a101eee *R/canvas_function.R
@@ -17,8 +17,8 @@ b4a91d69672b5e5242c197e7332f8095 *R/canvas_flow.R
 0e6bd7889d38dbe944dd073204fc0abf *R/canvas_lissajous.R
 b02f2e1035a9c4e4ad36bd6f1568fa25 *R/canvas_mandelbrot.R
 9e152bba03a3fd9e8748309f39f54bc2 *R/canvas_maze.R
-7b700ff3c35e25d308058c360a488f9c *R/canvas_mesh.R
-7b0b52f267d34c904785d0123dfc6650 *R/canvas_mosaic.R
+a38673f774a04a489140baeeceefe2ca *R/canvas_mesh.R
+09115dd67a54cde841310b99780f9935 *R/canvas_mosaic.R
 fa0dda0a51888702f433ca8837300530 *R/canvas_nebula.R
 2acd3513b69cd7b0bfef3ee410f7a8c8 *R/canvas_petri.R
 f71c57213651cf55c60f25e302485e27 *R/canvas_phyllotaxis.R
@@ -41,8 +41,8 @@ e523becee04572c88b393843771d049d *R/internal.R
 35dcc9529b3760d414b96da2f6180369 *R/saveCanvas.R
 cbffb798ea85349159fde068633d7a45 *R/theme_canvas.R
 40c7a796d32c7ea3c46d77b9eda7ec92 *R/zzz.R
-cd657fb3897d8e821f4b3a9a2d65c805 *README.md
-6f5af012cf0a3622f648f7e94211226c *inst/CITATION
+4c6a141b5ba2137cc45cf4b6417b071f *README.md
+b10b05373c8793c092b5503b14a291fe *inst/CITATION
 9f87978f84358b8abcf6186673792e25 *man/aRtsy.Rd
 902511fa3964f1f0edbc14621d0543ea *man/canvas_ant.Rd
 3ebfd9bc3d40b6b3d013f42565bffa25 *man/canvas_blacklight.Rd
@@ -51,7 +51,7 @@ ae5877788066accb5150a7cfc8e83e01 *man/canvas_circlemap.Rd
 8683d132946f946b2f4fe1b6f0508a65 *man/canvas_cobweb.Rd
 86ddc0e0da33f88aa2ea241e3ebbd3eb *man/canvas_collatz.Rd
 49cde02306a3914cf2b4f1bbb272e3ad *man/canvas_diamonds.Rd
-7812af0841146660a7b0e70995c40993 *man/canvas_flame.Rd
+7395f2d605bc47889fa38e1b4b631714 *man/canvas_flame.Rd
 85e3c39a5aabecb3338827435593e161 *man/canvas_flow.Rd
 743072653f8e8ea28c32307df844cca7 *man/canvas_forest.Rd
 30754955f716f2cc77b42505377ebbef *man/canvas_function.Rd
@@ -59,7 +59,7 @@ ae5877788066accb5150a7cfc8e83e01 *man/canvas_circlemap.Rd
 d9eed1e323911ba9ac5d3f2a2563f228 *man/canvas_lissajous.Rd
 e69498fbf80bc9d60d31f24f12cae708 *man/canvas_mandelbrot.Rd
 73c7d7fe379efc38e75ee427f5ea9a31 *man/canvas_maze.Rd
-31fb2d625fefdfc6a1ef2fe4e7dbbda4 *man/canvas_mesh.Rd
+5485d94f0246d0d7006d4018b88add0d *man/canvas_mesh.Rd
 36ac62737da692864c69785358c8e026 *man/canvas_mosaic.Rd
 bcc7c0432c1be7b78e03d6b82317a9a4 *man/canvas_nebula.Rd
 b4c53679d48d4d01139705600aea5915 *man/canvas_petri.Rd
@@ -81,7 +81,7 @@ b49066f4bd11d4eb0ddf51b1f1ee895c *man/canvas_tiles.Rd
 40aa1f83615525b6a874bc075197d39c *man/colorPalette.Rd
 b6820dede1ff9370d5e65f23e44e40b9 *man/figures/colors.pdf
 b1c5990cb125286a2c68536c1ddb2257 *man/figures/colors.svg
-40d06bed91751d4dfaaf637cda136d74 *man/figures/logo.png
+da64359a49a6b29515cd63ec06a5e7ac *man/figures/logo.png
 0a3128893233d776d2d3447b28217f6f *man/saveCanvas.Rd
 11c38381d5a3584ace3ac2c57267c203 *man/theme_canvas.Rd
 b3b4a75657791e276dcaf952e2ead01d *src/RcppExports.cpp
@@ -89,7 +89,7 @@ b3b4a75657791e276dcaf952e2ead01d *src/RcppExports.cpp
 53af7040967f21cc7ce0154b4bb4fb57 *src/canvas_chladni.cpp
 e246a3c0c098f3c4fba1280a39a01b14 *src/canvas_circlemap.cpp
 98d72dfad7be8b78ed39df2d26525675 *src/canvas_collatz.cpp
-a57a950f8d1a1023474891dd971035c6 *src/canvas_flame.cpp
+821515393e0df0cdef67b16c097257be *src/canvas_flame.cpp
 4fb44c24389da159e3e21edf6cc5a06e *src/canvas_flow.cpp
 8e2247c9f889b127b3df62d4639006c2 *src/canvas_maze.cpp
 618790fe003a253d555987283653ce4b *src/canvas_mesh.cpp
