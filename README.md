@@ -9,7 +9,7 @@
 
 <img src='https://github.com/koenderks/aRtsy/raw/development/man/figures/logo.png' width='149' height='173' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
-*"If you laugh at a joke, what difference does it make if subsequently you are told that the joke was created by an algorithm?" - Marcus du Sautoy, The Creative Code*
+*"If you laugh at a joke, what difference does it make if subsequently you are told that the joke was created by an algorithm?" - Marcus du Sautoy, The Creativity Code*
 
 `aRtsy` aims to make generative art accessible to the general public in a straightforward and standardized manner. The package provides algorithms for creating artworks that incorporate some form of randomness and are dependent on the set `seed`. Each algorithm is implemented in a separate function with its own set of parameters that can be tweaked.
 
@@ -17,7 +17,7 @@ Good luck hunting for some good `seed`'s!
 
 ## Artwork of the day
 
-Every 24 hours this repository randomly generates and tweets an artwork from the `aRtsy` library. The full collection of daily artworks is available on the [twitter](https://twitter.com/aRtsy_package) feed and the [mastodon](https://botsin.space/web/@aRtsy_package) feed. This is today's artwork:
+Every 24 hours this repository randomly generates and tweets an artwork from the `aRtsy` library. The full collection of daily artworks is available on the [twitter](https://twitter.com/aRtsy_package) feed and the [mastodon](https://mastodon.social/@aRtsy_package) feed. This is today's artwork:
 
 <p align="center">
   <img src='https://github.com/koenderks/aRtsy/raw/development/png/daily.png' width='50%'>
@@ -67,6 +67,7 @@ saveCanvas(artwork, filename = "myArtwork.png")
 * [`canvas_phyllotaxis()`](#phyllotaxis)
 * [`canvas_planet()`](#planets)
 * [`canvas_recaman()`](#recamáns-sequence)
+* [`canvas_slime()`](#slime-mold)
 * [`canvas_smoke()`](#rainbow-smoke)
 * [`canvas_splits()`](#split-lines)
 * [`canvas_stripes()`](#stripes)
@@ -345,6 +346,24 @@ You can use the `canvas_recaman()` function to make your own artwork using this 
 set.seed(1)
 canvas_recaman(colors = colorPalette("random", n = 10))
 # see ?canvas_recaman for more input parameters of this function
+```
+
+#### Slime mold
+
+This function implements the [Physarium](https://doi.org/10.1162/artl.2010.16.2.16202) model, which is neatly described in [this blogpost](https://cargocollective.com/sagejenson/physarum) by Sage Jenson and [this blogpost](https://fronkonstin.com/2020/08/11/abstractions/) by Antonio Sánchez Chinchón. The algorithm simulates particles on a two-dimensional grid that move towards areas on the grid with a high intensity.
+
+<p align="center">
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/slimes/2024-11-19.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/slimes/2024-11-18.png' width='30%'>
+  <img src='https://github.com/koenderks/aRtsy/raw/development/png/slimes/2024-11-20.png' width='30%'>
+</p>
+
+You can use the `canvas_slime()` function to make your own artwork using this algorithm.
+
+```r
+set.seed(1)
+canvas_slime(colors = colorPalette("neon1"))
+# see ?canvas_slime for more input parameters of this function
 ```
 
 #### Rainbow smoke
